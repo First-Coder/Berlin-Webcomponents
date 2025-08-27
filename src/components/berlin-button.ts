@@ -6,7 +6,7 @@ import {customElement, property} from "lit/decorators.js";
  */
 @customElement('berlin-button')
 export  class Button extends LitElement {
-    static styles = css`
+    static readonly styles = css`
         :host {
             font-family: arial, sans-serif, verdana, helvetica;
 

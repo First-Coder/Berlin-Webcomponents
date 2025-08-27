@@ -1,5 +1,9 @@
 import type { Preview } from '@storybook/web-components-vite'
 
+import '../public/tailwind.css';
+
+export const parameters = { layout: 'centered' };
+
 const preview: Preview = {
   parameters: {
     controls: {
