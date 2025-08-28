@@ -99,10 +99,8 @@ export class BlnButton extends LitElement {
     /**
      * Renders a button with customizable styles and behaviors based on properties such as size, variant, arrow inclusion, and disabled state.
      * The method dynamically constructs the button's classes, applies relevant styles, and optionally renders a right arrow icon based on button configuration.
-     *
-     * @return {string} A string representing the HTML template for the button, including its styles and dynamic content.
      */
-    renderButton(): string {
+    renderButton() {
         // Button types
         const isLink = this.variant === 'link';
 
@@ -120,7 +118,7 @@ export class BlnButton extends LitElement {
                 : this.size === 'small'
                     ? 'py-1 px-3'
                     : 'py-2 px-5';
-        const hover = !this.isDisabled && !isLink ? 'hover:bg-gray-200' : isLink ? 'hover:underline' : '';
+        const hover = !this.disabled && !isLink ? 'hover:bg-gray-200' : isLink ? 'hover:underline' : '';
         const disabled = this.disabled ? 'opacity-50 cursor-not-allowed' : '';
         const spanClasses = this.withArrow
             ? this.size === 'small'
@@ -158,7 +156,7 @@ export class BlnButton extends LitElement {
             </button>`;
     }
 
-    protected render(): string {
+    protected render() {
         return this.withStripes
             ? html`
                     <section class="py-2 pr-2 flex justify-end"
