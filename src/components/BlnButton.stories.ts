@@ -2,15 +2,15 @@ import type {Meta, StoryObj} from '@storybook/web-components-vite';
 
 import {fn} from 'storybook/test';
 
-import "../components/BlnButton";
-import type {BlnButtonProps} from "../components/BlnButton";
+import "./BlnButton";
+import type {BlnButtonProps} from "./BlnButton";
 
 import {html} from "lit";
 import {ifDefined} from 'lit/directives/if-defined.js';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta = {
-    title: 'Components/BlnButton',
+    title: 'Base Components/Button',
     tags: ['autodocs'],
     render: (args: BlnButtonProps) => html`
         <bln-button
