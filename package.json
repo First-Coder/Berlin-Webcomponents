@@ -7,8 +7,8 @@
     "build": "tsc -p tsconfig.json",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "tailwind:watch": "tailwindcss -i ./src/styles/tailwind.css -o ./public/tailwind.css --watch",
-    "build:bundle": "vite build"
+    "tailwind:build": "tailwindcss -c tailwind.config.js -i ./src/styles/tailwind.css -o ./src/styles/tailwind.min.css --minify",
+    "build:bundle": "npm run tailwind:build && vite build"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
@@ -31,6 +31,7 @@
   },
   "private": true,
   "dependencies": {
-    "axios": "^1.11.0"
+    "axios": "^1.11.0",
+    "postcss-lit": "^1.2.0"
   }
 }

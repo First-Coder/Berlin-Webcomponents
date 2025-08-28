@@ -496,8 +496,3 @@ export class BlnTree extends LitElement {
         `;
     }
 }
-
-/**
- * Export tree to the window
- */
-window.customElements.define("bln-tree", BlnTree);

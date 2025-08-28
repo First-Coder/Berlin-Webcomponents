@@ -1,5 +1,6 @@
 import {customElement, property} from "lit/decorators.js";
-import {html, LitElement} from "lit";
+import {html, LitElement, PropertyValues} from "lit";
+import tailwindCss from '../styles/tailwind.min.css?raw';
 
 export interface BlnButtonProps {
     variant?: 'primary' | 'link';
@@ -14,6 +15,10 @@ export interface BlnButtonProps {
 
 @customElement('bln-button')
 export class BlnButton extends LitElement {
+    // Cache für geladene Tailwind-CSS (einmal pro Seite)
+    private static tailwindCssText?: string;
+
+
     /**
      * Represents an HTML button element type.
      *
@@ -96,6 +101,27 @@ export class BlnButton extends LitElement {
      */
     @property({attribute: false}) onClick?: (e: MouseEvent) => void;
 
+    protected firstUpdated(_changedProperties: PropertyValues) {
+        super.firstUpdated(_changedProperties);
+
+        this.ensureTailwindInShadow();
+    }
+
+    // Lädt die gebaute Tailwind CSS und fügt sie als <style> in den Shadow DOM ein
+    private async ensureTailwindInShadow() {
+        try {
+            if (!BlnButton.tailwindCssText) {
+                BlnButton.tailwindCssText = tailwindCss;
+            }
+            const styleEl = document.createElement('style');
+            styleEl.textContent = BlnButton.tailwindCssText!;
+            this.shadowRoot?.prepend(styleEl);
+        } catch (err) {
+            console.error('Tailwind CSS konnte nicht geladen werden:', err);
+        }
+    }
+
+
     /**
      * Renders a button with customizable styles and behaviors based on properties such as size, variant, arrow inclusion, and disabled state.
      * The method dynamically constructs the button's classes, applies relevant styles, and optionally renders a right arrow icon based on button configuration.
@@ -138,7 +164,7 @@ export class BlnButton extends LitElement {
         // Render
         return html`
             <!-- Tailwind aus Storybook Static Dir -->
-            <link rel="stylesheet" href="/tailwind.css"/>
+<!--            <link rel="stylesheet" href="/tailwind.css"/>-->
 
             <button class="${buttonClasses}"
                     ?disabled=${this.disabled}
