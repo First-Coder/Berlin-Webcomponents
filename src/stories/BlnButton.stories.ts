@@ -26,7 +26,7 @@ const meta = {
         </bln-button>`,
     argTypes: {
         disabled: {control: 'boolean', description: 'Disabled state of the button', type: {name: 'boolean'}},
-        class: {control: 'none', description: 'Additional CSS classes to apply to the button', type: {name: 'string'}},
+        class: {description: 'Additional CSS classes to apply to the button', type: {name: 'string'}},
         withArrow: {control: 'boolean', description: 'Whether to show an arrow icon', type: {name: 'boolean'}},
         withStripes: {control: 'boolean', description: 'Whether to show stripes', type: {name: 'boolean'}},
         variant: {
@@ -51,14 +51,12 @@ type Story = StoryObj<BlnButtonProps>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
     args: {
-        primary: 'primary',
         label: 'BlnButton',
     },
 };
 
 export const PrimaryArrow: Story = {
     args: {
-        primary: 'primary',
         withArrow: true,
         label: 'BlnButton',
     },
@@ -66,7 +64,6 @@ export const PrimaryArrow: Story = {
 
 export const PrimaryStripes: Story = {
     args: {
-        primary: 'primary',
         withStripes: true,
         label: 'BlnButton',
     },

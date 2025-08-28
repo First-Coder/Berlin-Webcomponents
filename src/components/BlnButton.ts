@@ -9,7 +9,7 @@ export interface BlnButtonProps {
     label: string;
     onClick?: () => void;
     disabled?: boolean;
-    className?: string;
+    class?: string;
 }
 
 @customElement('bln-button')
