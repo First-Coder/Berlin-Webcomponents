@@ -1,0 +1,42 @@
+# .github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'   # läuft bei Tags wie v1.0.0, v2.3.4
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Beispiel: Abhängigkeiten installieren und Build erstellen
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build:bundle
+
+      # Bundle/Artefakt packen (z. B. zip)
+      - name: Create archive
+        run: |
+          mkdir -p dist
+          zip -r bundle.zip build/
+          mv bundle.zip dist/
+
+      # GitHub Release erstellen
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/bundle.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
