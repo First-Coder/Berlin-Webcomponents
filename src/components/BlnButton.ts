@@ -1,6 +1,7 @@
 import {customElement, property} from "lit/decorators.js";
 import {html, LitElement, PropertyValues} from "lit";
 import tailwindCss from '../styles/tailwind.min.css?raw';
+import TailwindElement from "../app/TailwindElement";
 
 export interface BlnButtonProps {
     variant?: 'primary' | 'link';
@@ -14,10 +15,8 @@ export interface BlnButtonProps {
 }
 
 @customElement('bln-button')
-export class BlnButton extends LitElement {
+export class BlnButton extends TailwindElement {
     // Cache für geladene Tailwind-CSS (einmal pro Seite)
-    private static tailwindCssText?: string;
-
 
     /**
      * Represents an HTML button element type.
@@ -104,22 +103,9 @@ export class BlnButton extends LitElement {
     protected firstUpdated(_changedProperties: PropertyValues) {
         super.firstUpdated(_changedProperties);
 
-        this.ensureTailwindInShadow();
     }
 
-    // Lädt die gebaute Tailwind CSS und fügt sie als <style> in den Shadow DOM ein
-    private async ensureTailwindInShadow() {
-        try {
-            if (!BlnButton.tailwindCssText) {
-                BlnButton.tailwindCssText = tailwindCss;
-            }
-            const styleEl = document.createElement('style');
-            styleEl.textContent = BlnButton.tailwindCssText!;
-            this.shadowRoot?.prepend(styleEl);
-        } catch (err) {
-            console.error('Tailwind CSS konnte nicht geladen werden:', err);
-        }
-    }
+
 
 
     /**
@@ -161,6 +147,8 @@ export class BlnButton extends LitElement {
             this.class, // zusätzliche Host-übergebene Klassen
         ].filter(Boolean).join(' ');
 
+        const arrayBGColor = this.variant === 'secondary' ?  "black" : "#e40422";
+
         // Render
         return html`
             <!-- Tailwind aus Storybook Static Dir -->
@@ -172,7 +160,7 @@ export class BlnButton extends LitElement {
                 <span class="${spanClasses}"><slot></slot></span>
                 ${this.withArrow
                         ? html`
-                            <div class="px-3 flex items-center" style="background: #e40422;">
+                            <div class="px-3 flex items-center" style="background: ${arrayBGColor};">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" fill="white">
                                     <!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. -->
                                     <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>

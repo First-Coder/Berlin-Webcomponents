@@ -33,7 +33,7 @@ const meta = {
             description: 'Variant of the button',
             type: {name: 'string'},
             control: {type: 'select'},
-            options: ['primary', 'link'],
+            options: ['primary', 'link', 'secondary'],
         },
         size: {
             description: 'Size of the button',
