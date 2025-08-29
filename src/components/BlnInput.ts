@@ -1,5 +1,5 @@
 import {customElement, property} from "lit/decorators.js";
-import TailwindElement from "../app/TailwinElement";
+import TailwindElement from "../app/TailwindElement";
 import {html} from "lit";
 import {booleanStringFalseConverter} from "../utils/converters";
 
@@ -17,6 +17,7 @@ export interface BlnInputProps {
     size: 'small' | 'medium' | 'large';
     cornerHint: string;
     isValid: boolean;
+    retroDesign: boolean;
 }
 
 @customElement('bln-input')
@@ -114,8 +115,13 @@ export class BlnInput extends TailwindElement {
                 ${this.label
                         ? html`
                             <div class="flex flex-wrap justify-between items-center gap-2">
-                                <label
-                                        class="block text-sm font-medium mb-2 text-gray-700">${this.label}
+                                <label class="${this.cn(
+                                        this.retroDesign
+                                                ? ['font-bold text-black']
+                                                : ['text-sm font-medium text-gray-700'],
+                                        ['block mb-2']
+                                )}">
+                                    ${this.label}
                                 </label>
                                 <span class="block mb-2 text-sm text-gray-500 dark:text-neutral-500">${this.cornerHint}</span>
                             </div>`
@@ -125,17 +131,22 @@ export class BlnInput extends TailwindElement {
                            value="${this.value}"
                            ?disabled="${this.disabled}"
                            class="${this.cn(
+                                   // Sizes
                                    this.size === 'small' ? ['py-1.5 sm:py-2 px-3'] : '',
                                    this.size === 'medium' ? ['py-2.5 sm:py-3 px-4'] : '',
                                    this.size === 'large' ? ['p-3.5 sm:p-5'] : '',
-                                   ['block w-full border-2 border-gray-200 rounded-lg sm:text-sm'],
+                                   // Retro
+                                   this.retroDesign
+                                           ? ['rounded-none focus:border-retro-blue focus:shadow-retro-input-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white']
+                                           : ['rounded-md focus:border-blue-600 focus-visible:outline-none'],
+                                   // Other...
+                                   ['block w-full border-2 border-gray-200 sm:text-sm'],
                                    ['disabled:opacity-50 disabled:pointer-events-none'],
-                                   ['focus:border-blue-500 focus-visible:outline-none'],
                                    this.isValid && this.hasAttribute('is-valid')
-                                           ? ['border-teal-500 focus:border-teal-500']
+                                           ? ['border-teal-500 focus:border-teal-400']
                                            : '',
                                    !this.isValid && this.hasAttribute('is-valid')
-                                           ? ['border-red-500 focus:border-red-500']
+                                           ? ['border-red-500 focus:border-red-300']
                                            : '',
                                    this.class,
                            )}"

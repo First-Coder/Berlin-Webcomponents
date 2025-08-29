@@ -1,6 +1,7 @@
 import {LitElement, PropertyValues} from "lit";
 import tailwindCss from '../styles/tailwind.min.css?raw';
 import {property} from "lit/decorators.js";
+import {booleanStringFalseConverter} from "../utils/converters";
 
 /**
  * Represents a value that can be used to dynamically construct class names in various web development contexts.
@@ -39,6 +40,16 @@ export default abstract class TailwindElement extends LitElement {
      * When set to false, the debugging mode is disabled, and normal operation occurs.
      */
     @property({type: Boolean}) debug = false;
+
+    /**
+     * A boolean variable that indicates whether the current mode or feature
+     * operates in a retro or vintage style.
+     *
+     * When set to `true`, the system or feature is expected to behave in a manner
+     * resembling older or classic functionality. When set to `false`, it operates
+     * in standard or modern mode.
+     */
+    @property({type: Boolean, converter: booleanStringFalseConverter, attribute: 'retro-design'}) retroDesign = false;
 
     /**
      * Represents an optional string containing Tailwind CSS class definitions.

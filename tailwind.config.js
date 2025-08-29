@@ -13,6 +13,10 @@ module.exports = {
         extend: {
             colors: {
                 'police-red': '#E40322',
+                'retro-blue': '#0076dd'
+            },
+            boxShadow: {
+                'retro-input-shadow': '0 1px 1px rgba(0,0,0,.075) inset,0 0px 8px 0px rgba(102,175,233,.8)',
             }
         },
     },

@@ -2,7 +2,7 @@ import {customElement, property} from "lit/decorators.js";
 import {html} from "lit";
 import {icons} from "lucide";
 import {unsafeSVG} from "lit-html/directives/unsafe-svg.js";
-import TailwindElement from "../app/TailwinElement";
+import TailwindElement from "../app/TailwindElement";
 
 /**
  * Represents an array of immutable tuples where each tuple consists of a string and an immutable record.
@@ -51,7 +51,7 @@ function iconToSvg(name: string, opts?: {
     'aria-hidden'?: 'true' | 'false';
     role?: string;
     title?: string;
-}) {
+}): string {
     const node = (icons as Record<string, IconNode>)[name];
     if (!node) return '';
 

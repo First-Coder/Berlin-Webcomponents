@@ -22,6 +22,7 @@ const meta = {
                 size=${ifDefined(args.size)}
                 corner-hint=${ifDefined(args.cornerHint)}
                 is-valid=${ifDefined(args.isValid)}
+                retro-design=${ifDefined(args.retroDesign)}
         />`,
     argTypes: {
         placeholder: {description: 'Placeholder of the input', type: {name: 'string'}},
@@ -39,6 +40,7 @@ const meta = {
             options: ['small', 'medium', 'large'],
         },
         isValid: {description: 'Whether the input is valid', type: {name: 'boolean'}},
+        retroDesign: {description: 'Whether to use the retro design', type: {name: 'boolean'}},
     },
     args: {
         label: 'E-Mail',
@@ -53,6 +55,13 @@ type Story = StoryObj<BlnInputProps>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const DefaultInput: Story = {};
+
+export const RetroInput: Story = {
+    args: {
+        retroDesign: true,
+        hint: undefined,
+    },
+};
 
 export const PilledInput: Story = {
     args: {
