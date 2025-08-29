@@ -5,7 +5,9 @@ on:
   push:
     tags:
       - 'v*'   # läuft bei Tags wie v1.0.0, v2.3.4
-
+permissions:
+  contents: write   # erlaubt Release-Uploads
+  
 jobs:
   build:
     runs-on: ubuntu-latest
