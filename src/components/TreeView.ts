@@ -27,7 +27,7 @@ export class TreeView extends LitElement {
       margin-left: 1rem;
       border-left: 1px solid #ccc;
       padding-left: 0.5rem;
-    }
+    } 
   `;
 
     private toggle(node: TreeNode) {
