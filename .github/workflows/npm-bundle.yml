@@ -30,9 +30,8 @@ jobs:
       - name: Create archive
         run: |
           mkdir -p dist
-          zip -r bundle.zip build/
-          mv bundle.zip dist/
-
+          zip -r bundle.zip dist/
+         
       # GitHub Release erstellen
       - name: Create Release
         uses: softprops/action-gh-release@v2
