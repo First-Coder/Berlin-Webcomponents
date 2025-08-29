@@ -78,6 +78,22 @@ function iconToSvg(name: string, opts?: {
     return `<svg ${attrsToString(svgAttrs)}>${title}${children}</svg>`;
 }
 
+/**
+ * Interface representing the properties for LucideIcons component.
+ *
+ * @property {string} name - The name of the icon to be rendered.
+ * @property {number} size - The size of the icon in pixels.
+ * @property {string} color - The color to apply to the icon.
+ * @property {number} strokeWidth - The stroke width of the icon lines.
+ * @property {string} cls - Additional CSS class names to style the icon.
+ */
+export interface LucideIconsProps {
+    name: string;
+    size: number;
+    color: string;
+    strokeWidth: number;
+    cls: string;
+}
 
 /**
  * A custom web component representing an icon using the Lucide library.
@@ -103,7 +119,7 @@ export class LucideIcon extends TailwindElement {
      * Represents the term or query used to search for specific data or information.
      * This variable can hold a string value indicating the keywords or phrase to perform a search operation.
      */
-    @property() name: string = 'Search';
+    @property() name: LucideIconsProps['name'] = 'Search';
 
     /**
      * Represents the size or dimensions of an object or element.
@@ -111,7 +127,7 @@ export class LucideIcon extends TailwindElement {
      * @type {number}
      * @default 18
      */
-    @property() size: number = 18;
+    @property() size: LucideIconsProps['size'] = 18;
 
     /**
      * Represents a CSS-compatible color value used for styling elements.
@@ -126,12 +142,10 @@ export class LucideIcon extends TailwindElement {
      * - `'#ff0000'`
      * - `'rgb(255, 0, 0)'`
      * - `'hsl(0, 100%, 50%)/**
-     ' *`
      Represents * the
-     color * value Default to: be `' usedcurrent forColor styling' elements`
-     .
+     color * value Default to: be `' usedcurrent forColor styling elements`
      */
-    @property() color: string = 'currentColor';
+    @property() color: LucideIconsProps['color'] = 'currentColor';
 
     /**
      * Represents the width of a stroke or line used in rendering or drawing operations.
@@ -139,15 +153,15 @@ export class LucideIcon extends TailwindElement {
      *
      * The default value is 2.
      */
-    @property({attribute: 'stroke-width'}) strokeWidth: number = 2;
+    @property({attribute: 'stroke-width'}) strokeWidth: LucideIconsProps['strokeWidth'] = 2;
 
     /**
-     * Represents a class identifier or designation used in programming context.
-     * The variable `cls` is an empty string by default and can be utilized to store
+     * Represents a class identifier or designation used in a programming context.
+     * The variable `cls` is an empty string by default and can be used to store
      * or manipulate class names, identifiers, or other string-based data attributes.
      * Ensure that the value assigned to `cls` follows the expected format for its intended purpose.
      */
-    @property({type: String}) cls = '';
+    @property() cls: LucideIconsProps['cls'] = '';
 
 
     protected render() {
