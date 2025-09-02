@@ -30,9 +30,15 @@ jobs:
 
       # Bundle/Artefakt packen (z. B. zip)
       - name: Create archive
-        run: |
-          zip dist/bundle.js
-         
+        run: zip -j dist/bundle.zip dist/bundle.js
+
+      - name: Upload artifact (for debugging)
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle
+          path: dist/bundle.zip
+
+    
       # GitHub Release erstellen
       - name: Create Release
         uses: softprops/action-gh-release@v2
