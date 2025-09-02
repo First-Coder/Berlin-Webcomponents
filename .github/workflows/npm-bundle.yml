@@ -31,8 +31,7 @@ jobs:
       # Bundle/Artefakt packen (z. B. zip)
       - name: Create archive
         run: |
-          mkdir -p dist
-          zip -r bundle.zip dist/
+          zip dist/bundle.js
          
       # GitHub Release erstellen
       - name: Create Release
