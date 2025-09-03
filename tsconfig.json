@@ -13,6 +13,9 @@
     "types": ["node", "vite/client"],
     "lib": ["ES2022", "DOM"]
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "node_modules/vitest/globals.d.ts"
+  ],
   "exclude": [".storybook", "dist"]
 }
