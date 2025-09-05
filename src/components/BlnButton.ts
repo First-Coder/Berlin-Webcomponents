@@ -1,12 +1,12 @@
-
-import {customElement, property} from "lit/decorators.js";
-import {html, LitElement, PropertyValues} from "lit";
-import tailwindCss from '../styles/tailwind.min.css?raw';
+import {customElement, property, state} from "lit/decorators.js";
+import {html, PropertyValues} from "lit";
 import TailwindElement from "../app/TailwindElement";
 
 import './LucideIcon';
+import {booleanStringFalseConverter} from "../utils/converters";
 
 export interface BlnButtonProps {
+    type: string;
     variant?: 'solid' | 'outline' | 'ghost' | 'soft' | 'link' | 'arrow' | 'arrow-red';
     withArrow: boolean,
     withStripes: boolean,
@@ -16,6 +16,10 @@ export interface BlnButtonProps {
     disabled?: boolean;
     class?: string;
     retroDesign: boolean;
+    loading: boolean;
+    // Virtual properties
+    leading: boolean;
+    trailing: boolean;
 }
 
 @customElement('bln-button')
@@ -31,13 +35,13 @@ export class BlnButton extends TailwindElement {
      * - Does not have a default behavior, allowing custom actions to be defined.
      * - Commonly associated with event handlers, such as "click" events.
      */
-    @property({type: String}) type = "button";
+    @property() type: BlnButtonProps['type'] = "button";
 
 
     /**
      * Represents a variable that can store a value of different classes.
      */
-    @property({type: String}) class = "";
+    @property() class: BlnButtonProps['class'] = "";
 
     /**
      * Represents the variant type for a specific component or functionality.
@@ -45,7 +49,7 @@ export class BlnButton extends TailwindElement {
      *
      * Possible value: "primary"
      */
-    @property({type: String}) variant = "solid";
+    @property() variant: BlnButtonProps['variant'] = "solid";
 
 
     /**
@@ -54,7 +58,7 @@ export class BlnButton extends TailwindElement {
      * Commonly used to define or adjust dimensions, layouts, or options.
      * Possible values might include "small", "medium", "large", etc.
      */
-    @property({type: String}) size = "medium";
+    @property() size: BlnButtonProps['size'] = "medium";
 
 
     /**
@@ -63,7 +67,7 @@ export class BlnButton extends TailwindElement {
      * When set to `true`, the arrow functionality will be enabled.
      * When set to `false`, the arrow functionality will remain disabled.
      */
-    @property({type: Boolean, attribute: "with-arrow"}) withArrow = false;
+    @property({attribute: "with-arrow"}) withArrow: BlnButtonProps['withArrow'] = false;
 
 
     /**
@@ -71,14 +75,14 @@ export class BlnButton extends TailwindElement {
      * If set to `true`, the feature is inactive or unavailable.
      * Defaults to `false`, indicating that the feature is enabled and operational.
      */
-    @property({type: Boolean, reflect: true}) disabled = false;
+    @property({reflect: true}) disabled: BlnButtonProps['disabled'] = false;
 
     /**
      * This variable indicates whether a striped effect is applied or not.
      * It is a boolean value that defaults to false, implying that the striped effect
      * is disabled unless explicitly set to true.
      */
-    @property({type: Boolean, attribute: "with-stripes"}) withStripes = false;
+    @property({attribute: "with-stripes"}) withStripes: BlnButtonProps['withStripes'] = false;
 
 
     /**
@@ -95,6 +99,129 @@ export class BlnButton extends TailwindElement {
      * @param {MouseEvent} e - The mouse event triggered by the click action.
      */
     @property({attribute: false}) onClick?: (e: MouseEvent) => void;
+
+    /**
+     * Represents the loading state for the button.
+     * This property determines if the button should display a loading indicator.
+     * When set to `true`, the button is in a loading state.
+     * Defaults to `false`.
+     */
+    @property({reflect: true, converter: booleanStringFalseConverter}) loading: BlnButtonProps['loading'] = false;
+
+    /**
+     * A boolean variable that indicates whether a subject or entity has a leading characteristic.
+     * This variable typically signifies the presence (`true`) or absence (`false`) of
+     * a leading or preliminary state, condition, or attribute.
+     */
+    @state() private hasLeading: boolean = false;
+
+    /**
+     * A boolean variable indicating whether a specific trailing behavior is present.
+     * This typically determines if there is any trailing element or character in a particular context.
+     *
+     * @type {boolean}
+     */
+    @state() private hasTrailing: boolean = false;
+
+    /**
+     * Handles changes in the assigned nodes of a slot element and updates the `hasLeading` property
+     * based on the presence of non-empty nodes.
+     *
+     * @param {Event} e - The event triggered when the slot's assigned nodes change.
+     * @return {void} This method does not return a value.
+     */
+    private onLeadingChange(e: Event): void {
+        const slot = e.target as HTMLSlotElement;
+        const assigned = slot.assignedNodes({flatten: true}).filter(n => {
+            // leere Textknoten ignorieren
+            return !(n.nodeType === Node.TEXT_NODE && !n.textContent?.trim());
+        });
+        this.hasLeading = assigned.length > 0;
+    }
+
+    /**
+     * Handles the 'slotchange' event for the trailing slot and updates the state
+     * based on the presence of assigned nodes in the slot.
+     *
+     * @param {Event} e - The slotchange event triggered by the trailing slot.
+     * @return {void} This method does not return a value.
+     */
+    private onTrailingChange(e: Event): void {
+        const slot = e.target as HTMLSlotElement;
+        const assigned = slot.assignedNodes({flatten: true}).filter(n => {
+            // leere Textknoten ignorieren
+            return !(n.nodeType === Node.TEXT_NODE && !n.textContent?.trim());
+        });
+        this.hasTrailing = assigned.length > 0;
+    }
+
+    /**
+     * Returns an array of CSS class names for horizontal padding based on the size property
+     * and whether the padding is for the left or right side.
+     *
+     * @param {boolean} left - Determines whether the padding is for the left (true) or right (false) side.
+     * @return {string[]} An array of class names representing horizontal padding for the specified side and size.
+     */
+    private getSizeHorizontalPadding(left: boolean): string[] {
+        switch (this.size) {
+            case 'small':
+                return left ? ['pl-3'] : ['pr-3'];
+            case 'medium':
+                return left ? ['pl-4'] : ['pr-4'];
+            case 'large':
+                return left ? ['pl-4', 'sm:pl-5'] : ['pr-4', 'sm:pr-5'];
+            default:
+                return left ? ['pl-4'] : ['pr-4'];
+        }
+    }
+
+    /**
+     * Updates the component based on changes to its properties and adjusts the padding of certain elements within the shadow DOM.
+     *
+     * @param {PropertyValues<this>} changedProperties - An object containing the properties that changed and their previous values.
+     * @return {void} This method does not return a value.
+     */
+    protected updated(changedProperties: PropertyValues<this>) {
+        const shadowRoot = this.shadowRoot;
+        if (!shadowRoot) return;
+
+        // Remove old padding classes
+        shadowRoot.querySelector('span#loading')?.classList.remove('ml-2');
+        shadowRoot.querySelector('slot[name="leading"]')?.classList.remove(...this.getSizeHorizontalPadding(true));
+        shadowRoot.querySelector('slot[name="trailing"]')?.classList.remove(...this.getSizeHorizontalPadding(false));
+        shadowRoot.querySelector('span#content')?.classList.remove(...this.getSizeHorizontalPadding(true));
+        shadowRoot.querySelector('span#content')?.classList.remove(...this.getSizeHorizontalPadding(false));
+
+        // Set left padding
+        let leftHtmlElement: Element | null;
+        if (this.hasLeading) {
+            leftHtmlElement = this.shadowRoot.querySelector('slot[name="leading"]');
+        } else if (this.loading && !this.retroDesign) {
+            leftHtmlElement = this.shadowRoot.querySelector('span#loading');
+        } else {
+            leftHtmlElement = this.shadowRoot.querySelector('span#content');
+        }
+        if (!leftHtmlElement) {
+            console.warn('No left padding element found');
+        } else if (this.loading && !this.retroDesign) {
+            leftHtmlElement.classList.add('ml-2');
+        } else {
+            leftHtmlElement.classList.add(...this.getSizeHorizontalPadding(true));
+        }
+
+        // Set right padding
+        let rightHtmlElement: Element | null;
+        if (this.hasTrailing) {
+            rightHtmlElement = this.shadowRoot.querySelector('slot[name="trailing"]');
+        } else {
+            rightHtmlElement = this.shadowRoot.querySelector('span#content');
+        }
+        if (!rightHtmlElement) {
+            console.warn('No right padding element found');
+        } else {
+            rightHtmlElement.classList.add(...this.getSizeHorizontalPadding(false));
+        }
+    }
 
     /**
      * Renders a button with customizable styles and behaviors based on properties such as size, variant, arrow inclusion, and disabled state.
@@ -135,12 +262,21 @@ export class BlnButton extends TailwindElement {
             )}"
                     ?disabled=${this.disabled}
                     @click=${(e: MouseEvent) => this.onClick?.(e)}>
-                <span class="${this.cn([
+                ${this.loading && !this.retroDesign
+                        ? html`
+                            <span id="loading" class="animate-spin" role="status" aria-label="loading">
+                                <lucide-icon name="LoaderCircle" cls="w-5 h-5"></lucide-icon>
+                            </span>
+                        `
+                        : html`
+                            <slot name="leading" @slotchange=${this.onLeadingChange}></slot>`
+                }
+                <span id="content" class="${this.cn([
                     this.size === 'large'
-                            ? 'p-4 sm:p-5'
+                            ? 'py-4 sm:py-5'
                             : this.size === 'small'
-                                    ? 'py-2 px-3'
-                                    : 'py-3 px-4',
+                                    ? 'py-2'
+                                    : 'py-3',
                     this.variant === 'arrow' || this.variant === 'arrow-red'
                             ? this.retroDesign
                                     ? 'border-r-2 border-black'
@@ -149,7 +285,9 @@ export class BlnButton extends TailwindElement {
                     this.retroDesign
                             ? ''
                             : 'border-transparent',
-                ])}"><slot></slot></span>
+                ])}">
+                    <slot></slot>
+                </span>
                 ${this.variant === 'arrow' || this.variant === 'arrow-red'
                         ? html`
                             <div class="${this.cn([
@@ -171,7 +309,8 @@ export class BlnButton extends TailwindElement {
                                              ])}">
                                 </lucide-icon>
                             </div>`
-                        : ""}
+                        : html`
+                            <slot name="trailing" @slotchange=${this.onTrailingChange}></slot>`}
             </button>`;
     }
 

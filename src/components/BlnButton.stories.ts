@@ -22,14 +22,22 @@ const meta = {
                 ?with-stripes=${ifDefined(args.withStripes)}
                 ${args.withArrow ? 'with-arrow' : ''}
                 retro-design=${ifDefined(args.retroDesign)}
+                loading=${ifDefined(args.loading)}
                 .onClick=${args.onClick}
         >${ifDefined(args.label)}
+            ${args.leading
+                    ? html`<lucide-icon slot="leading" name="ChevronLeft" cls="ml-2 w-4 h-4"></lucide-icon>`
+                    : ''}
+            ${args.trailing
+                    ? html`<lucide-icon slot="trailing" name="ChevronRight" cls="mr-2 w-4 h-4"></lucide-icon>`
+                    : ''}
         </bln-button>`,
     argTypes: {
         disabled: {control: 'boolean', description: 'Disabled state of the button', type: {name: 'boolean'}},
         class: {description: 'Additional CSS classes to apply to the button', type: {name: 'string'}},
         withArrow: {control: 'boolean', description: 'Whether to show an arrow icon', type: {name: 'boolean'}},
         withStripes: {control: 'boolean', description: 'Whether to show stripes', type: {name: 'boolean'}},
+        loading: {control: 'boolean', description: 'Whether the button is in loading state', type: {name: 'boolean'}},
         retroDesign: {control: 'boolean', description: 'Whether to use the retro design', type: {name: 'boolean'}},
         variant: {
             description: 'Variant of the button',
@@ -91,6 +99,56 @@ export const ArrowRed: Story = {
     args: {
         variant: 'arrow-red',
     },
+};
+
+export const LoadingButton: Story = {
+    args: {
+        variant: 'solid',
+        loading: true,
+    }
+};
+
+export const LoadingButtonSmall: Story = {
+    args: {
+        variant: 'solid',
+        loading: true,
+        size: 'small'
+    }
+};
+
+export const LoadingButtonOutline: Story = {
+    args: {
+        variant: 'outline',
+        loading: true,
+    }
+};
+
+export const LoadingButtonGhost: Story = {
+    args: {
+        variant: 'ghost',
+        loading: true,
+    }
+};
+
+export const LoadingButtonSoft: Story = {
+    args: {
+        variant: 'soft',
+        loading: true,
+    }
+};
+
+export const LeadingButton: Story = {
+    args: {
+        variant: 'solid',
+        leading: true,
+    }
+};
+
+export const TrailingButton: Story = {
+    args: {
+        variant: 'solid',
+        trailing: true,
+    }
 };
 
 export const Retro: Story = {

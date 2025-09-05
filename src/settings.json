@@ -1,7 +1,0 @@
-{
-  "sonarlint.rules": {
-    "typescript:S3358": {
-      "level": "off"
-    }
-  }
-}
