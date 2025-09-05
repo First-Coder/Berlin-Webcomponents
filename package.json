@@ -4,11 +4,13 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "concurrently -k \"npm:tailwind:watch\" \"npm:storybook\"",
+    "dev": "concurrently -k \"npm:tailwind:watch\" \"npm:storybook\" \"npm:test:watch\"",
     "build": "tsc -p tsconfig.json",
     "build:bundle": "npm run tailwind:build && vite build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
     "tailwind:build": "tailwindcss -c tailwind.config.js -i ./src/styles/tailwind.css -o ./src/styles/tailwind.min.css --minify",
     "tailwind:watch": "tailwindcss -c tailwind.config.js -i ./src/styles/tailwind.css -o ./src/styles/tailwind.min.css --minify --watch"
   },
@@ -23,6 +25,7 @@
     "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.1",
+    "jsdom": "^26.1.0",
     "lit": "^3.3.1",
     "playwright": "^1.55.0",
     "postcss": "^8.5.6",
