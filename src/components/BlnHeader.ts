@@ -1,3 +1,4 @@
+
 import {customElement, property} from "lit/decorators.js";
 import TailwindElement from "../app/TailwindElement";
 import {html} from "lit";
@@ -5,6 +6,8 @@ import {booleanStringFalseConverter} from "../utils/converters";
 
 
 import './LucideIcon';
+import './BlnButton';
+import {BlnButton} from "./BlnButton";
 
 export interface BlnHeaderProps {
     class: string;
@@ -62,7 +65,7 @@ export class BlnHeader extends TailwindElement {
                     </a>
                 </div>
             </section>
-            <nav class="flex items-center justify-between shadow-md py-4 px-6">
+            <nav class="flex items-center justify-between shadow-header py-4 px-6">
                 <div class="min-w-80 max-w-[24vw] overflow-visible">
                     <a href="${this.titleUrl}">
                         <small class="block">${this.subTitle}</small>
@@ -70,6 +73,9 @@ export class BlnHeader extends TailwindElement {
                     </a>
                 </div>
                 <div class="order-10 grow-0 flex items-end ml-[2vw]">
+                    <bln-button>
+                        test
+                    </bln-button>
                     <button type="button"
                             aria-haspopup="true"
                             aria-expanded="false">

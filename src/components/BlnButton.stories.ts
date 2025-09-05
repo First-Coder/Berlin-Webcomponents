@@ -21,6 +21,7 @@ const meta = {
                 ?disabled=${args.disabled === true}
                 ?with-stripes=${ifDefined(args.withStripes)}
                 ${args.withArrow ? 'with-arrow' : ''}
+                retro-design=${ifDefined(args.retroDesign)}
                 .onClick=${args.onClick}
         >${ifDefined(args.label)}
         </bln-button>`,
@@ -29,11 +30,12 @@ const meta = {
         class: {description: 'Additional CSS classes to apply to the button', type: {name: 'string'}},
         withArrow: {control: 'boolean', description: 'Whether to show an arrow icon', type: {name: 'boolean'}},
         withStripes: {control: 'boolean', description: 'Whether to show stripes', type: {name: 'boolean'}},
+        retroDesign: {control: 'boolean', description: 'Whether to use the retro design', type: {name: 'boolean'}},
         variant: {
             description: 'Variant of the button',
             type: {name: 'string'},
             control: {type: 'select'},
-            options: ['primary', 'link', 'secondary'],
+            options: ['solid', 'link', 'outline', 'ghost', 'soft'],
         },
         size: {
             description: 'Size of the button',
@@ -42,43 +44,100 @@ const meta = {
             options: ['small', 'medium', 'large'],
         },
     },
-    args: {label: 'BlnButton', onClick: fn()},
+    args: {label: 'Button', onClick: fn()},
 } satisfies Meta<BlnButtonProps>;
 
 export default meta;
 type Story = StoryObj<BlnButtonProps>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary: Story = {
+export const Solid: Story = {
     args: {
-        label: 'BlnButton',
+        variant: 'solid',
     },
 };
 
-export const PrimaryArrow: Story = {
+export const Outline: Story = {
     args: {
-        withArrow: true,
-        label: 'BlnButton',
+        variant: 'outline',
     },
 };
 
-export const PrimaryStripes: Story = {
+export const Ghost: Story = {
     args: {
-        withStripes: true,
-        label: 'BlnButton',
+        variant: 'ghost',
+    },
+};
+
+export const Soft: Story = {
+    args: {
+        variant: 'soft',
     },
 };
 
 export const Link: Story = {
     args: {
-        label: 'BlnButton',
         variant: 'link',
+    },
+};
+
+export const Arrow: Story = {
+    args: {
+        variant: 'arrow',
+    },
+};
+
+export const ArrowRed: Story = {
+    args: {
+        variant: 'arrow-red',
+    },
+};
+
+export const Retro: Story = {
+    args: {
+        retroDesign: true,
+    },
+};
+
+export const RetroLink: Story = {
+    args: {
+        variant: 'link',
+        retroDesign: true,
+    },
+};
+
+export const RetroArrow: Story = {
+    args: {
+        variant: 'arrow',
+        retroDesign: true,
+    },
+};
+
+export const RetroArrowRed: Story = {
+    args: {
+        variant: 'arrow-red',
+        retroDesign: true,
+    },
+};
+
+export const Stripes: Story = {
+    args: {
+        withStripes: true,
+        variant: 'solid',
+        retroDesign: true,
+        size: 'small'
     },
 };
 
 export const Disabled: Story = {
     args: {
-        label: 'BlnButton',
         disabled: true,
+    },
+};
+
+export const DisabledRetro: Story = {
+    args: {
+        disabled: true,
+        retroDesign: true,
     },
 };
