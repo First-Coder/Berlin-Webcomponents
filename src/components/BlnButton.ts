@@ -8,7 +8,6 @@ import {booleanStringFalseConverter} from "../utils/converters";
 export interface BlnButtonProps {
     type: string;
     variant?: 'solid' | 'outline' | 'ghost' | 'soft' | 'link' | 'arrow' | 'arrow-red';
-    withArrow: boolean,
     withStripes: boolean,
     size?: 'small' | 'medium' | 'large';
     label: string;
@@ -51,7 +50,6 @@ export class BlnButton extends TailwindElement {
      */
     @property() variant: BlnButtonProps['variant'] = "solid";
 
-
     /**
      * Represents the size of an item or element.
      * This variable holds a string value indicating the size classification.
@@ -60,30 +58,19 @@ export class BlnButton extends TailwindElement {
      */
     @property() size: BlnButtonProps['size'] = "medium";
 
-
-    /**
-     * Indicates whether the arrow feature should be enabled or disabled.
-     * This variable is a boolean flag that determines the activation state of the arrow feature.
-     * When set to `true`, the arrow functionality will be enabled.
-     * When set to `false`, the arrow functionality will remain disabled.
-     */
-    @property({attribute: "with-arrow"}) withArrow: BlnButtonProps['withArrow'] = false;
-
-
     /**
      * A boolean variable that determines whether a particular feature or functionality is disabled.
      * If set to `true`, the feature is inactive or unavailable.
      * Defaults to `false`, indicating that the feature is enabled and operational.
      */
-    @property({reflect: true}) disabled: BlnButtonProps['disabled'] = false;
+    @property({type: Boolean, reflect: true}) disabled: BlnButtonProps['disabled'] = false;
 
     /**
      * This variable indicates whether a striped effect is applied or not.
      * It is a boolean value that defaults to false, implying that the striped effect
      * is disabled unless explicitly set to true.
      */
-    @property({attribute: "with-stripes"}) withStripes: BlnButtonProps['withStripes'] = false;
-
+    @property({type: Boolean, attribute: "with-stripes"}) withStripes: BlnButtonProps['withStripes'] = false;
 
     /**
      * Represents an optional callback function to handle click events.
@@ -106,7 +93,11 @@ export class BlnButton extends TailwindElement {
      * When set to `true`, the button is in a loading state.
      * Defaults to `false`.
      */
-    @property({reflect: true, converter: booleanStringFalseConverter}) loading: BlnButtonProps['loading'] = false;
+    @property({
+        type: Boolean,
+        reflect: true,
+        converter: booleanStringFalseConverter
+    }) loading: BlnButtonProps['loading'] = false;
 
     /**
      * A boolean variable that indicates whether a subject or entity has a leading characteristic.

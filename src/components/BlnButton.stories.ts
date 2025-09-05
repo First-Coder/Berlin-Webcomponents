@@ -17,10 +17,8 @@ const meta = {
                 size=${args.size ?? 'medium'}
                 variant=${args.variant ?? 'primary'}
                 class-names=${ifDefined(args.class)}
-                ?with-arrow=${ifDefined(args.withArrow)}
                 ?disabled=${args.disabled === true}
                 ?with-stripes=${ifDefined(args.withStripes)}
-                ${args.withArrow ? 'with-arrow' : ''}
                 retro-design=${ifDefined(args.retroDesign)}
                 loading=${ifDefined(args.loading)}
                 .onClick=${args.onClick}
@@ -35,7 +33,6 @@ const meta = {
     argTypes: {
         disabled: {control: 'boolean', description: 'Disabled state of the button', type: {name: 'boolean'}},
         class: {description: 'Additional CSS classes to apply to the button', type: {name: 'string'}},
-        withArrow: {control: 'boolean', description: 'Whether to show an arrow icon', type: {name: 'boolean'}},
         withStripes: {control: 'boolean', description: 'Whether to show stripes', type: {name: 'boolean'}},
         loading: {control: 'boolean', description: 'Whether the button is in loading state', type: {name: 'boolean'}},
         retroDesign: {control: 'boolean', description: 'Whether to use the retro design', type: {name: 'boolean'}},
@@ -43,7 +40,7 @@ const meta = {
             description: 'Variant of the button',
             type: {name: 'string'},
             control: {type: 'select'},
-            options: ['solid', 'link', 'outline', 'ghost', 'soft'],
+            options: ['solid', 'link', 'outline', 'ghost', 'soft', 'arrow', 'arrow-red'],
         },
         size: {
             description: 'Size of the button',
