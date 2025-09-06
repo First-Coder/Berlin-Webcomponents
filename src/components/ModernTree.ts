@@ -19,6 +19,15 @@ export interface ModernTreeProps {
 @customElement('modern-tree')
 export class ModernTree extends TailwindElement {
 
+    private loadedIds: Set<string> = new Set();
+    @property({type: Boolean}) autoExpand: boolean = true;
+
+    /**
+     * Fires when a node with hasChildren is expanded but has no rendered children yet.
+     * Event name: 'tree.request-children'
+     * detail: { id: string, level: string }
+     */
+
     // @ts-ignore
     @property({type: String, state: true, attribute: 'data-json', converter: (value: string,type: any ) => {
             return JSON.parse(value);
@@ -58,6 +67,17 @@ export class ModernTree extends TailwindElement {
         }
 
         this.shadowRoot?.getElementById("skeleton")?.remove();
+
+        // Auto-expand root on init if desired
+        if (this.autoExpand && this.dataModel?.hasChildren) {
+            const id = this.dataModel.id;
+            const level = this.dataModel.level;
+            this.firstNode?.dispatchEvent(new CustomEvent('tree.request-children', {
+                detail: { id, level },
+                bubbles: true,
+                composed: true
+            }));
+        }
     }
 
     isDataModelValid = () => {
@@ -121,10 +141,29 @@ export class ModernTree extends TailwindElement {
         return details;
     }
 
-    generateExtandebleButton = (hasChildren: boolean) => {
+    generateExtandebleButton = (hasChildren: boolean, current?: IDataModel) => {
         const extandebleButton = document.createElement("button");
         const buttonDisabledClass = hasChildren ? "" : "fill: #9ca3af;";
-        extandebleButton.onclick = () => this.firstNode?.dispatchEvent(new CustomEvent('node.select', {detail: this.dataModel?.id}));
+        extandebleButton.onclick = () => {
+            if (!hasChildren) return;
+            const id = current?.id ?? this.dataModel?.id;
+            const containerId = `${id}-children`;
+            const el = this.shadowRoot?.getElementById(containerId) as HTMLElement | null;
+            // If already loaded/rendered, just toggle visibility without requesting again
+            if (el && el.childElementCount > 0) {
+                el.style.display = (el.style.display === 'none' || !el.style.display) ? 'block' : 'none';
+                return;
+            }
+            // Dispatch a request event to load children on demand
+            const level = current?.level ?? this.dataModel?.level;
+            this.firstNode?.dispatchEvent(new CustomEvent('tree.request-children', {
+                detail: { id, level },
+                bubbles: true,
+                composed: true
+            }));
+            // ensure container is visible when they arrive; if exists, pre-open
+            if (el) el.style.display = 'block';
+        };
         extandebleButton.classList.add("p-2", "mr-2");
         extandebleButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" style="${buttonDisabledClass}">
                             <!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. -->
@@ -141,21 +180,26 @@ export class ModernTree extends TailwindElement {
 
         let hasChildren: boolean| undefined ;
         let level : number = 0;
+        let current: IDataModel | undefined;
 
         if (parentNode === undefined && child === undefined) {
+            current = this.dataModel;
             hasChildren = this.dataModel?.hasChildren;
             if (this.lvlConverter) {
                 level = this.lvlConverter(this.dataModel?.level ?? ""); // level 0 ,1 ,2,3,4,5 .... a,b,c, ...... /1/1/2 ..... a/aa/b/bb...
             }
         } else {
+            current = child;
             hasChildren = child?.hasChildren ?? false;
             if (this.lvlConverter) {
                 level = this.lvlConverter(child?.level ?? "");
             }
         }
 
-        let treeNode: HTMLElement = document.createElement("div");
+        // Wrapper to hold node and its children container
+        const wrapper: HTMLElement = document.createElement("div");
 
+        let treeNode: HTMLElement = document.createElement("div");
         treeNode.style.marginLeft = (level * 2) + "em";
         treeNode.style.width = "36em";
         treeNode.classList.add("flex", "items-center", "justify-between", "border", "border-gray-400", "rounded", "hover:bg-gray-200", "my-2");
@@ -165,35 +209,78 @@ export class ModernTree extends TailwindElement {
         leftSide.classList.add("flex");
         treeNode.append(leftSide);
 
-
-        leftSide.append(this.generateExtandebleButton(hasChildren ?? false));
-        leftSide.append(this.generateDetails( parentNode === undefined ?   this.dataModel : child));
+        leftSide.append(this.generateExtandebleButton(hasChildren ?? false, current));
+        leftSide.append(this.generateDetails(current));
 
         // Right side
         const rightSide = document.createElement("div");
         treeNode.append(rightSide);
 
-        if (hasChildren === true) {
-            if(parentNode === undefined) {
-                console.log("root children:", this.dataModel?.children )
-                this.dataModel?.children?.forEach((child: IDataModel) => {
-                    this.generateNode(this,child);
-                })
-            } else {
-                child?.children?.forEach((child: IDataModel) => {
-                    console.log("child children:", child?.children )
-                    this.generateNode(this,child);
-                })
-            }
+        wrapper.append(treeNode);
+
+        // Create a container for children to support lazy rendering
+        const id = current?.id ?? "";
+        const childrenContainer = document.createElement('div');
+        childrenContainer.id = `${id}-children`;
+        childrenContainer.style.display = 'none';
+        wrapper.append(childrenContainer);
+
+        // If children are already provided, render them and show container
+        const childrenToRender = (current?.children ?? []);
+        if (hasChildren && childrenToRender.length > 0) {
+            childrenContainer.style.display = 'block';
+            childrenToRender.forEach((ch: IDataModel) => this.generateNode(childrenContainer, ch));
         }
 
         if(parentNode === undefined) {
-            return treeNode;
+            return wrapper;
         } else {
-            parentNode.append(treeNode);
+            parentNode.append(wrapper);
         }
     }
 
+
+    addChildren = (parentId: string, children: IDataModel[]) => {
+        // prevent duplicate children by checking existing ids
+        const existing = this.findNodeById(this.dataModel, parentId)?.children?.map(c => c.id) ?? [];
+        const incomingIds = children.map(c => c.id).join(',');
+        const existingIds = existing.join(',');
+        if (incomingIds === existingIds && existing.length > 0) {
+            // same set already present; still ensure container is visible and return
+            const cont = this.shadowRoot?.getElementById(`${parentId}-children`) as HTMLElement | null;
+            if (cont) cont.style.display = 'block';
+            return;
+        }
+        // update internal model
+        const target = this.findNodeById(this.dataModel, parentId);
+        if (target) {
+            target.children = children;
+            target.hasChildren = children.length > 0;
+        }
+        // render UI
+        const container = this.shadowRoot?.getElementById(`${parentId}-children`) as HTMLElement | null;
+        if (container) {
+            this.loadedIds.add(parentId);
+            container.innerHTML = '';
+            children.forEach((child) => this.generateNode(container, child));
+            container.style.display = 'block';
+        } else {
+            // If container not found (edge), re-render whole tree
+            this.requestUpdate();
+        }
+    }
+
+    private findNodeById = (node: IDataModel | undefined, id: string): IDataModel | undefined => {
+        if (!node) return undefined;
+        if (node.id === id) return node;
+        if (node.children) {
+            for (const ch of node.children) {
+                const found = this.findNodeById(ch, id);
+                if (found) return found;
+            }
+        }
+        return undefined;
+    }
 
     render() {
         if (!this.isDataModelValid()) {
