@@ -14,28 +14,28 @@ describe('FormBuilder (smoke)', () => {
 describe('FormBuilder (setPassword with length < minLength)', () => {
     it('returns an error message because the password is too short ', () => {
         const fb = new FormBuilder();
-        expect(fb.validate('password', '123',5)).toBe('Passwort zu kurz (mindestens 5 Zeichen)');
+        expect(fb.validate('password', '123')).toBe('Passwort zu kurz (mindestens 5 Zeichen)');
     })
 })
 
 describe('FormBuilder (setPassword with correct length)', () => {
     it('returns empty error', () => {
         const fb = new FormBuilder();
-        expect(fb.validate('password', '1234567',6)).toBe('');
+        expect(fb.validate('password', '1234567')).toBe('');
     })
 })
 
 describe('FormBuilder (set NumberInput with incorrect numbers)', () => {
     it('returns error where number is too high', () => {
         const fb = new FormBuilder();
-        expect(fb.validate('number', '1234567',1, 99)).toBe('Wert zu hoch (maximal 99)');
+        expect(fb.validate('number', '1234567')).toBe('Wert zu hoch (maximal 99)');
     })
 })
 
 describe('FormBuilder (set NumberInput with incorrect numbers)', () => {
     it('returns error where number is too low', () => {
         const fb = new FormBuilder();
-        expect(fb.validate('number', '1',10, 99)).toBe('Wert zu niedrig (mindestens 10)');
+        expect(fb.validate('number', '1')).toBe('Wert zu niedrig (mindestens 10)');
     })
 })
 
