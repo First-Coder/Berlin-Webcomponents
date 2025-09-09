@@ -14,6 +14,7 @@ const modules = import.meta.glob([
     '!./**/*.test.*',
     '!./**/*.d.ts',
     '!./index.ts',
+    '!./components/BlnTree.ts',
 ], {
     eager: true,
 });
@@ -23,6 +24,8 @@ console.debug('Geladene Module:', Object.keys(modules));
 
 
 export * from './components/BlnSelect';
+export * from './components/BlnCheckBox';
+export * from './components/BlnTreeView';
 
 
 const meta = {

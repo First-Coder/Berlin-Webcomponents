@@ -55,7 +55,7 @@ export class BlnHeader extends TailwindElement {
 
     protected render(): unknown {
         return html`
-            <section class="flex items-center justify-start border-b border-gray-300 py-1 px-6 transition-all h-11">
+            <section class="flex items-center justify-start border-b border-black py-1 px-6 h-11">
                 <div>
                     <a href="/">
                         <img title="Link zu: Startseite Berlin.de"
@@ -65,35 +65,17 @@ export class BlnHeader extends TailwindElement {
                     </a>
                 </div>
             </section>
-            <nav class="flex items-center justify-between shadow-header py-4 px-6">
+            <nav class="flex items-center justify-between py-4 px-6">
                 <div class="min-w-80 max-w-[24vw] overflow-visible">
                     <a href="${this.titleUrl}">
-                        <small class="block">${this.subTitle}</small>
-                        <span class="block">${this.title}</span>
+                        <small class="block text-xs text-gray-700">${this.subTitle}</small>
+                        <span class="block text-xl font-bold">${this.title}</span>
                     </a>
                 </div>
-                <div class="order-10 grow-0 flex items-end ml-[2vw]">
-                    <bln-button>
-                        test
-                    </bln-button>
-                    <button type="button"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                        <i class="fas fa-universal-access" aria-hidden="true"></i>
-                        <span>Barrierefrei</span>
-                    </button>
-                    <button type="button"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                        <span>Suche</span>
-                    </button>
-                    <button @click="${() => this.openDrawer()}" type="button"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                        <i class="fas fa-bars" aria-hidden="true"></i>
-                        <span>Menü</span>
-                    </button>
+                <div class="order-10 grow-0 flex items-center gap-2 ml-[2vw]">
+                    <bln-button retro-design size="small">Barrierefrei</bln-button>
+                    <bln-button retro-design size="small">Suche</bln-button>
+                    <bln-button retro-design size="small">Menü</bln-button>
                 </div>
             </nav>
         `;

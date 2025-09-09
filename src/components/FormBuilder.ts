@@ -6,39 +6,62 @@ import {List} from "lucide";
 
     fields: TemplateResult[] | undefined;
 
-    validateFunctions : Map<string,((value: string) => string)> = new Map<string,((value: string) => string)> ; // { type: string; func: ((type: string) => string); } | undefined // ((type: string)=>string)[]
+    // Sync validation functions
+    validateFunctions : Map<string,((value: string) => string)> = new Map<string,((value: string) => string)> ;
 
+    // Async validation functions (optional)
+    asyncValidateFunctions: Map<string, (value: string) => Promise<string>> = new Map<string, (value: string) => Promise<string>>();
 
     constructor() {
+        // default sync email validator
         this.validateFunctions.set("email", (value:string)=> {
             return !value.includes('@') ? "Falsches Email Format" : "";
         });
     }
 
-
+    // Register/override a sync validator
     setCustomValidateFunction = (type:string, func: (value: string)=>string)=>{
         this.validateFunctions.delete(type)
         this.validateFunctions.set(type,func);
         return this;
     }
 
+    // Register/override an async validator
+    setCustomValidateFunctionAsync = (type: string, func: (value: string) => Promise<string>) => {
+        this.asyncValidateFunctions.delete(type);
+        this.asyncValidateFunctions.set(type, func);
+        return this;
+    }
 
+    // Synchronous validation API (existing)
     validate = (type: string, value: string)=> {
-
         let error = "";
-        let func = this.validateFunctions.get(type);
+        const func = this.validateFunctions.get(type);
         if(func) {
             error = func(value);
         } else {
             if (type === 'email') {
-                // TODO Ceck
-                // ungülige E-Mail, ungültiges format, email nicht vorhanden, ...
+                // Platzhalter für weitere Sync-Validierungen
+                // ungültige E-Mail, ungültiges Format, etc.
             }
         }
         return error;
     }
 
-
+    // Asynchronous validation API (new)
+    validateAsync = async (type: string, value: string): Promise<string> => {
+        const asyncFunc = this.asyncValidateFunctions.get(type);
+        if (asyncFunc) {
+            try {
+                return await asyncFunc(value);
+            } catch (e) {
+                // On error, return a generic message; consumers may override by their async validator
+                return typeof e === 'string' ? e : 'Validierung fehlgeschlagen';
+            }
+        }
+        // Fallback to sync validator wrapped in a Promise
+        return Promise.resolve(this.validate(type, value));
+    }
 
     /**
      * Dynamically sets a form field element based on the provided type, label, and value.
