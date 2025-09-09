@@ -26,6 +26,7 @@ console.debug('Geladene Module:', Object.keys(modules));
 export * from './components/BlnSelect';
 export * from './components/BlnCheckBox';
 export * from './components/BlnTreeView';
+export * from './components/BlnToast';
 
 
 const meta = {

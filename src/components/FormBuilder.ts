@@ -1,136 +1,226 @@
 import {html, TemplateResult} from "lit";
-import {List} from "lucide";
+// Ensure components are registered when templates are used
+import './BlnButton';
+import './BlnSelect';
+import './BlnCheckBox';
+import './BlnTreeView';
+import './ModernTree';
+import './BlnToast';
+import type { BlnSelectProps } from './BlnSelect';
+import type { BlnCheckBoxProps } from './BlnCheckBox';
+import type { BlnTreePropsType, BlnTreeNodeType } from './BlnTreeView';
+import type { IDataModel } from './ModernTree';
+import type { BlnToastProps } from './BlnToast';
+import type { BlnButtonProps } from './BlnButton';
 
+// A small, framework-agnostic builder that produces lit TemplateResults for our inputs/buttons
+// and offers a simple validate API. Tests focus on validate().
 
- export default class FormBuilder {
+export type FieldType = 'email' | 'password' | 'number' | 'text';
 
-    fields: TemplateResult[] | undefined;
+type SyncValidator = (value: string) => string;
 
-    // Sync validation functions
-    validateFunctions : Map<string,((value: string) => string)> = new Map<string,((value: string) => string)> ;
+type AsyncValidator = (value: string) => Promise<string>;
 
-    // Async validation functions (optional)
-    asyncValidateFunctions: Map<string, (value: string) => Promise<string>> = new Map<string, (value: string) => Promise<string>>();
+export default class FormBuilder {
+  private fields: TemplateResult[] = [];
 
-    constructor() {
-        // default sync email validator
-        this.validateFunctions.set("email", (value:string)=> {
-            return !value.includes('@') ? "Falsches Email Format" : "";
-        });
+  private validateFunctions: Map<string, SyncValidator> = new Map();
+  private asyncValidateFunctions: Map<string, AsyncValidator> = new Map();
+
+  constructor() {
+    // default validators
+    this.validateFunctions.set('email', (value: string) => {
+      return !value.includes('@') ? 'Falsches Email Format' : '';
+    });
+    // Passwort: mindestens 5 Zeichen
+    this.validateFunctions.set('password', (value: string) => {
+      return value && value.length >= 5 ? '' : 'Passwort zu kurz (mindestens 5 Zeichen)';
+    });
+    // Number: zwischen 10 und 99 (inklusive)
+    this.validateFunctions.set('number', (value: string) => {
+      const n = Number(value);
+      if (Number.isNaN(n)) return 'Wert ist keine Zahl';
+      if (n < 10) return 'Wert zu niedrig (mindestens 10)';
+      if (n > 99) return 'Wert zu hoch (maximal 99)';
+      return '';
+    });
+  }
+
+  // Register/override a sync validator
+  setCustomValidateFunction(type: string, func: SyncValidator) {
+    this.validateFunctions.set(type, func);
+    return this;
+  }
+
+  // Register/override an async validator
+  setCustomValidateFunctionAsync(type: string, func: AsyncValidator) {
+    this.asyncValidateFunctions.set(type, func);
+    return this;
+  }
+
+  // Synchronous validation API
+  validate(type: string, value: string) {
+    const func = this.validateFunctions.get(type);
+    return func ? func(value) : '';
+  }
+
+  // Asynchronous validation API
+  async validateAsync(type: string, value: string): Promise<string> {
+    const asyncFunc = this.asyncValidateFunctions.get(type);
+    if (asyncFunc) {
+      try {
+        return await asyncFunc(value);
+      } catch (e) {
+        return typeof e === 'string' ? e : 'Validierung fehlgeschlagen';
+      }
     }
+    return Promise.resolve(this.validate(type, value));
+  }
 
-    // Register/override a sync validator
-    setCustomValidateFunction = (type:string, func: (value: string)=>string)=>{
-        this.validateFunctions.delete(type)
-        this.validateFunctions.set(type,func);
-        return this;
+  // Builder: add different field types. These are minimal and not used by tests, but kept for completeness.
+  addField(type: FieldType, label: string, value = '') {
+    let field: TemplateResult;
+    switch (type) {
+      case 'email':
+        field = html`
+          <div class="form-group">
+            <label>${label}</label>
+            <input type="email" value=${value} />
+            <small class="form-text">${this.validate('email', value)}</small>
+          </div>`;
+        break;
+      case 'password':
+        field = html`
+          <div class="form-group">
+            <label>${label}</label>
+            <input type="password" value=${value} />
+          </div>`;
+        break;
+      case 'number':
+        field = html`
+          <div class="form-group">
+            <label>${label}</label>
+            <input type="number" value=${value} />
+            <small class="form-text">${this.validate('number', value)}</small>
+          </div>`;
+        break;
+      default:
+        field = html`
+          <div class="form-group">
+            <label>${label}</label>
+            <input type="text" value=${value} />
+          </div>`;
     }
+    this.fields.push(field);
+    return this;
+  }
 
-    // Register/override an async validator
-    setCustomValidateFunctionAsync = (type: string, func: (value: string) => Promise<string>) => {
-        this.asyncValidateFunctions.delete(type);
-        this.asyncValidateFunctions.set(type, func);
-        return this;
-    }
+  addButton(text: string, onClick?: () => void) {
+    this.fields.push(html`<button type="button" @click=${onClick}>${text}</button>`);
+    return this;
+  }
 
-    // Synchronous validation API (existing)
-    validate = (type: string, value: string)=> {
-        let error = "";
-        const func = this.validateFunctions.get(type);
-        if(func) {
-            error = func(value);
-        } else {
-            if (type === 'email') {
-                // Platzhalter für weitere Sync-Validierungen
-                // ungültige E-Mail, ungültiges Format, etc.
-            }
-        }
-        return error;
-    }
+  // Convenience: add a BlnTree
+  addBlnTree(props: Partial<BlnTreePropsType> & { items?: BlnTreeNodeType[] } = {}) {
+    const tpl = html`<bln-tree
+      .items=${props.items ?? []}
+      .selectedIds=${props.selectedIds ?? []}
+      .expandedIds=${props.expandedIds ?? []}
+      .multiSelect=${props.multiSelect ?? false}
+      aria-label=${props.ariaLabel ?? ''}
+      aria-labelledby=${props.ariaLabelledby ?? ''}
+      aria-describedby=${props.ariaDescribedby ?? ''}
+      class=${props.class ?? ''}
+    ></bln-tree>`;
+    this.fields.push(tpl);
+    return this;
+  }
 
-    // Asynchronous validation API (new)
-    validateAsync = async (type: string, value: string): Promise<string> => {
-        const asyncFunc = this.asyncValidateFunctions.get(type);
-        if (asyncFunc) {
-            try {
-                return await asyncFunc(value);
-            } catch (e) {
-                // On error, return a generic message; consumers may override by their async validator
-                return typeof e === 'string' ? e : 'Validierung fehlgeschlagen';
-            }
-        }
-        // Fallback to sync validator wrapped in a Promise
-        return Promise.resolve(this.validate(type, value));
-    }
+  // Convenience: add a BlnCheckbox
+  addBlnCheckbox(props: Partial<BlnCheckBoxProps> = {}) {
+    const tpl = html`<bln-checkbox
+      .label=${props.label ?? ''}
+      .name=${props.name ?? ''}
+      .value=${props.value ?? 'on'}
+      .checked=${props.checked ?? false}
+      .disabled=${props.disabled ?? false}
+      .required=${props.required ?? false}
+      .hint=${props.hint ?? ''}
+      .cornerHint=${props.cornerHint ?? ''}
+      .class=${props.class ?? ''}
+    ></bln-checkbox>`;
+    this.fields.push(tpl);
+    return this;
+  }
 
-    /**
-     * Dynamically sets a form field element based on the provided type, label, and value.
-     *
-     * @param {string} label - The label for the form field.
-     * @param {string} value - The value to populate the form field with.
-     * @param {string} type - The type of the form field (e.g., 'email', 'password', etc.).
-     * @return {this} The instance of the class for method chaining.
-     */
-    setField(label: string, value:string, type: string) {
-        let field: TemplateResult | undefined = undefined;
+  // Convenience: add a ModernTree
+  addModernTree(model: IDataModel, opts: { level?: number } = {}) {
+    const tpl = html`<modern-tree
+      .dataModel=${model}
+      .level=${opts.level ?? 0}
+    ></modern-tree>`;
+    this.fields.push(tpl);
+    return this;
+  }
 
-        switch (type) {
-            case 'email':
+  // Convenience: add a BlnToast
+  addBlnToast(props: Partial<BlnToastProps> = {}) {
+    const tpl = html`<bln-toast
+      .open=${props.open ?? false}
+      .variant=${props.variant ?? 'info'}
+      .title=${props.title ?? ''}
+      .message=${props.message ?? ''}
+      .autoHide=${props.autoHide ?? true}
+      .autoHideDelay=${props.autoHideDelay ?? 4000}
+      .closeButton=${props.closeButton ?? true}
+      .ariaLive=${props.ariaLive ?? 'polite'}
+      .ariaAtomicBool=${props.ariaAtomic ?? true}
+      .class=${props.class ?? ''}
+    ></bln-toast>`;
+    this.fields.push(tpl);
+    return this;
+  }
 
-                field =  html`
-                <div class="form-group">
-                    <label for="exampleInputEmail1">${label}</label>
-                    <input type="email" class="form-control" id="" aria-describedby="emailHelp" placeholder="Enter email" value=${value}></input>
-                    <small id="" class="form-text text-muted">${this.validate(type, value)}</small>
-                </div>`;
-                break;
-            case 'password':
-                field =  html`
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Passwort</label>
-                    <input type="password" class="form-control" id="" aria-describedby="" placeholder=""></input>
-                </div>`;
-                break;
-            default:
-                field =  html`
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="text" class="form-control" id="" aria-describedby="" placeholder="text"></input>
-                    </div>`;
-                break;
+  // Convenience: add a BlnSelect
+  addBlnSelect(props: Partial<BlnSelectProps> = {}) {
+    const tpl = html`<bln-select
+      .label=${props.label ?? ''}
+      .cornerHint=${props.cornerHint ?? ''}
+      .hint=${props.hint ?? ''}
+      .name=${props.name ?? ''}
+      .placeholder=${props.placeholder ?? ''}
+      .value=${props.value ?? ''}
+      .disabled=${props.disabled ?? false}
+      .required=${props.required ?? false}
+      .multiple=${props.multiple ?? false}
+      .size=${props.size ?? 'medium'}
+      .class=${props.class ?? ''}
+      .options=${props.options ?? []}
+      .ariaLabel=${props.ariaLabel ?? ''}
+      .ariaLabelledby=${props.ariaLabelledby ?? ''}
+      .ariaDescribedby=${props.ariaDescribedby ?? ''}
+    ></bln-select>`;
+    this.fields.push(tpl);
+    return this;
+  }
 
-        }
-        this.fields?.push(field);
-        return this;
-    }
+  // Convenience: add a BlnButton
+  addBlnButton(label: string, props: Partial<BlnButtonProps> = {}, onClick?: (e: MouseEvent) => void) {
+    const tpl = html`<bln-button
+      .variant=${(props.variant as any) ?? 'solid'}
+      .size=${props.size ?? 'medium'}
+      .withArrow=${props.withArrow ?? false}
+      .withStripes=${props.withStripes ?? false}
+      .disabled=${props.disabled ?? false}
+      .class=${props.class ?? ''}
+      .onClick=${onClick}
+    >${label}</bln-button>`;
+    this.fields.push(tpl);
+    return this;
+  }
 
-
-    setClassForField= (id:string)=> {
-
-    }
-
-    /**
-     * Adds a button element with specified text and functionality to a collection of fields.
-     *
-     * @param {string} btntext - The text to be displayed on the button.
-     * @param {Function} func - The callback function to be executed when the button is clicked.
-     * @returns {Object} The current object instance for method chaining.
-     */
-    setButton= (btntext:string,func: ()=>void)=>{
-        this.fields?.push(html`
-             <button type="submit" onclick=${func} class="btn btn-primary">${btntext}</button>
-        `);
-        return this;
-    }
-
-    /**
-     * Retrieves the fields associated with the current instance.
-     *
-     * @return {Array|Object} The fields associated with this instance.
-     */
-    getFields() {
-        return this.fields;
-    }
-
-
+  getFields() {
+    return this.fields;
+  }
 }
