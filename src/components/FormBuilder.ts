@@ -6,6 +6,7 @@ import './BlnCheckBox';
 import './BlnTreeView';
 import './ModernTree';
 import './BlnToast';
+import './BlnInput';
 import type { BlnSelectProps } from './BlnSelect';
 import type { BlnCheckBoxProps } from './BlnCheckBox';
 import type { BlnTreePropsType, BlnTreeNodeType } from './BlnTreeView';
@@ -86,7 +87,7 @@ export default class FormBuilder {
         field = html`
           <div class="form-group">
             <label>${label}</label>
-            <input type="email" value=${value} />
+            <bln-input type="email" value=${value} />
             <small class="form-text">${this.validate('email', value)}</small>
           </div>`;
         break;
@@ -94,14 +95,14 @@ export default class FormBuilder {
         field = html`
           <div class="form-group">
             <label>${label}</label>
-            <input type="password" value=${value} />
+            <bln-input type="password" value=${value} />
           </div>`;
         break;
       case 'number':
         field = html`
           <div class="form-group">
             <label>${label}</label>
-            <input type="number" value=${value} />
+            <bln-input type="number" value=${value} />
             <small class="form-text">${this.validate('number', value)}</small>
           </div>`;
         break;
@@ -109,7 +110,7 @@ export default class FormBuilder {
         field = html`
           <div class="form-group">
             <label>${label}</label>
-            <input type="text" value=${value} />
+            <bln-input type="text" value=${value} />
           </div>`;
     }
     this.fields.push(field);

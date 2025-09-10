@@ -61,6 +61,7 @@ export class BlnSelect extends TailwindElement {
     // interner IDs
     @state() private _selectId = `bln-select-${Math.random().toString(36).slice(2)}`;
     @state() private _hintId = `bln-select-hint-${Math.random().toString(36).slice(2)}`;
+    @state() private _isValidSet = false;
 
     private onChange = (e: Event) => {
         const sel = e.currentTarget as HTMLSelectElement;
@@ -76,9 +77,8 @@ export class BlnSelect extends TailwindElement {
     };
 
     private isSelectionValid(): boolean | undefined {
-        // Wenn Attribut is-valid gesetzt ist, dann steuern wir Styles entsprechend
-        if (this.hasAttribute("is-valid")) return this.isValid;
-        return undefined;
+        // Show validity state only if user explicitly set isValid (tracked flag)
+        return this._isValidSet ? this.isValid : undefined;
     }
 
 
@@ -108,6 +108,10 @@ export class BlnSelect extends TailwindElement {
     }
 
 
+
+    protected willUpdate(changed: Map<string, any>) {
+        if (changed.has('isValid')) this._isValidSet = true;
+    }
 
     protected render() {
         // A11y: aria-describedby automatisch, wenn hint vorhanden

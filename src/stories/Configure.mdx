@@ -14,6 +14,8 @@ import Testing from "./assets/testing.png";
 import Accessibility from "./assets/accessibility.png";
 import Theming from "./assets/theming.png";
 import AddonLibrary from "./assets/addon-library.png";
+import "./configure.css";
+
 
 export const RightArrow = () => <svg
     viewBox="0 0 14 14"
@@ -59,215 +61,617 @@ export const RightArrow = () => <svg
         <pre><code> type="module" src="~/js/components/bundle.js"</code></pre>
     </div>
 </div>
-<div className='sb-addon'>
-    <div className='sb-addon-text'>
-        <h4>Addons</h4>
-        <p className="sb-section-item-paragraph">Integrate your tools with Storybook to connect workflows.</p>
-        <a
-            href="https://storybook.js.org/addons/?ref=configure"
-            target="_blank"
-        >Discover all addons<RightArrow /></a>
-    </div>
-    <div className='sb-addon-img'>
-        <img src={AddonLibrary} alt="Integrate your tools with Storybook to connect workflows." />
+<div className="sb-container">
+    <div className='sb-section-title'>
+        # BlnToast — Dokumentation
+
+        BlnToast ist eine leichtgewichtige, zugängliche Toast-/Alert-Komponente für temporäre Statusmeldungen. Sie unterstützt verschiedene Varianten (Info, Erfolg, Warnung, Fehler), automatisches Ausblenden, einen optionalen Schließen-Button, Retro-Design sowie A11y-konforme Live-Regionen.
+
+        - Tag-Name: bln-toast
+        - Zweck: Kurzlebige Statusmeldungen (z. B. nach Aktionen)
+        - Varianten: info | success | warning | error
+        - A11y: role="status", aria-live, aria-atomic
+        - Styling: Tailwind-Klassen via class-Attribut injizierbar
+        - Inhalte: Title, Message oder eigener Inhalt per Slot
+
+        ## Schnellstart
+
+        Ein einfaches Toast mit Titel und Nachricht:
+        ```html
+        <bln-toast
+            open
+            variant="info"
+            title="Gespeichert"
+            message="Ihre Änderungen wurden erfolgreich übernommen."
+        ></bln-toast>
+        ```
+
+
+        Erfolgsmeldung mit Auto-Hide (Standard: aktiv, 4000 ms):
+        ```html
+        <bln-toast
+            open
+            variant="success"
+            title="Erfolg"
+            message="Alles erledigt! Dieses Toast blendet sich gleich automatisch aus."
+        ></bln-toast>
+        ```
+
+
+        Warnung ohne Auto-Hide und mit Schließen-Button:
+        ```html
+        <bln-toast
+            open
+            variant="warning"
+            title="Achtung"
+            message="Bitte prüfen Sie Ihre Eingaben."
+            auto-hide="false"
+            close-button
+        ></bln-toast>
+        ```
+
+
+        Eigenen Inhalt per Slot einfügen (überschreibt message):
+        ```html
+        <bln-toast open variant="error" title="Fehler">
+            <div>
+                <p>Beim Speichern ist ein Fehler aufgetreten.</p>
+                <a href="/hilfe" class="underline">Mehr erfahren</a>
+            </div>
+        </bln-toast>
+        ```
+
+
+        Retro-Design aktivieren:
+        ```html
+        <bln-toast
+            open
+            variant="info"
+            title="Hinweis"
+            message="Retro-Look mit kantigen Rändern."
+            retro-design
+        ></bln-toast>
+        ```
+
+
+        ## Eigenschaften (Properties/Attribute)
+
+        - open: boolean (reflektiert)
+        - Sichtbarkeit des Toasts. Bei true wird das Toast angezeigt, bei false ausgeblendet.
+        - Als Attribut: open (ohne Wert) entspricht true.
+
+        - variant: 'info' | 'success' | 'warning' | 'error'
+        - Bestimmt Farbakzente und Icon.
+        - Standard: info
+
+        - title: string
+        - Überschrift des Toasts (optional, aber empfohlen).
+
+        - message: string
+        - Kurzer Inhaltstext. Wird ignoriert, wenn der Default-Slot belegt ist.
+
+        - auto-hide: boolean
+        - Ob das Toast nach einer Verzögerung automatisch geschlossen wird.
+        - Standard: true
+
+        - auto-hide-delay: number (ms)
+        - Verzögerung bis zum automatischen Ausblenden in Millisekunden.
+        - Praxis: 3000–6000 ms sind üblich.
+
+        - close-button: boolean
+        - Blendet einen Schließen-Button ein.
+        - Standard: true
+
+        - aria-live: 'polite' | 'assertive' | 'off'
+        - Steuerung des Screenreader-Verkündigungsgrads.
+        - Standard: polite
+
+        - aria-atomic: boolean
+        - Gibt an, ob der gesamte Inhalt als eine Einheit vorgelesen wird.
+        - Standard: true
+
+        - class: string
+        - Zusätzliche CSS-/Utility-Klassen (z. B. Tailwind). Werden auf das äußere Toast-Element angewendet.
+
+        - retro-design: boolean
+        - Schaltet auf einen kantigeren Look mit stärkeren Rändern.
+        - Standard: false
+
+        Hinweis zu Boolean-Attributen: Als HTML-Attribut ohne Wert setzen (z. B. auto-hide="false" für false; Attribut ganz weglassen entspricht true, sofern es standardmäßig true ist, bzw. false, wenn standardmäßig false).
+
+        ## Slots
+
+        - Default-Slot
+        - Erlaubt vollständig eigenen Markup-Inhalt (z. B. Links, zusätzliche Hinweise).
+        - Überschreibt die Anzeige von message.
+
+        Beispiel:
+        ```html
+        <bln-toast open title="Update verfügbar">
+            <div class="space-y-1">
+                <p>Version 2.0.1 kann installiert werden.</p>
+                <button class="underline">Jetzt aktualisieren</button>
+            </div>
+        </bln-toast>
+        ```
+
+
+        ## Methoden und Ereignisse
+
+        - Methoden:
+        - show(): Öffnet das Toast programmatisch (setzt open auf true und feuert ein open-Event).
+        - close(): Schließt das Toast programmatisch (setzt open auf false und feuert ein close-Event).
+
+        - Ereignisse:
+        - open: Wird ausgelöst, wenn das Toast geöffnet wird.
+        - close: Wird ausgelöst, wenn das Toast geschlossen wird (manuell oder durch Auto-Hide).
+
+        Beispiel programmatische Steuerung:
+        ```html
+        <button id="showSuccess">Toast zeigen</button>
+        <bln-toast id="t1" variant="success" title="Gespeichert" message="Daten gespeichert." auto-hide-delay="3000"></bln-toast>
+
+        <script type="module">{`
+            const toast = document.getElementById('t1');
+            document.getElementById('showSuccess').addEventListener('click', () => {
+            toast.show();
+        });
+
+                    toast.addEventListener('open', () => console.log('Toast geöffnet'));
+                    toast.addEventListener('close', () => console.log('Toast geschlossen'));`}
+        </script>
+        ```
+
+
+        ## Barrierefreiheit (A11y)
+
+        - Rolle & Live-Region:
+        - Das Toast agiert als Live-Region mit role="status".
+        - aria-live steuert, wie dringlich Screenreader die Meldung ankündigen (polite vs. assertive).
+        - aria-atomic=true sorgt dafür, dass der gesamte Inhalt als Einheit vorgelesen wird.
+
+        - Fokusmanagement:
+        - Das Toast nimmt keinen Fokus, um Workflows nicht zu stören.
+        - Der optionale Schließen-Button ist fokussierbar und mit aria-label="Schließen" versehen.
+
+        - Best Practices:
+        - Kritische Fehler: aria-live="assertive" verwenden.
+        - Häufige Hintergrundhinweise: aria-live="polite".
+        - Inhalt kurz und prägnant halten; Titel + 1–2 Sätze.
+
+        ## Styling und Layout
+
+        - Außencontainer:
+        - Das Toast selbst ist nicht fest positioniert. Platzieren Sie es in einem Container, der die Position im Viewport bestimmt (z. B. fixed bottom-4 right-4).
+        - Tailwind-/Utility-Klassen:
+        - Über das class-Attribut lassen sich Schatten, Abstände oder Breite anpassen.
+
+        Beispiele für Positionierung:
+
+        Rechts unten, ein Toast:
+        ```html
+        <div class="fixed bottom-4 right-4">
+            <bln-toast open title="Tipp" message="Nutzen Sie Shortcuts." class="mb-2"></bln-toast>
+        </div>
+        ```
+
+
+        Rechts unten, mehrere Toaster (gestapelt):
+        ```html
+        <div class="fixed bottom-4 right-4 flex flex-col gap-2 max-w-sm">
+            <bln-toast open variant="success" title="Erfolg" message="A erledigt."></bln-toast>
+            <bln-toast open variant="warning" title="Hinweis" message="Bitte prüfen."></bln-toast>
+        </div>
+        ```
+
+
+        ## Verhaltensdetails
+
+        - Auto-Hide:
+        - Wenn open=true und auto-hide=true, wird nach Ablauf der auto-hide-delay das Toast automatisch geschlossen und das close-Event ausgelöst.
+        - Verhindern Sie ungewolltes Schließen, indem Sie auto-hide="false" setzen.
+
+        - Manuelles Schließen:
+        - Über den Schließen-Button oder per close().
+
+        - Varianten:
+        - Jede Variante nutzt passende Farbakzente und ein thematisches Icon.
+
+        - Übergänge:
+        - Sichtbarkeit wird weich ein-/ausgeblendet (Opacity-Transition). Für individuelle Animationen ergänzen/überschreiben Sie Klassen via class.
+
+        ## Integration in Anwendungen
+
+        - Formular-Feedback:
+        - Nach erfolgreichem Submit ein success-Toast mit kurzem Text zeigen; Auto-Hide aktiv lassen.
+        - Fehlerfälle:
+        - Bei Fehlern error-Variante mit assertive-Live-Region verwenden.
+        - Hintergrundaktionen:
+        - Für unaufdringliche Hinweise info/polite nutzen.
+
+        Lit/TS-Beispiel:
+        ```typescript
+        // TypeScript
+        import { html } from 'lit';
+
+        export const view = (state: { `saved: boolean; error?: string` }) => html`
+        {` <div class="fixed bottom-4 right-4">
+            <bln-toast
+            .open=${state.saved}
+            variant="success"
+            title="Gespeichert"
+            message="Die Einstellungen wurden übernommen."
+            auto-hide
+            auto-hide-delay="3000"
+            ></bln-toast>
+
+                <bln-toast
+                .open=${Boolean(state.error)}
+        variant="error"
+        title="Fehler"
+        aria-live="assertive"
+        >
+        <p>${state.error ?? ''}</p>
+    </bln-toast>
+</div>
+    `}
+        ```
+
+
+        ## Testen
+
+        - Sichtbarkeit:
+        - Prüfen Sie das open-Attribut/Property und die visuelle Präsenz (Opacity).
+        - Auto-Hide:
+        - Setzen Sie auto-hide und auto-hide-delay; erwarten Sie ein close-Event nach Ablauf.
+        - A11y:
+        - role="status" und aria-live/-atomic korrekt gesetzt.
+        - Interaktion:
+        - Schließen-Button klickbar und löst close-Event aus.
+        - Slot-Inhalte:
+        - Bei belegtem Slot sollte message nicht angezeigt werden.
+
+        ## Fehlersuche (Troubleshooting)
+
+        - Toast erscheint nicht:
+        - open muss true sein (Attribut oder Property).
+        - Positionierung: Stellen Sie sicher, dass der äußere Container sichtbar ist (z. B. fixed + bottom/right).
+
+        - Toast schließt „zu schnell“:
+        - Erhöhen Sie auto-hide-delay oder deaktivieren Sie auto-hide.
+
+        - Screenreader liest Meldungen nicht vor:
+        - aria-live auf assertive/polite setzen und aria-atomic prüfen.
+        - Sehr lange Inhalte vermeiden; Live-Regionen sollten kurz sein.
+
+        - Überlagert Klicks auf darunterliegende Inhalte:
+        - Platzieren Sie den Toaster in einer Ecke (z. B. bottom-right) und achten Sie auf pointer-events beim Layout.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-toast
+        - Eigenschaften:
+        - open: boolean
+        - variant: 'info' | 'success' | 'warning' | 'error'
+        - title: string
+        - message: string
+        - auto-hide: boolean
+        - auto-hide-delay: number (ms)
+        - close-button: boolean
+        - aria-live: 'polite' | 'assertive' | 'off'
+        - aria-atomic: boolean
+        - class: string
+        - retro-design: boolean
+        - Slots:
+        - default: ersetzt message durch eigenen Inhalt
+        - Methoden:
+        - show(), close()
+        - Events:
+        - open, close
+        - A11y:
+        - role="status", aria-live, aria-atomic
+
+        Brauchen Sie Beispiele für Ihr Framework (React, Vue, Svelte, Angular) oder eine Toaster-Manager-Implementierung (z. B. Queue/Stack)? Ich, AI Assistant, stelle gerne passende Snippets bereit.
     </div>
 </div>
-<div className="sb-section sb-socials">
-    <div className="sb-section-item">
-        <img src={Github} alt="Github logo" className="sb-explore-image"/>
-        Join our contributors building the future of UI development.
+<div className="sb-container">
+    <div className='sb-section-title'>
+        # BlnNavigation — Dokumentation
 
-        <a
-            href="https://github.com/storybookjs/storybook"
-            target="_blank"
-        >Star on GitHub<RightArrow /></a>
-    </div>
-    <div className="sb-section-item">
-        <img src={Discord} alt="Discord logo" className="sb-explore-image"/>
-        <div>
-            Get support and chat with frontend developers.
+        Seitliche Navigation mit auf-/einklappbarem Inhalt für Web-Apps. Das Element zeigt einen Kopfbereich mit optionalem Icon und Titel sowie einen ein-/ausblendbaren Inhaltsbereich, in den beliebige Navigationseinträge per Slot eingefügt werden können (z. B. Links, Buttons oder Listenelemente).
 
-            <a
-                href="https://discord.gg/storybook"
-                target="_blank"
-            >Join Discord server<RightArrow /></a>
-        </div>
-    </div>
-    <div className="sb-section-item">
-        <img src={Youtube} alt="Youtube logo" className="sb-explore-image"/>
-        <div>
-            Watch tutorials, feature previews and interviews.
+        - Tag-Name: bln-navigation
+        - Framework: Lit (Web Component)
+        - Layout/Styles: Tailwind-Klassen (per class-Attribut injizierbar)
+        - A11y: ARIA-Attribute für Toggle/Panel, semantisches nav-Element
 
-            <a
-                href="https://www.youtube.com/@chromaticui"
-                target="_blank"
-            >Watch on YouTube<RightArrow /></a>
-        </div>
-    </div>
-    <div className="sb-section-item">
-        <img src={Tutorials} alt="A book" className="sb-explore-image"/>
-        <p>Follow guided walkthroughs on for key workflows.</p>
+        ## Schnellstart
 
-        <a
-            href="https://storybook.js.org/tutorials/?ref=configure"
-            target="_blank"
-        >Discover tutorials<RightArrow /></a>
-    </div>
-</div>
-<style>
-    {`
-  .sb-container {
-    margin-bottom: 48px;
-  }
+        - Fügen Sie das Web Component-Bundle in Ihr Projekt ein (z. B. über Ihr Build-System).
+        - Verwenden Sie das Tag bln-navigation in Ihrem HTML.
+        - Platzieren Sie Ihre Navigationslinks in den Default-Slot.
 
-      .sb-section {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-      }
+        ## Beispiele
 
-      img {
-        object-fit: cover;
-      }
+        Einfaches Grundgerüst:
+        ```html
+        <bln-navigation title="Navigation" icon="Menu">
+            <li><a href="#overview" class="px-4 py-2 hover:bg-gray-50">Übersicht</a></li>
+            <li><a href="#settings" class="px-4 py-2 hover:bg-gray-50">Einstellungen</a></li>
+            <li><button class="text-left w-full px-4 py-2 hover:bg-gray-50">Aktion</button></li>
+        </bln-navigation>
+        ```
 
-      .sb-section-title {
-        margin-bottom: 32px;
-      }
 
-      .sb-section a:not(h1 a, h2 a, h3 a) {
-        font-size: 14px;
-      }
+        Startzustand eingeklappt:
+        ```html
+        <bln-navigation title="Navigation" icon="Menu" collapsed>
+            <li><a href="#a" class="px-4 py-2">Eintrag A</a></li>
+            <li><a href="#b" class="px-4 py-2">Eintrag B</a></li>
+        </bln-navigation>
+        ```
 
-      .sb-section-item, .sb-grid-item {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-      }
 
-      .sb-section-item-heading {
-        padding-top: 20px !important;
-        padding-bottom: 5px !important;
-        margin: 0 !important;
-      }
-      .sb-section-item-paragraph {
-        margin: 0;
-        padding-bottom: 10px;
-      }
+        Ohne Icon:
+        ```html
+        <bln-navigation title="Menü" icon="">
+            <li><a href="#one" class="px-4 py-2">Punkt 1</a></li>
+        </bln-navigation>
+        ```
 
-      .sb-chevron {
-        margin-left: 5px;
-      }
 
-      .sb-features-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 32px 20px;
-      }
+        Eigene Breite/Styles per Tailwind-Klassen:
+        ```html
+        <bln-navigation title="Projekt" class="w-72 border-r border-gray-200">
+            <li><a href="#home" class="px-4 py-2">Home</a></li>
+            <li><a href="#team" class="px-4 py-2">Team</a></li>
+        </bln-navigation>
+        ```
 
-      .sb-socials {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-      }
 
-      .sb-socials p {
-        margin-bottom: 10px;
-      }
+        Programmgesteuert ein-/ausklappen (z. B. auf Button-Klick):
+        ```html
+        <button id="toggleNav">Toggle</button>
 
-      .sb-explore-image {
-        max-height: 32px;
-        align-self: flex-start;
-      }
+        <bln-navigation id="sideNav" title="Inhalte">
+            <li><a href="#x" class="px-4 py-2">X</a></li>
+            <li><a href="#y" class="px-4 py-2">Y</a></li>
+        </bln-navigation>
 
-      .sb-addon {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        position: relative;
-        background-color: #EEF3F8;
-        border-radius: 5px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        background: #EEF3F8;
-        height: 180px;
-        margin-bottom: 48px;
-        overflow: hidden;
-      }
+        <script type="module">{`
+            const nav = document.getElementById('sideNav');
+            document.getElementById('toggleNav').addEventListener('click', () => {
+            nav.collapsed = !nav.collapsed; // Property steuert den Zustand
+        });
+            `}
+        </script>
+        ```
 
-      .sb-addon-text {
-        padding-left: 48px;
-        max-width: 240px;
-      }
 
-      .sb-addon-text h4 {
-        padding-top: 0px;
-      }
+        ## Eigenschaften (Properties/Attribute)
 
-      .sb-addon-img {
-        position: absolute;
-        left: 345px;
-        top: 0;
-        height: 100%;
-        width: 200%;
-        overflow: hidden;
-      }
+        - title: string
+        - Überschrift im Header der Navigation.
+        - Attribut: title
+        - Standard: "Navigation"
 
-      .sb-addon-img img {
-        width: 650px;
-        transform: rotate(-15deg);
-        margin-left: 40px;
-        margin-top: -72px;
-        box-shadow: 0 0 1px rgba(255, 255, 255, 0);
-        backface-visibility: hidden;
-      }
+        - icon?: string
+        - Name eines Lucide-Icons, das im Header angezeigt wird.
+        - Attribut: icon
+        - Leer lassen oder "" für kein Icon.
+        - Beispielwerte: "Menu", "Folder", "Settings"
 
-      @media screen and (max-width: 800px) {
-        .sb-addon-img {
-          left: 300px;
-        }
-      }
+        - collapsed?: boolean
+        - Ein-/Ausklappzustand der Navigation.
+        - Attribut: collapsed (präsent = true, nicht präsent = false)
+        - Property ist reflektiert: Änderungen am Property aktualisieren das Attribut und umgekehrt.
+        - Standard: false (ausgeklappt)
 
-      @media screen and (max-width: 600px) {
-        .sb-section {
-          flex-direction: column;
-        }
+        - class?: string
+        - Zusätzliche CSS-Klassen (z. B. Tailwind-Klassen), die auf das äußere nav-Element angewandt werden.
+        - Attribut: class
 
-        .sb-features-grid {
-          grid-template-columns: repeat(1, 1fr);
-        }
+        Hinweis: boolean-Attribute wie collapsed werden ohne Wert gesetzt: <bln-navigation collapsed></bln-navigation>
 
-        .sb-socials {
-          grid-template-columns: repeat(2, 1fr);
-        }
+        ## Slots
 
-        .sb-addon {
-          height: 280px;
-          align-items: flex-start;
-          padding-top: 32px;
-          overflow: hidden;
-        }
+        - Default-Slot
+        - Enthält die eigentlichen Navigationseinträge, typischerweise als Listenelemente innerhalb eines ul.
+        - Beispiel:
+        ```html
+        <bln-navigation title="Menü">
+            <li><a href="#a" class="px-4 py-2">A</a></li>
+            <li><a href="#b" class="px-4 py-2">B</a></li>
+        </bln-navigation>
+        ```
 
-        .sb-addon-text {
-          padding-left: 24px;
-        }
 
-        .sb-addon-img {
-          right: 0;
-          left: 0;
-          top: 130px;
-          bottom: 0;
-          overflow: hidden;
-          height: auto;
-          width: 124%;
-        }
+        Empfehlung: Nutzen Sie li-Elemente als direkte Kinder und stylen Sie Links/Buttons innen mit geeigneten Klassen (Padding, Hover-Zustände).
 
-        .sb-addon-img img {
-          width: 1200px;
-          transform: rotate(-12deg);
-          margin-left: 0;
-          margin-top: 48px;
-          margin-bottom: -40px;
-          margin-left: -24px;
-        }
-      }
+        ## Events
+
+        - toggle
+        - Wird ausgelöst, wenn der Nutzer über die Kopfzeile ein- oder ausklappt.
+        - Detail-Payload: { `collapsed: boolean` }
+        - Beispiel:
+        ```html
+        <bln-navigation id="nav" title="Sections"></bln-navigation>
+        <script type="module">{`}
+            document.getElementById('nav')?.addEventListener('toggle', (e) => {
+            console.log('Nav-Zustand:', e.detail.collapsed ? 'eingeklappt' : 'ausgeklappt');
+        });
 `}
-</style>
+        </script>
+        ```
+
+
+        ## Barrierefreiheit (A11y)
+
+        - Semantik: Das Root-Element rendert ein nav mit aria-label="Seitennavigation".
+        - Header-Toggle:
+        - aria-controls verweist auf das Panel-Element.
+        - aria-expanded gibt den aktuellen Zustand an (true/false).
+        - Zugängliche Beschriftung via aria-label, z. B. "Navigation ausklappen" bzw. "Navigation einklappen".
+        - Panel:
+        - aria-hidden spiegelt den Sichtbarkeitszustand wider.
+        - Tastaturbedienung:
+        - Das Toggle ist per Tastatur fokussier- und aktivierbar.
+        - Die Inhalte im Slot sollten Links/Buttons mit standardkonformem Tastaturverhalten sein.
+        - Lesereihenfolge:
+        - Nutzen Sie die Default-Slot-Struktur mit ul/li für verständliche Screenreader-Ausgabe.
+
+        Best Practices:
+        - Titel (title) sollte kurz und aussagekräftig sein.
+        - Für lange Linktexte Trunkierung/Tooltip erwägen.
+        - Kontrastreiche Hover-/Focus-Styles für Links vergeben.
+
+        ## Styling und Layout
+
+        - Breite/Höhe:
+        - Standardbreite ist 16rem (w-64). Sie können diese über class überschreiben:
+        ```html
+        <bln-navigation class="w-80">...</bln-navigation>
+        ```
+
+        - Ränder/Trennlinien:
+        - Der Header hat eine untere Trennlinie. Weitere Umrandungen können Sie außen hinzufügen:
+        ```html
+        <bln-navigation class="w-64 border-r border-gray-200">...</bln-navigation>
+        ```
+
+        - Animation:
+        - Das Ein-/Ausklappen erfolgt über eine max-height/opacity-Transition. Sie können das über zusätzliche Klassen in class ergänzen oder überschreiben.
+        - Icon-Größe:
+        - Das Icon ist kompakt. Wenn Sie größere Icons wünschen, fügen Sie eigene Klassen hinzu:
+        ```html
+        <bln-navigation icon="Menu" class="[&_lucide-icon]:w-6 [&_lucide-icon]:h-6">...</bln-navigation>
+        ```
+
+
+        ## Integrationstipps
+
+        - In Lit-Templates:
+        ```textmate
+        // TypeScript
+        import { html } from 'lit';
+
+        const view = () => html`
+        <bln-navigation title="Inhalte">
+            <li><a href="/docs" class="px-4 py-2">Dokumente</a></li>
+            <li><a href="/settings" class="px-4 py-2">Einstellungen</a></li>
+        </bln-navigation>
+        `;
+        ```
+
+
+        - Mit Router:
+        - Fügen Sie aktive Zustände anhand der aktuellen Route hinzu (z. B. aria-current="page" oder aktive Farben).
+
+        - SSR/Prerender:
+        - Das Attribut collapsed legt den Initialzustand fest. Setzen Sie es serverseitig, wenn die Navigation initial eingeklappt sein soll.
+
+        ## Zustandssteuerung
+
+        - Gesteuert (controlled): Setzen Sie collapsed per Property/Attribut von außen, z. B. via Framework-State. Auf das toggle-Event reagieren Sie, um den State zu synchronisieren.
+        - Ungesteuert (uncontrolled): Lassen Sie den User über das integrierte Toggle schalten; der interne Zustand wird automatisch gepflegt und über das reflected-Attribut sichtbar.
+
+        Beispiel controlled:
+        ```html
+        <bln-navigation id="nav" title="Menü" collapsed></bln-navigation>
+        <script type="module">{`
+            const nav = document.getElementById('nav');
+            nav.addEventListener('toggle', (e) => {
+            // z. B. App-Store/State aktualisieren
+            // und ggf. nav.collapsed erneut setzen, um den Zustand zu kontrollieren
+            nav.collapsed = e.detail.collapsed;
+        });`}
+        </script>
+        ```
+
+
+        ## Muster für Einträge
+
+        - Link:
+        ```html
+        <li>
+            <a href="/reports" class="block px-4 py-2 hover:bg-gray-50 focus:bg-gray-100">Reports</a>
+        </li>
+        ```
+
+
+        - Button/Aktion:
+        ```html
+        <li>
+            <button class="w-full text-left block px-4 py-2 hover:bg-gray-50 focus:bg-gray-100">Neu erstellen</button>
+        </li>
+        ```
+
+
+        - Abschnittsüberschrift:
+        ```html
+        <li class="px-4 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">Allgemein</li>
+        ```
+
+
+        - Geteilter Bereich:
+        ```html
+        <li><hr class="my-2 border-gray-200"></hr></li>
+        ```
+
+
+        ## Fehlerbehebung (Troubleshooting)
+
+        - Icon wird nicht angezeigt:
+        - Prüfen Sie, ob der Icon-Name korrekt ist. Lassen Sie icon leer, um das Icon auszublenden.
+
+        - Toggle reagiert nicht:
+        - Stellen Sie sicher, dass keine Pointer-Events blockiert werden und das Element nicht disabled ist.
+        - Prüfen Sie eventuelle Overlay-Elemente, die über der Kopfzeile liegen.
+
+        - Inhalt wird abgeschnitten:
+        - Die Animation nutzt max-height. Erhöhen Sie die zulässige Höhe via class:
+        ```html
+        <bln-navigation class="w-64 [&_#bln-nav-panel]:max-h-[90vh]">...</bln-navigation>
+        ```
+
+        - Alternativ overflow-y-auto im Panel-Kontext über anpassende Selektoren hinzufügen.
+
+        - Unerwartetes Zusammen-/Aufklappen beim externen Setzen von collapsed:
+        - Bei controlled-Nutzung State-Quelle (z. B. Store) mit dem toggle-Event synchron halten.
+
+        ## Zugriffs- und Testhinweise
+
+        - Selektoren:
+        - Tag: bln-navigation
+        - Header-Button kann über Rollen/Aria gefunden werden (z. B. getByRole('button', { `expanded: true/false` })).
+
+        - Event-Assertions:
+        - Auf das Custom-Event toggle hören und die detail.collapsed-Änderung prüfen.
+
+        ## Best Practices
+
+        - Inhalte als Liste strukturieren (ul > li) für bessere Semantik.
+        - Konsistente Abstände für Einträge (z. B. px-4 py-2).
+        - Aktiven Eintrag markieren (z. B. aria-current="page" und visuelle Hervorhebung).
+        - Titel (title) immer setzen, um die Navigation klar zu benennen.
+        - Bei schmalen Viewports die Startkonfiguration collapsed nutzen und bei Bedarf per Icon öffnen lassen.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-navigation
+        - Properties/Attribute:
+        - title: string
+        - icon?: string
+        - collapsed?: boolean (reflektiert)
+        - class?: string
+        - Slots:
+        - default: Liste der Navigationseinträge (z. B. li > a)
+        - Events:
+        - toggle: detail = { `collapsed: boolean` }
+        - A11y:
+        - nav[aria-label="Seitennavigation"], aria-controls/aria-expanded am Toggle, aria-hidden am Panel
+
+        Wenn Sie weitere Beispiele oder eine Integration mit Ihrem Framework (z. B. React/Vue/Svelte) wünschen, sagen Sie mir, welches Setup Sie nutzen. Ich, AI Assistant, helfe gerne mit passenden Snippets.
+
+</div>
+</div>
