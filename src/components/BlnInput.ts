@@ -98,7 +98,10 @@ export class BlnInput extends TailwindElement {
             this.error ? this._errorId : ''
         ].filter(Boolean).join(' ') || undefined;
 
-        const invalid = this._isValidSet ? !this.isValid : undefined;
+        // Determine validity state only after consumer has explicitly set isValid
+        // Additionally, when there is no value yet, keep a neutral state (no green/red)
+        const hasValue = (this.value ?? '') !== '';
+        const invalid = this._isValidSet && hasValue ? !this.isValid : undefined;
 
         return html`
       <div class="max-w-sm">
@@ -126,7 +129,8 @@ export class BlnInput extends TailwindElement {
                     ? ['rounded-none focus:border-retro-blue focus:shadow-retro-input-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white']
                     : ['rounded-md focus:border-blue-600 focus-visible:outline-none'],
                 // Other...
-                ['block w-full border-2 border-gray-200 sm:text-sm'],
+                ['block w-full border-2 sm:text-sm'],
+                hasValue ? ['border-gray-200'] : ['border-black'],
                 ['disabled:opacity-50 disabled:pointer-events-none'],
                 invalid === false ? ['border-teal-500 focus:border-teal-400'] : '',
                 invalid === true ? ['border-red-500 focus:border-red-300'] : '',

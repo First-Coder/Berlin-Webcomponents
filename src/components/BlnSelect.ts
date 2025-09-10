@@ -78,7 +78,11 @@ export class BlnSelect extends TailwindElement {
 
     private isSelectionValid(): boolean | undefined {
         // Show validity state only if user explicitly set isValid (tracked flag)
-        return this._isValidSet ? this.isValid : undefined;
+        // and there is a value selected (neutral when empty)
+        const hasValue = Array.isArray(this.value)
+            ? this.value.length > 0
+            : (this.value ?? '') !== '';
+        return (this._isValidSet && hasValue) ? this.isValid : undefined;
     }
 
 
@@ -152,7 +156,9 @@ export class BlnSelect extends TailwindElement {
                 ? ['rounded-none focus:border-retro-blue focus:shadow-retro-input-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white']
                 : ['rounded-md focus:border-blue-600 focus-visible:outline-none'],
             // Base
-            ['block w-full border-2 border-gray-200 sm:text-sm appearance-none bg-white'],
+            ['block w-full border-2 sm:text-sm appearance-none bg-white'],
+            // Neutral when no value: black border; otherwise gray
+            (Array.isArray(this.value) ? this.value.length > 0 : (this.value ?? '') !== '' ) ? ['border-gray-200'] : ['border-black'],
             ['disabled:opacity-50 disabled:pointer-events-none'],
             invalid === true ? ['border-teal-500 focus:border-teal-400'] : '',
             invalid === false ? ['border-red-500 focus:border-red-300'] : '',
