@@ -48,6 +48,8 @@ export const RightArrow = () => <svg
 - [BlnNavigation](#blnNavigation)
 - [BlnTreeView](#blnTreeView)
 
+- [FormBuilder](#formBuilder)
+
 
 
 ## Kurzer Überblick
@@ -2244,3 +2246,357 @@ export const RightArrow = () => <svg
 
     [zum Inhaltsverzeichnis](#start)
 </div></div>
+<div className="sb-container">
+    <div className='sb-section-title'>
+        <a name="formBuilder"></a>
+    # FormBuilder — Baukasten für Formulare, Validierung und UI-Komponenten
+
+    Der FormBuilder ist eine schlanke Hilfsklasse, mit der Sie Formularfragmente programmatisch zusammensetzen, synchron/asynchron validieren und häufige UI-Bausteine (Buttons, Tree, Checkbox, Select, Toast etc.) bequem hinzufügen können. Das Ergebnis sind Lit-Templates (TemplateResult[]), die Sie direkt in Ihre Webkomponente oder Seite rendern können.
+
+    - Paradigma: Builder-Pattern; alle add…()-Methoden sind kaskadierbar (fluent API)
+    - Ausgabe: Array aus TemplateResult via getFields()
+    - Validierung: synchron und asynchron, erweiterbar via eigene Validatoren
+    - Bequeme Helfer: addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
+
+    ## Schnellstart
+
+    ```textmate
+    // TypeScript
+    {` import {FormBuilder} from './FormBuilder';
+
+    const fb = new FormBuilder();
+
+    // Felder + einfache Validierung
+    fb.addField('email', 'E-Mail', '')
+    .addField('password', 'Passwort', '')
+    .addField('number', 'Alter', '18')
+    .addButton('Speichern', () => {
+    console.log('Speichern geklickt');
+});
+
+    // Später im Render-Kontext (z. B. in Ihrer Lit-Komponente):
+    const fields = fb.getFields(); // TemplateResult[]
+    // In Ihrem Template:
+    {/* ${fields} */}
+    `}
+    ```
+
+
+    Beispiel-Integration in eine Lit-Komponente:
+
+    ```textmate
+    // TypeScript
+    {`
+    import {LitElement, html} from 'lit';
+    import {customElement} from 'lit/decorators.js';
+    import {FormBuilder} from './FormBuilder';
+
+    @customElement('demo-form')
+    export class DemoForm extends LitElement {
+    private fb = new FormBuilder()
+    .addField('email', 'E-Mail')
+    .addField('password', 'Passwort')
+    .addField('number', 'Alter', '21')
+    .addButton('Absenden', () => this.submit());
+
+    private submit() {
+    console.log('Formular abgesendet');
+}
+
+    protected render() {
+    return html"<form class="space-y-3">${this.fb.getFields()}</form>";
+}
+}
+    `}
+    ```
+
+
+    ## Validierung
+
+    ### Standard-Validatoren (out of the box)
+    - email: prüft, ob ein „@“ enthalten ist; sonst Meldung „Falsches Email Format“
+    - password: mindestens 5 Zeichen; sonst Meldung „Passwort zu kurz (mindestens 5 Zeichen)“
+    - number: Muss Zahl sein und zwischen 10 und 99 (inkl.) liegen; andernfalls passende Fehlermeldung
+
+    Diese Validatoren werden von addField bei den entsprechenden Typen automatisch angewendet und als Text unter dem Feld gerendert (email, number). Für password wird im Ausgangscode kein Inline-Fehler gerendert; Sie können aber eigene Logik ergänzen.
+
+    ### Eigene (Sync) Validatoren registrieren
+    ```textmate
+    // TypeScript
+    {` type SyncValidator = (value: string) => string; // '' bedeutet „kein Fehler“
+
+    const fb = new FormBuilder()
+    .setCustomValidateFunction('iban', (value) => {
+    return /^DE\d{20}$/.test(value) ? '' : 'Ungültige IBAN';
+});
+
+    const msg = fb.validate('iban', 'DE123'); // -> 'Ungültige IBAN'
+`}
+    ```
+
+
+    - validate(type, value): Führt synchronen Validator aus. Rückgabe ist die Fehlernachricht oder ''.
+
+    ### Eigene (Async) Validatoren registrieren
+    ```textmate
+    // TypeScript
+    {`
+    type AsyncValidator = (value: string) => Promise<string>; // '' = OK
+
+    const fb = new FormBuilder()
+    .setCustomValidateFunctionAsync('username', async (value) => {
+        const res = await fetch("/api/exists?u=${encodeURIComponent(value)}").then(r => r.json());
+        return res.exists ? 'Benutzername bereits vergeben' : '';
+    });
+
+    // Verwendung
+    const err = await fb.validateAsync('username', 'alice');
+    // -> '' oder 'Benutzername bereits vergeben'
+    `}
+    ```
+
+
+    - validateAsync(type, value): Führt den asynchronen Validator aus. Fehlt ein Async-Validator, wird automatisch validate(type, value) (sync) verwendet. Falls der Async-Validator eine Exception wirft, wird „Validierung fehlgeschlagen“ zurückgegeben (oder der String der Exception, wenn es ein String ist).
+
+    ## Felder hinzufügen
+
+    ### addField(type, label, value?)
+    Erzeugt ein Basisfeld mit Label und optionalem Startwert.
+    - type: 'email' | 'password' | 'number' | 'text' (Default-Fall)
+    - label: sichtbarer Feldtitel
+    - value: Startwert (string, optional)
+
+    Beispiele:
+    ```textmate
+    // TypeScript
+    new FormBuilder()
+    .addField('email', 'E-Mail', '')
+    .addField('password', 'Passwort')
+    .addField('number', 'Mitarbeiteranzahl', '12')
+    .addField('text', 'Notiz', '…');
+    ```
+
+
+    Hinweise:
+    - Für 'email' und 'number' wird die Fehlermeldung direkt unter dem Feld angezeigt (basierend auf validate()).
+    - Für 'password' ist eine Standardprüfung (>= 5 Zeichen) hinterlegt, die im Standardmarkup nicht automatisch als Text ausgegeben wird. Sie können dieses Verhalten erweitern, indem Sie z. B. addField um eine eigene Darstellung ergänzen oder eine eigene Feldmethode schreiben.
+
+    ### addButton(text, onClick?)
+    Fügt einen Button hinzu. onClick ist optional.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder()
+    .addButton('Zurück', () => history.back())
+    .addButton('Speichern', () => this.save());
+    `}
+    ```
+
+
+    ## Komfort-Builder für UI-Komponenten
+
+    Die folgenden Methoden fügen gebrauchsfertige Web-Komponenten ein. Sie reichen Props durch und können so kontrollierte Zustände und A11y-Attribute setzen. Alle Methoden pushen ein Template in die interne Liste und geben this zurück (kaskadierbar).
+
+    ### addBlnTree(props?)
+    Fügt einen hierarchischen Tree ein.
+    - Unterstützt u. a. items, selectedIds, expandedIds, multiSelect, aria-Attribute, class.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnTree({
+        items: [{ id: 'root', label: 'Root', children: [{ id: 'a', label: 'A' }] }],
+        expandedIds: ['root'],
+        selectedIds: [],
+        multiSelect: false,
+        ariaLabel: 'Organisationsstruktur'
+    });
+    `}
+    ```
+
+
+    Typische Anwendungsfälle:
+    - Auswahl von Knoten
+    - Lazy Loading (über Tree-Events, die Sie in Ihrer Komponente behandeln)
+
+    ### addBlnCheckbox(props?)
+    Fügt eine Checkbox mit Label, Hint, Corner-Hint etc. ein.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnCheckbox({
+        label: 'AGB akzeptieren',
+        name: 'terms',
+        checked: false,
+        required: true,
+        hint: 'Bitte bestätigen, um fortzufahren'
+    });
+    `}
+    ```
+
+
+    ### addModernTree(model, opts?)
+    Fügt eine modern-tree-Komponente ein.
+    - model: Datenmodell
+    - opts.level?: Start-Ebene (Default 0)
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addModernTree(myModel, { level: 1 });
+    `}
+    ```
+
+
+    ### addBlnToast(props?)
+    Fügt eine Toast-Benachrichtigung ein (Info/Erfolg/Warnung/Fehler, Auto-Hide etc.).
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnToast({
+        open: true,
+        variant: 'success',
+        title: 'Gespeichert',
+        message: 'Ihre Einstellungen wurden übernommen',
+        autoHide: true,
+        autoHideDelay: 3000
+    });
+    `}
+    ```
+
+
+    ### addBlnSelect(props?)
+    Fügt ein Select-Feld ein (Single/Multi, Label, Hint, Optionen usw.).
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnSelect({
+        label: 'Land',
+        name: 'country',
+        placeholder: 'Bitte wählen',
+        options: [
+    { value: 'de', label: 'Deutschland' },
+    { value: 'at', label: 'Österreich' },
+        ],
+        required: true
+    });
+    `}
+    ```
+
+
+    ### addBlnButton(label, props?, onClick?)
+    Fügt einen stilisierten Button ein.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnButton('Weiter', { variant: 'solid', size: 'medium' }, () => {
+        console.log('Weiter geklickt');
+    });
+    `}
+    ```
+
+
+    ## Ausgabe rendern
+
+    - getFields(): TemplateResult[] — gibt alle bisher hinzugefügten Templates zurück.
+    - Rendering: Binden Sie dieses Array an der gewünschten Stelle im Template ein.
+
+    ```textmate
+    // TypeScript
+    const fb = new FormBuilder().addField('email', 'E-Mail').addButton('OK');
+    const view = html`<section class="grid gap-4">${fb.getFields()}</section>`;
+    ```
+
+
+    ## Beispiele (End-to-End)
+
+    ### 1) Formular mit Sync- und Async-Validierung
+    ```textmate
+    // TypeScript
+{`
+    const fb = new FormBuilder()
+    .setCustomValidateFunction('postal', (v) => (/^\d{5}$/.test(v) ? '' : 'PLZ muss 5 Ziffern haben'))
+    .setCustomValidateFunctionAsync('username', async (v) => {
+        if (!v) return 'Benutzername erforderlich';
+        const ok = await fetch("/api/user/check?u=${encodeURIComponent(v)}").then(r => r.json());
+        return ok.free ? '' : 'Benutzername vergeben';
+    })
+    .addField('text', 'Benutzername') // Anzeige der Fehlermeldung müssten Sie bei Bedarf selbst ergänzen
+    .addField('email', 'E-Mail')
+    .addField('number', 'Mitarbeiterzahl', '10')
+    .addButton('Prüfen', async () => {
+        const e1 = fb.validate('postal', '10115'); // ''
+        const e2 = await fb.validateAsync('username', 'alice'); // '' oder Fehlermeldung
+        console.log({ e1, e2 });
+    });
+    `}
+    ```
+
+
+    ### 2) Formular mit Tree, Checkbox, Select und Actions
+    ```textmate
+    // TypeScript
+{`
+    const fb = new FormBuilder()
+    .addBlnTree({
+        items: [{ id: 'root', label: 'Root', children: [{ id: 'a', label: 'A' }] }],
+        expandedIds: ['root'],
+        ariaLabel: 'Bereiche'
+    })
+    .addBlnCheckbox({ label: 'Newsletter abonnieren', name: 'news' })
+    .addBlnSelect({
+        label: 'Sprache',
+        options: [{ value: 'de', label: 'Deutsch' }, { value: 'en', label: 'Englisch' }],
+        required: true
+    })
+    .addBlnButton('Speichern', { variant: 'solid' }, () => console.log('Speichern'))
+    .addBlnToast({ open: false, message: 'Gespeichert' });
+    `}
+    ```
+
+
+    ## Best Practices
+
+    - Builder kaskadieren: Nutzen Sie die fluente API, um lesbare Konfigurationen zu erhalten.
+    - Validierungslogik zentralisieren: Registrieren Sie eigene Validatoren (sync/async) einmal und verwenden Sie sie überall.
+    - Fehlertexte: Leere Strings '' bedeuten gültig; alles andere wird als Fehlermeldung interpretiert.
+    - Asynchrone Validierung robust machen: Fehler/Exceptions fangen; die API gibt im Fehlerfall „Validierung fehlgeschlagen“ zurück.
+    - Unveränderlichkeit: Wenn Sie Items/Props an UI-Komponenten übergeben, bevorzugen Sie neue Arrays/Objekte, um reaktive Updates zuverlässig auszulösen.
+    - i18n: Verwenden Sie Ihre eigene Übersetzungs-/Formatierungsschicht für Fehlermeldungen und Labels.
+
+    ## API-Referenz
+
+    Methoden:
+    - setCustomValidateFunction(type: string, func: (value: string) => string): this
+    - Registriert/überschreibt einen synchronen Validator.
+    - setCustomValidateFunctionAsync(type: string, func: (value: string) => Promise<string></string>): this
+        - Registriert/überschreibt einen asynchronen Validator.
+        - validate(type: string, value: string): string
+        - Führt Sync-Validierung aus; '' bedeutet „gültig“.
+        - validateAsync(type: string, value: string): Promise<string></string>
+            - Führt Async-Validierung aus; fällt zurück auf validate(), wenn kein Async-Validator vorhanden ist.
+            - addField(type: 'email'|'password'|'number'|'text', label: string, value?: string): this
+            - Fügt ein Eingabefeld ein; simple Inline-Fehleranzeige für 'email' und 'number'.
+            - addButton(text: string, onClick?: () => void): this
+            - Fügt einen Button ein.
+            - addBlnTree(props?: Partial {'<...>'}): this
+            - Fügt einen Tree ein; unterstützt Items, Auswahl, Expansion, Multi-Select, aria-*.
+            - addBlnCheckbox(props?: Partial{'<...>'}): this
+            - Fügt eine Checkbox ein.
+            - addModernTree(model: IDataModel, opts?: {`{ level?: number }): this `}
+            - Fügt modern-tree mit Datenmodell ein.
+            - addBlnToast(props?: Partial{'<...>'}): this
+            - Fügt eine Toast-Notification ein.
+            - addBlnSelect(props?: Partial{'<...>'}): this
+            - Fügt ein Select-Feld ein.
+            - addBlnButton(label: string, props?: Partial{'<...>'}, onClick?: (e: MouseEvent) => void): this
+            - Fügt einen stilisierten Button ein.
+            - getFields(): TemplateResult[]
+            - Liefert das Array der aufgebauten UI-Templates
+    </div></div>
+
