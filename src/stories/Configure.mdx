@@ -1,4 +1,4 @@
-import { Meta } from "@storybook/addon-docs/blocks";
+import {Meta} from "@storybook/addon-docs/blocks";
 
 import Github from "./assets/github.svg";
 import Discord from "./assets/discord.svg";
@@ -14,6 +14,8 @@ import Testing from "./assets/testing.png";
 import Accessibility from "./assets/accessibility.png";
 import Theming from "./assets/theming.png";
 import AddonLibrary from "./assets/addon-library.png";
+import "./configure.css";
+
 
 export const RightArrow = () => <svg
     viewBox="0 0 14 14"
@@ -28,246 +30,2573 @@ export const RightArrow = () => <svg
         'path fill': 'currentColor'
     }}
 >
-    <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
+    <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z"/>
 </svg>
 
-<Meta title="Configure your project" />
+
+<Meta title="Configure your project"/>
+<div><a name="start"></a></div>
+
+# Inhaltsverzeichnis
+- [Einführung](#einfuehrung)
+- [Installation](#installation)
+- [BlnInput](#blnInput)
+- [BlnCheckBox](#blnCheckBox)
+- [BlnButton](#blnButton)
+- [BlnSelect](#blnSelect)
+- [BlnToast](#blnToast)
+- [BlnNavigation](#blnNavigation)
+- [BlnTreeView](#blnTreeView)
+
+- [FormBuilder](#formBuilder)
+
+
+
+## Kurzer Überblick
 
 <div className="sb-container">
     <div className='sb-section-title'>
-        # Documentation for Webcomponents (Berlin-Webcomponents)
-        This documentation describes the use of individual web components (e.g., buttons, inputs).
+        <a name="einfuehrung"></a>
+        # Dokumentation für Berlin WebKomponenten
+        Diese Dokumentation beschreibt die Installation der BerlinWebKomponenten und gibt
+        zu jeder Komponente eine ausführliche Dokumentation.
 
-    </div>
+        ## Web Komponenten:
+        Web Components ist eine Suite verschiedener Technologien, die es Ihnen ermöglichen, wiederverwendbare benutzerdefinierte Elemente zu erstellen — mit Funktionalität, die vom Rest Ihres Codes gekapselt ist — und diese in Ihren Webanwendungen zu verwenden.
+
+
+        Als Entwickler wissen wir alle, dass es eine gute Idee ist, Code so oft wie möglich wiederzuverwenden. Traditionell war dies bei benutzerdefinierten Markup-Strukturen nicht so einfach — denken Sie an das komplexe HTML (sowie die zugehörigen Stile und Skripte), das Sie manchmal schreiben mussten, um benutzerdefinierte UI-Elemente zu rendieren, und wie die mehrfache Verwendung dieser Elemente Ihre Seite in ein Chaos verwandeln kann, wenn Sie nicht vorsichtig sind.
+
+        Web Components zielt darauf ab, solche Probleme zu lösen — es besteht aus drei Haupttechnologien, die zusammen verwendet werden können, um vielseitige benutzerdefinierte Elemente mit gekapselter Funktionalität zu erstellen, die problemlos überall wiederverwendet werden können, ohne Angst vor Codekollisionen zu haben.
+
+        Benutzerdefinierte Elemente
+        Eine Reihe von JavaScript-APIs, die es Ihnen ermöglichen, benutzerdefinierte Elemente und deren Verhalten zu definieren, die dann wie gewünscht in Ihrer Benutzeroberfläche verwendet werden können.
+
+        Shadow DOM
+        Eine Reihe von JavaScript-APIs zum Anhängen eines gekapselten "Shadow"-DOM-Baums an ein Element — das getrennt vom Hauptdokument-DOM gerendert wird — und zur Steuerung der zugehörigen Funktionalität. Auf diese Weise können Sie die Funktionen eines Elements privat halten, sodass sie geskriptet und gestylt werden können, ohne die Angst vor Kollisionen mit anderen Teilen des Dokuments.
+
+        HTML-Vorlagen
+        Die {`<template>`}- und {`<slot>`}-Elemente ermöglichen es Ihnen, Markup-Vorlagen zu schreiben, die nicht auf der gerenderten Seite angezeigt werden. Diese können dann mehrfach als Grundlage für die Struktur eines benutzerdefinierten Elements wiederverwendet werden.
+
+        Der grundlegende Ansatz zur Implementierung eines Web-Components sieht im Allgemeinen etwa so aus:
+
+        Erstellen Sie eine Klasse, in der Sie die Funktionalität Ihres Web-Components mit der class-Syntax angeben.
+        Registrieren Sie Ihr neues benutzerdefiniertes Element mithilfe der Methode CustomElementRegistry.define(), indem Sie den zu definierenden Elementnamen, die Klasse oder Funktion, in der die Funktionalität angegeben ist, und optional das zu ererbende Element übergeben.
+        Falls erforderlich, hängen Sie ein Shadow DOM an das benutzerdefinierte Element mithilfe der Methode Element.attachShadow(). Fügen Sie dem Shadow DOM mit regulären DOM-Methoden untergeordnete Elemente, Event-Listener usw. hinzu.
+        Falls erforderlich, definieren Sie eine HTML-Vorlage mit {`<template>`}- und {`<slot>`}. Verwenden Sie erneut reguläre DOM-Methoden, um die Vorlage zu klonen und an Ihr Shadow DOM anzuhängen.
+        Verwenden Sie Ihr benutzerdefiniertes Element überall auf Ihrer Seite, genau wie Sie es mit einem regulären HTML-Element tun würden.
+
+
+        ## Lit-Bibliothek:
+        Lit ist eine einfache JavaScript-Bibliothek von Google, die die Erstellung von schnellen, leichtgewichtigen und wiederverwendbaren Webkomponenten vereinfacht. Es bietet eine Basisklasse (LitElement), die Funktionen für reaktive Eigenschaften, deklarative Vorlagen (lit-html) und kapselte Stile bereitstellt. Lit-Komponenten funktionieren in jedem Framework oder ganz ohne Framework und ermöglichen die Erstellung von wiederverwendbaren Bausteinen für Apps und Designsysteme.
+        <a href="https://lit.dev/" target="_blank">Lit-Webkomponenten</a>
+
+
+        ## Wichtiger Hinweis:
+        In den Codebeispielen dieser Dokumentation werden mitunter folgende Zeichen verwendet ( geschweifte Klammer auf und Backtick   und  Backtick mit geschweifte Klammer zu), da es Probleme beim markdown gab.
+        Diese Zeichen sind ggf. zu entfernen.
+
+
+        [zum Inhaltsverzeichnis](#start)
+</div>
 </div>
 <div className="sb-container">
     <div className='sb-section-title'>
+        <a name="installation"></a>
         # Installation
 
-        To use the components in your own project, the following steps are required:
+        Um diese WebKomponenten nutzen zu können sind folgende Schritte notwendig:
 
-        #### Step 1: Download this project from github.com
+        #### Schritt 1: Herunterladen des Projektes von github.com
         <a href="https://github.com/lgund/Berlin-Webcomponents" target="_blank">Berlin-Webcomponents on github.com</a>
 
-        #### Step 2: Open the project in your IDE and navigate to the 'dist'-Folder
+        #### Schritt 2: Öffnen des Projekts in Ihrer IDE und anschließend in den 'dist'-Ordner navigieren
 
-        #### Step 3: Copy the bundle.js File
+        #### Schritt 3: Kopieren des bundle.js File
 
-        #### Step 4: In your own project where you want to use these Webcomponents navigate to e.g. Index.html and insert a script tag
-
-
+        #### Schritt 4: In Ihrem eigenen Projekt wo Sie die Komponenten verwenden möchten zur Index.html navigieren das
+        folgende Script Tag einfügen
         <pre><code> type="module" src="~/js/components/bundle.js"</code></pre>
+
+
+        [zum Inhaltsverzeichnis](#start)
     </div>
 </div>
-<div className='sb-addon'>
-    <div className='sb-addon-text'>
-        <h4>Addons</h4>
-        <p className="sb-section-item-paragraph">Integrate your tools with Storybook to connect workflows.</p>
-        <a
-            href="https://storybook.js.org/addons/?ref=configure"
-            target="_blank"
-        >Discover all addons<RightArrow /></a>
-    </div>
-    <div className='sb-addon-img'>
-        <img src={AddonLibrary} alt="Integrate your tools with Storybook to connect workflows." />
-    </div>
-</div>
-<div className="sb-section sb-socials">
-    <div className="sb-section-item">
-        <img src={Github} alt="Github logo" className="sb-explore-image"/>
-        Join our contributors building the future of UI development.
+<div className="sb-container">
+    <div className='sb-section-title'>
+        <a name="blnInput"></a>
+        # BlnInput — Zugängliches Eingabefeld für Formulare
 
-        <a
-            href="https://github.com/storybookjs/storybook"
-            target="_blank"
-        >Star on GitHub<RightArrow /></a>
-    </div>
-    <div className="sb-section-item">
-        <img src={Discord} alt="Discord logo" className="sb-explore-image"/>
-        <div>
-            Get support and chat with frontend developers.
+        BlnInput ist ein vielseitiges, zugängliches Eingabefeld auf Basis von Web Components. Es bietet Label,
+        Hilfetexte, Fehlermeldungen, verschiedene Größen, Validitätsanzeigen (inkl. Icon), Retro-Design sowie umfassende
+        A11y-Unterstützung.
 
-            <a
-                href="https://discord.gg/storybook"
-                target="_blank"
-            >Join Discord server<RightArrow /></a>
+        - Tag-Name: bln-input
+        - Typen: Text, E-Mail, URL, Number, Passwort, Suche, Tel, Datum/Zeit (via type)
+        - A11y: Verbundenes Label, aria-describedby, aria-invalid, Error-Alert
+        - Styling: Utility-/Tailwind-Klassen via class und Retro-Design
+        - Ereignisse: input, change, focus, blur, keydown, keyup
+
+        ## Schnellstart
+
+        Ein einfaches Textfeld mit Label und Platzhalter:
+        ```html
+        <bln-input
+            label="Vorname"
+            name="firstName"
+            placeholder="Max"
+        ></bln-input>
+        ```
+
+
+        Mit Hilfetext und Pflichthinweis:
+        ```html
+        <bln-input
+            label="E-Mail"
+            name="email"
+            type="email"
+            placeholder="name@beispiel.de"
+            hint="Wir teilen Ihre E-Mail nicht mit Dritten."
+            required
+        ></bln-input>
+        ```
+
+
+        Gültigkeitszustand explizit anzeigen:
+        ```html
+        <bln-input
+            label="Benutzername"
+            name="username"
+            value=${'berliner'}
+            is-valid
+            hint="Sie können Buchstaben, Zahlen und Bindestriche verwenden."
+        ></bln-input>
+        ```
+
+
+        Fehlermeldung mit A11y-Alert:
+        ```html
+        <bln-input
+            label="Passwort"
+            type="password"
+            required
+            error="Mindestens 8 Zeichen erforderlich."
+        ></bln-input>
+        ```
+
+
+        Größenvarianten:
+        ```html
+        <div style="display:flex; gap:12px; flex-direction:column; width:320px;">
+            <bln-input label="Klein" size="small" placeholder="Small"></bln-input>
+            <bln-input label="Mittel" size="medium" placeholder="Medium"></bln-input>
+            <bln-input label="Groß" size="large" placeholder="Large"></bln-input>
         </div>
-    </div>
-    <div className="sb-section-item">
-        <img src={Youtube} alt="Youtube logo" className="sb-explore-image"/>
-        <div>
-            Watch tutorials, feature previews and interviews.
+        ```
 
-            <a
-                href="https://www.youtube.com/@chromaticui"
-                target="_blank"
-            >Watch on YouTube<RightArrow /></a>
-        </div>
-    </div>
-    <div className="sb-section-item">
-        <img src={Tutorials} alt="A book" className="sb-explore-image"/>
-        <p>Follow guided walkthroughs on for key workflows.</p>
 
-        <a
-            href="https://storybook.js.org/tutorials/?ref=configure"
-            target="_blank"
-        >Discover tutorials<RightArrow /></a>
-    </div>
-</div>
-<style>
-    {`
-  .sb-container {
-    margin-bottom: 48px;
-  }
+        Retro-Design:
+        ```html
+        <bln-input
+            label="Titel"
+            placeholder="z. B. Projektbericht"
+            retro-design
+        ></bln-input>
+        ```
 
-      .sb-section {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-      }
 
-      img {
-        object-fit: cover;
-      }
+        ## Eigenschaften (Properties/Attribute)
 
-      .sb-section-title {
-        margin-bottom: 32px;
-      }
+        - label: string
+        - Sichtbares Label und programmatically verknüpft mit dem Eingabefeld.
 
-      .sb-section a:not(h1 a, h2 a, h3 a) {
-        font-size: 14px;
-      }
+        - corner-hint: string
+        - Kleiner Hinweis rechts neben dem Label (z. B. „Optional“).
 
-      .sb-section-item, .sb-grid-item {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-      }
+        - hint: string
+        - Hilfetext unter dem Feld; wird a11y-konform via aria-describedby referenziert.
 
-      .sb-section-item-heading {
-        padding-top: 20px !important;
-        padding-bottom: 5px !important;
-        margin: 0 !important;
-      }
-      .sb-section-item-paragraph {
-        margin: 0;
-        padding-bottom: 10px;
-      }
+        - error: string
+        - Fehlermeldung unter dem Feld; wird mit role="alert" angekündigt.
 
-      .sb-chevron {
-        margin-left: 5px;
-      }
+        - name: string
+        - Name-Attribut für Formulare.
 
-      .sb-features-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 32px 20px;
-      }
+        - type: string
+        - HTML-Eingabetyp, z. B. text, email, url, number, password, search, tel, date, time, datetime-local.
+        - Standard: text
 
-      .sb-socials {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-      }
+        - value: string
+        - Aktueller Wert; kann als Property gebunden werden.
 
-      .sb-socials p {
-        margin-bottom: 10px;
-      }
+        - placeholder: string
+        - Platzhaltertext.
 
-      .sb-explore-image {
-        max-height: 32px;
-        align-self: flex-start;
-      }
+        - disabled: boolean
+        - Deaktiviert das Feld (auch per CSS sichtbar).
 
-      .sb-addon {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        position: relative;
-        background-color: #EEF3F8;
-        border-radius: 5px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        background: #EEF3F8;
-        height: 180px;
-        margin-bottom: 48px;
-        overflow: hidden;
-      }
+        - required: boolean
+        - Markiert das Feld als Pflichtfeld (native Browservalidierung möglich).
 
-      .sb-addon-text {
-        padding-left: 48px;
-        max-width: 240px;
-      }
+        - readonly: boolean
+        - Nur lesbar, nicht editierbar.
 
-      .sb-addon-text h4 {
-        padding-top: 0px;
-      }
+        - minlength, maxlength: number
+        - Minimale bzw. maximale Zeichenlänge.
 
-      .sb-addon-img {
-        position: absolute;
-        left: 345px;
-        top: 0;
-        height: 100%;
-        width: 200%;
-        overflow: hidden;
-      }
+        - pattern: string
+        - Regex für Browser-Validierung (z. B. für spezielle Formate).
 
-      .sb-addon-img img {
-        width: 650px;
-        transform: rotate(-15deg);
-        margin-left: 40px;
-        margin-top: -72px;
-        box-shadow: 0 0 1px rgba(255, 255, 255, 0);
-        backface-visibility: hidden;
-      }
+        - min, max: string
+        - Untere/obere Grenze (für number/date/time etc.).
 
-      @media screen and (max-width: 800px) {
-        .sb-addon-img {
-          left: 300px;
-        }
-      }
+        - step: string | number
+        - Schrittweite (für number/date/time etc.).
 
-      @media screen and (max-width: 600px) {
-        .sb-section {
-          flex-direction: column;
-        }
+        - inputmode: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url'
+        - Steuert die virtuelle Tastatur auf Mobilgeräten.
 
-        .sb-features-grid {
-          grid-template-columns: repeat(1, 1fr);
-        }
+        - autocomplete: string
+        - Autocomplete-Hinweis (z. B. given-name, email, organization).
 
-        .sb-socials {
-          grid-template-columns: repeat(2, 1fr);
-        }
+        - size: 'small' | 'medium' | 'large'
+        - Steuerung von Innenabständen und Schriftgrößen.
 
-        .sb-addon {
-          height: 280px;
-          align-items: flex-start;
-          padding-top: 32px;
-          overflow: hidden;
-        }
+        - class: string
+        - Zusätzliche Utility-/Tailwind-Klassen, die direkt auf das <input></input> angewendet werden.
 
-        .sb-addon-text {
-          padding-left: 24px;
-        }
+        - is-valid: boolean (reflektiert)
+        - Erzwingt einen Validitätszustand (grün/rot inkl. Icon).
+        - Wichtig: Der visuelle Validitätszustand wird erst verwendet, nachdem is-valid einmal explizit gesetzt wurde
+        UND ein Wert vorhanden ist. Ohne Wert bleibt der Zustand neutral (keine grün/rot-Markierung).
 
-        .sb-addon-img {
-          right: 0;
-          left: 0;
-          top: 130px;
-          bottom: 0;
-          overflow: hidden;
-          height: auto;
-          width: 124%;
-        }
+        - retro-design: boolean
+        - Alternative, kantige Optik mit Retro-Fokus-Styling.
 
-        .sb-addon-img img {
-          width: 1200px;
-          transform: rotate(-12deg);
-          margin-left: 0;
-          margin-top: 48px;
-          margin-bottom: -40px;
-          margin-left: -24px;
-        }
-      }
+        - aria-label, aria-labelledby, aria-describedby: string
+        - A11y-Attribute zur Feinsteuerung der Zugänglichkeit.
+
+        Hinweise zu Boolean-Attributen:
+        - Präsentes Attribut bedeutet true (z. B. required), nicht vorhandenes Attribut false.
+        - Für false bei standardmäßig true-Eigenschaften muss explizit false gesetzt werden (z. B. is-valid="false").
+
+        ## Ereignisse
+
+        - input
+        - Bei jeder Wertänderung ausgelöst; aktualisiert die value-Property.
+
+        - change
+        - Beim Verlassen/Commit des Feldes (Browser-Standardverhalten).
+
+        - focus, blur
+        - Fokuswechsel.
+
+        - keydown, keyup
+        - Mit detail: {`key: string`}.
+
+        Beispiel:
+        ```html
+        <bln-input id="iban" label="IBAN"></bln-input>
+        <script type="module">{`
+        const el = document.getElementById('iban');
+
+                el.addEventListener('input', () => {
+                console.log('Wert:', el.value);
+            });
+
+                el.addEventListener('keydown', (e) => {
+                console.log('Taste gedrückt:', e.detail.key);
+            });
 `}
-</style>
+        </script>
+        ```
+
+
+        ## A11y (Barrierefreiheit)
+
+        - Label-Verknüpfung:
+        - Das Label ist mit dem Eingabefeld verknüpft (for/id), sofern label gesetzt ist.
+
+        - Beschreibungen:
+        - hint und error werden per aria-describedby angebunden.
+        - error erhält role="alert" und aria-live="polite" (Screenreader-Ansage).
+
+        - Validität:
+        - aria-invalid wird abhängig vom explizit gesetzten is-valid und dem Vorhandensein eines Wertes gesetzt:
+        - nicht gesetzt oder kein Wert: aria-invalid="false" (neutral)
+        - is-valid = true (mit Wert): aria-invalid="false"
+        - is-valid = false (mit Wert): aria-invalid="true"
+
+        - Platzhalter:
+        - placeholder ist kein Ersatz für ein sichtbares Label; label sollte weiterhin gesetzt werden.
+
+        ## Validierungsmuster (Beispiele)
+
+        - Minimale/maximale Länge:
+        ```html
+        <bln-input
+            label="Benutzername"
+            minlength="3"
+            maxlength="20"
+            required
+        ></bln-input>
+        ```
+
+
+        - Nur Zahlen mit Schrittweite:
+        ```html
+        <bln-input
+            label="Alter"
+            type="number"
+            min="0"
+            max="120"
+            step="1"
+            inputmode="numeric"
+        ></bln-input>
+        ```
+
+
+        - Regex-Pattern (z. B. PLZ in Deutschland 5 Ziffern):
+        ```html
+        <bln-input
+            label="PLZ"
+            pattern="^[0-9]{5}$"
+            inputmode="numeric"
+            placeholder="10115"
+        ></bln-input>
+        ```
+
+
+        ## Styling und Layout
+
+        - Größen:
+        - small, medium, large beeinflussen Padding und Lesbarkeit.
+
+        - Retro-Design:
+        - Aktiviert kantige Ecken, Retro-Fokusrahmen und markantere Kanten.
+
+        - Zusätzliche Klassen:
+        - Über class können Utility-Klassen ergänzt werden, z. B. volle Breite im Container:
+        ```html
+        <bln-input label="Projekt" class="w-full" placeholder="Name"></bln-input>
+        ```
+
+
+        - Validitätssymbole:
+        - Bei gültig/ungültig erscheint rechts ein passendes Status-Icon (z. B. Check oder Warnung).
+
+        ## Integration in Formulare
+
+        - Native Form-Teilnahme:
+        - name, disabled, required etc. verhalten sich wie bei nativen Inputs.
+
+        - Controlled usage (per State/Property):
+        ```html
+        <bln-input id="email" label="E-Mail"></bln-input>
+        <script type="module">{`
+        const input = document.getElementById('email');
+        // Wert setzen
+        input.value = 'user@example.org';
+        // Validität nach eigener Prüfung anzeigen
+        input.isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);`}
+        </script>
+        ```
+
+
+        - Serverseitige Fehlermeldungen:
+        - error setzen, um eine rote Fehlermeldung unter dem Feld anzuzeigen:
+        ```html
+        <bln-input label="Benutzername" error="Benutzername bereits vergeben."></bln-input>
+        ```
+
+
+        ## Best Practices
+
+        - Immer ein sichtbares Label setzen (nicht nur placeholder verwenden).
+        - hint für Hilfestellungen, error für konkrete Fehlermeldungen verwenden.
+        - is-valid erst setzen, nachdem der Nutzer interagiert hat, um „zu frühe“ Fehlanzeigen zu vermeiden.
+        - inputmode korrekt wählen, um auf Mobilgeräten die passende Tastatur zu erhalten.
+        - Bei Zahlen und Datumstypen min/max/step passend definieren.
+        - autocomplete sinnvoll setzen (z. B. given-name, email, organization).
+
+        ## Testen
+
+        - Rendern/Aria:
+        - Prüfen, ob Label mit Input verknüpft ist (for/id).
+        - aria-describedby enthält IDs von hint/error, wenn gesetzt.
+        - aria-invalid abhängig von is-valid und value korrekt.
+
+        - Interaktion:
+        - input-Event ändert value und wird gebubbelt.
+        - change-Event feuert nach Commit.
+        - keydown/keyup übermitteln die gedrückte Taste in detail.key.
+
+        - Visuelle Zustände:
+        - is-valid = true/false zeigt grün/rot inkl. Icon, aber erst, nachdem is-valid einmal gesetzt wurde und value
+        nicht leer ist.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-input
+        - Wesentliche Eigenschaften:
+        - label, corner-hint, hint, error
+        - name, type, value, placeholder
+        - disabled, required, readonly
+        - minlength, maxlength, pattern, min, max, step
+        - inputmode, autocomplete
+        - size ('small' | 'medium' | 'large')
+        - class
+        - is-valid, retro-design
+        - aria-label, aria-labelledby, aria-describedby
+        - Ereignisse:
+        - input, change, focus, blur, keydown(detail.key), keyup(detail.key)
+        - Slots:
+        - keine (Inhalt ist das native <input></input>)/)
+
+
+        [zum Inhaltsverzeichnis](#start)
+    </div>
+</div>
+<div className="sb-container">
+    <div className='sb-section-title'>
+        <a name="blnCheckBox"></a>
+        # BlnCheckBox — Zugängliche Checkbox mit Label, Hint und Größen
+
+        BlnCheckBox ist eine flexible, zugängliche Checkbox als Web Component. Sie bietet:
+        - optionale Sektionen-Überschrift (label) und Corner-Hinweis,
+        - integriertes Inline-Label via Slot,
+        - Größenvarianten,
+        - Retro-Design,
+        - vollständige A11y-Attribute,
+        - native Formularunterstützung,
+        - und Events für Formularlogik.
+
+        - Tag-Name: bln-checkbox
+        - Zweck: Auswahl Ein/Aus in Formularen und UIs
+        - Größen: small | medium | large
+        - A11y: aria-* Attribute, verbundene Beschreibungen, Keyboard- und Screenreader-tauglich
+        - Styling: Utility-/Tailwind-Klassen via class sowie Retro-Design
+
+        ## Schnellstart
+
+        Einfachste Verwendung mit Inline-Label:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox name="newsletter" value="yes">Newsletter abonnieren</bln-checkbox>
+        ```
+
+
+        Mit Sektionstitel (oberhalb), Corner-Hinweis und Hilfetext:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox
+            label="Einstellungen"
+            corner-hint="Optional"
+            name="tips"
+            hint="Sie können Benachrichtigungen jederzeit in den Profileinstellungen ändern."
+        >
+            Produkt-Updates per E-Mail erhalten
+        </bln-checkbox>
+        ```
+
+
+        Pflicht-Checkbox:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox name="terms" required>
+            Ich akzeptiere die Nutzungsbedingungen
+        </bln-checkbox>
+        ```
+
+
+        Deaktiviert:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox name="beta" disabled>Beta-Features aktivieren</bln-checkbox>
+        ```
+
+
+        Größenvarianten:
+        ```html
+        <!-- HTML -->
+        <div style="display:flex; gap:12px; flex-direction:column;">
+            <bln-checkbox size="small">Klein</bln-checkbox>
+            <bln-checkbox size="medium">Mittel</bln-checkbox>
+            <bln-checkbox size="large">Groß</bln-checkbox>
+        </div>
+        ```
+
+
+        Retro-Design:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox retro-design>Retro-Look aktivieren</bln-checkbox>
+        ```
+
+
+        ## Eigenschaften (Properties/Attribute)
+
+        - label: string
+        - Überschrift über der eigentlichen Checkbox (Sektionstitel). Optional.
+        - hint: string
+        - Hilfetext unterhalb der Checkbox; wird a11y-konform referenziert.
+        - corner-hint: string
+        - Kleiner Hinweis rechts neben der Überschrift (z. B. „Optional“).
+
+        - name: string
+        - Name der Checkbox im Formular.
+        - value: string
+        - Wert beim Absenden, wenn checked=true. Standard: "on".
+        - checked: boolean (reflektiert)
+        - Aktueller Zustand der Checkbox (true/false).
+        - disabled: boolean (reflektiert)
+        - Deaktiviert die Checkbox.
+        - required: boolean (reflektiert)
+        - Markiert als Pflichtfeld (wirkt bei Formularvalidierung).
+
+        - size: 'small' | 'medium' | 'large'
+        - Steuert die Kantenlänge der Box und Abstände. Standard: medium.
+        - class: string
+        - Zusätzliche Utility-/Tailwind-Klassen (werden am <input type="checkbox"></input> angewandt).
+
+        - aria-label, aria-labelledby, aria-describedby: string
+        - Feinsteuerung für Screenreader.
+
+        - retro-design: boolean
+        - Aktiviert einen kantigeren, kontrastreicheren Stil.
+
+        Hinweis zu Boolean-Attributen:
+        - Präsentes Attribut bedeutet true (z. B. required).
+        - Weglassen bedeutet false. Für false explizit "false" nutzen, wenn per Attribut gesteuert werden soll (oder
+        Property binden).
+
+        ## Slots
+
+        - Default-Slot
+        - Das Inline-Label rechts der Checkbox.
+        - Beispiel:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox>AGB akzeptieren</bln-checkbox>
+        ```
+
+
+        Empfehlung:
+        - Nutzen Sie den Slot für die eigentliche Beschriftung der Checkbox.
+        - Nutzen Sie label/corner-hint nur, wenn Sie eine Abschnittsüberschrift über der Checkbox benötigen.
+
+        ## Ereignisse
+
+        - input
+        - Wird beim Umschalten ausgelöst (wie bei nativen Checkboxen).
+        - change
+        - Wird beim Commit/Umschalten ausgelöst (Browserstandard, direkt auf Änderung).
+
+        Beispiel:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox id="optin" name="optin">Zustimmen</bln-checkbox>
+        <script type="module">{`
+        // JavaScript/TypeScript
+        const el = document.getElementById('optin');
+        el.addEventListener('input', () => {
+        console.log('checked:', el.checked);
+    });
+        el.addEventListener('change', () => {
+        console.log('form change fired');
+    });`}
+        </script>
+        ```
+
+
+        ## A11y (Barrierefreiheit)
+
+        - Tastatur:
+        - Voll nutzbar (Space toggelt, Tab fokussiert).
+        - Beschreibungen:
+        - hint wird via aria-describedby angebunden.
+        - Inline-Label ist visuell/semantisch mit der Checkbox verknüpft (über das umschließende Label-Element).
+        - Zusätzliche Labels:
+        - Bei rein ikonischen/ohne sichtbaren Text: aria-label setzen oder aria-labelledby verwenden.
+        - Required:
+        - required markiert das Feld für die Browservalidierung (Ankündigung durch Screenreader).
+
+        Best Practices:
+        - Möglichst immer ein verständliches Inline-Label (Slot) verwenden.
+        - hint sparsam und präzise einsetzen.
+        - Für Gruppen mit mehreren Checkboxen eine übergeordnete Gruppenbeschriftung (z. B. fieldset/legend in der
+        App-Struktur) nutzen.
+
+        ## Formularintegration
+
+        - Native Teilnahme:
+        - name, value, checked verhalten sich wie bei <input type="checkbox"></input>.>.
+        - Controlled usage:
+        - checked als Property/Attribut von außen steuern und bei input/change synchronisieren.
+        - Beispiel Controlled:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox id="c1" name="updates">Updates per E-Mail</bln-checkbox>
+        <script type="module">{`
+            // JavaScript/TypeScript
+            const c1 = document.getElementById('c1');
+            // Setzen:
+            c1.checked = true;
+            // Reagieren:
+            c1.addEventListener('change', () => {
+            // App-Status synchronisieren
+            // c1.checked liefert den aktuellen Zustand
+        });
+        `}</script>
+        ```
+
+
+        ## Layout & Styling
+
+        - Größe:
+        - size beeinflusst die Box-Kantenlänge (small/medium/large).
+        - Zusätzliche Klassen:
+        - Mit class können Sie z. B. Abstände oder Farben feinsteuern.
+        - Beispiel: Abstand nach unten
+        ```html
+        <!-- HTML -->
+        <bln-checkbox class="mb-3">Eintrag</bln-checkbox>
+        ```
+
+        - Retro-Design:
+        - Betont klare Kanten, stärkere Ränder und retroartige Fokus-Stile.
+
+        ## Muster
+
+        - Einfache Gruppe:
+        ```html
+        <!-- HTML -->
+        <div role="group" aria-labelledby="prefs">
+            <div id="prefs" style="font-weight:600; margin-bottom:8px;">Präferenzen</div>
+            <bln-checkbox name="p1">Benachrichtigungen</bln-checkbox>
+            <bln-checkbox name="p2">Dunkles Design</bln-checkbox>
+            <bln-checkbox name="p3" disabled>Beta-Funktionen</bln-checkbox>
+        </div>
+        ```
+
+
+        - Mit Sektionstitel, Corner-Hinweis und Hint:
+        ```html
+        <!-- HTML -->
+        <bln-checkbox
+            label="Datenschutz"
+            corner-hint="Erforderlich"
+            name="privacy"
+            required
+            hint="Sie können diese Einstellung später im Profil anpassen."
+        >
+            Ich stimme der Verarbeitung meiner Daten zu
+        </bln-checkbox>
+        ```
+
+
+        ## Testen
+
+        - Zustand:
+        - checked spiegelt den visuellen Status.
+        - Events input und change werden beim Umschalten ausgelöst.
+        - A11y:
+        - aria-describedby enthält die Hint-ID, falls hint gesetzt ist.
+        - required verhält sich wie nativ.
+        - Disabled:
+        - disabled verhindert Interaktion; visuelle Opazität ist reduziert.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-checkbox
+        - Eigenschaften:
+        - label, corner-hint, hint
+        - name, value, checked, disabled, required
+        - size ('small' | 'medium' | 'large'), class
+        - aria-label, aria-labelledby, aria-describedby
+        - retro-design
+        - Slots:
+        - default: Inline-Labeltext der Checkbox
+        - Events:
+        - input, change
+
+
+        [zum Inhaltsverzeichnis](#start)
+    </div>
+</div>
+<div className="sb-container">
+    <div className='sb-section-title'>
+        <a name="blnButton"></a>
+        # BlnButton — Aktionselement mit Varianten, Größen, Pfeil- und Streifenstil
+
+        BlnButton ist ein Web Component Button für Aktionen in Ihrer UI. Er unterstützt verschiedene Varianten, Größen,
+        einen optionalen Pfeilbereich, einen optionalen Streifenhintergrund, Disabled-Zustand sowie flexible
+        Styling-Erweiterung über Klassen. Der Beschriftungstext kommt über den Default-Slot.
+
+        - Tag-Name: bln-button
+        - Zweck: Auslösen von Aktionen (Klicks, Form-Behelfe, Navigation)
+        - Varianten: primary, secondary, link
+        - Größen: small, medium, large
+        - Styling: Utility-/Tailwind-Klassen via class
+        - Interaktion: native Button-Verhalten, onClick-Handler und Click-Event
+
+        ## Schnellstart
+
+        Einfacher Primärbutton:
+        ```html
+        <bln-button>Speichern</bln-button>
+        ```
+
+
+        Sekundärbutton:
+        ```html
+        <bln-button variant="secondary">Abbrechen</bln-button>
+        ```
+
+
+        Link-Variante (optisch akzentuiert):
+        ```html
+        <bln-button variant="link">Mehr erfahren</bln-button>
+        ```
+
+
+        Mit Pfeilfläche rechts:
+        ```html
+        <bln-button with-arrow>Weiter</bln-button>
+        ```
+
+
+        Mit Streifenhintergrund:
+        ```html
+        <bln-button with-stripes>Aktion</bln-button>
+        ```
+
+
+        Größen:
+        ```html
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <bln-button size="small">Klein</bln-button>
+            <bln-button size="medium">Mittel</bln-button>
+            <bln-button size="large">Groß</bln-button>
+        </div>
+        ```
+
+
+        Deaktiviert:
+        ```html
+        <bln-button disabled>Bitte warten …</bln-button>
+        ```
+
+
+        Eigene Zusatzklassen:
+        ```html
+        <bln-button class="w-full uppercase tracking-wide">Vollbreite</bln-button>
+        ```
+
+
+        ## Eigenschaften (Properties/Attribute)
+
+        - variant: 'primary' | 'secondary' | 'link'
+        - Steuert den visuellen Stil (Farben, Rahmen, Gewichtung).
+        - Standard: primary
+
+        - size: 'small' | 'medium' | 'large'
+        - Beeinflusst typografische Größe und Innenabstände.
+        - Standard: medium
+
+        - with-arrow: boolean
+        - Fügt rechts eine Pfeilfläche an (visuell getrennte Zone, ideal für Weiter/Nächste).
+        - In Kombination mit Varianten: Pfeil-Hintergrundfarbe passt sich an (z. B. bei secondary dunkel).
+
+        - with-stripes: boolean
+        - Zeigt hinter dem Button einen diagonalen Streifenhintergrund.
+
+        - disabled: boolean
+        - Deaktiviert Interaktion; Cursor und Opazität werden visuell angepasst.
+
+        - class: string
+        - Zusätzliche Utility-/Tailwind-Klassen für Feintuning (Breite, Abstand, Textformatierung, …).
+
+        - onClick: (e: MouseEvent) => void
+        - Optionaler Property-Callback, der beim Klick aufgerufen wird. Alternativ können Sie wie gewohnt auf das
+        DOM-Event 'click' hören.
+
+        Hinweis zu Boolean-Attributen: Präsentes Attribut entspricht true. Weglassen entspricht false.
+
+        ## Inhalte
+
+        - Default-Slot
+        - Beschriftung/Content des Buttons:
+        ```html
+        <bln-button><span>Jetzt starten</span></bln-button>
+        ```
+
+
+        ## Interaktion und Ereignisse
+
+        - Klick-Interaktion:
+        - Native Button-Bedienung (Maus, Tastatur: Enter/Space).
+        - disabled verhindert Klicks.
+
+        - Ereignisse:
+        - click (DOM-Event)
+        - onClick-Property (optional)
+
+        Beispiel DOM-Event:
+        ```html
+        <bln-button id="cta">Aktion</bln-button>
+        <script type="module">{`
+            const btn = document.getElementById('cta');
+            btn.addEventListener('click', (e) => {
+            console.log('Geklickt!', e);
+        });
+        `}</script>
+        ```
+
+
+        Beispiel onClick-Property:
+        ```html
+        <bln-button id="cta2">Klick mich</bln-button>
+        <script type="module">{`
+            const btn = document.getElementById('cta2');
+            btn.onClick = () => console.log('Handler via Property');
+        `}</script>
+        ```
+
+
+        ## Varianten und Verhalten
+
+        - primary
+        - Standardstil für Hauptaktionen.
+
+        - secondary
+        - Zurückhaltender, aber klarer Stil für Nebenaktionen.
+        - Mit with-arrow: Pfeilfläche in dunkler Optik.
+
+        - link
+        - Auffälliger, kontrastreicher Stil für „Call-to-Action“-ähnliche Links/Buttons.
+
+        - with-arrow
+        - Teilt den Button optisch in Text- und Pfeilbereich auf.
+        - Besonders bei „Weiter/Zum nächsten Schritt“.
+
+        - with-stripes
+        - Präsentationsstil mit diagonalem Streifenhintergrund hinter dem Button.
+
+        - disabled
+        - Triggert reduzierte Opazität und cursor: not-allowed; verhindert Klick-Events.
+
+        ## Beispiele aus der Praxis
+
+        - Primäraktion mit Pfeil:
+        ```html
+        <bln-button variant="primary" with-arrow>Weiter</bln-button>
+        ```
+
+
+        - Sekundäraktion in Vollbreite:
+        ```html
+        <bln-button variant="secondary" class="w-full">Abbrechen</bln-button>
+        ```
+
+
+        - Link-Variante für deutliches „Jetzt kaufen“:
+        ```html
+        <bln-button variant="link" size="large">Jetzt kaufen</bln-button>
+        ```
+
+
+        - CTA auf gestreiftem Hintergrund:
+        ```html
+        <bln-button with-stripes class="mx-auto">Entdecken</bln-button>
+        ```
+
+
+        ## Barrierefreiheit (A11y)
+
+        - Semantik:
+        - Verwendet einen nativen Button im Shadow DOM mit standardkonformen Rollen/Interaktionen.
+
+        - Tastatur:
+        - Aktivierung über Enter/Space; Fokus-Handling wie bei nativen Buttons.
+
+        - Disabled:
+        - Deaktivierte Buttons sind für Screenreader und per Tastatur als inaktiv erkennbar.
+
+        Best Practices:
+        - Aussagekräftigen Button-Text verwenden (nicht nur „Klicken“).
+        - Disabled nur setzen, wenn eine Aktion aktuell nicht verfügbar ist; alternativ Ladezustände kommunizieren.
+
+        ## Stylingtipps
+
+        - Layout:
+        - Über class können Sie z. B. w-full, px-*, py-*, gap, uppercase etc. ergänzen.
+
+        - Typografie/Größe:
+        - size beeinflusst intern die Typo-Klassen; bei Bedarf zusätzlich über class tunen.
+
+        - Kontrast:
+        - Achten Sie auf ausreichenden Farbkontrast in Kombination mit Ihrem Theme.
+
+        ## Testen
+
+        - Rendering:
+        - Button existiert und zeigt den Slot-Inhalt.
+
+        - Disabled:
+        - disabled-Attribut gesetzt, Interaktion gesperrt, visuelle Klassen für Opazität/Pointer.
+
+        - Ereignisse:
+        - click-Event und onClick-Property reagieren wie erwartet.
+
+        - Stile:
+        - with-arrow rendert eine rechte Pfeilfläche.
+        - with-stripes rendert einen Streifenhintergrund.
+        - Varianten und Größen setzen jeweils die passenden Klassen.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-button
+        - Eigenschaften:
+        - variant: 'primary' | 'secondary' | 'link'
+        - size: 'small' | 'medium' | 'large'
+        - with-arrow: boolean
+        - with-stripes: boolean
+        - disabled: boolean
+        - class: string
+        - onClick(e: MouseEvent): void
+        - Slots:
+        - default: Button-Beschriftung/Content
+        - Events:
+        - click
+
+
+        [zum Inhaltsverzeichnis](#start)
+    </div>
+</div>
+<div className="sb-container">
+    <div className="sb-title">
+        <a name="blnSelect"></a>
+        # BlnSelect — Zugängliches Select/Dropdown mit Single- und Mehrfachauswahl
+
+        BlnSelect ist ein zugängliches Select-Element als Web Component. Es unterstützt:
+        - Single- und Multiple-Select,
+        - Optionen per Property (Array) oder via Slot,
+        - Label, Corner-Hinweis und Hint,
+        - Validitätsanzeige mit Status-Icons,
+        - Größenvarianten und Retro-Design,
+        - umfassende A11y-Attribute.
+
+        - Tag-Name: bln-select
+        - Varianten: Single (Standard) und multiple
+        - Optionen: programmatisch (.options) oder via geschlottete <option></option>-Elemente
+        - A11y: korrektes Labeling, aria-describedby/-invalid
+
+        ## Schnellstart
+
+        Ein einfaches Single-Select mit Platzhalter:
+        ```html
+        <!-- HTML -->
+        <bln-select
+            label="Kategorie"
+            placeholder="Bitte wählen"
+            options=${[
+            {label: 'Option A', value: 'a'},
+            {label: 'Option B', value: 'b'},
+            {label: 'Option C', value: 'c', disabled: true},
+        ]}
+        ></bln-select>
+        ```
+
+
+        Mit vorausgewähltem Wert:
+        ```html
+        <!-- HTML -->
+        <bln-select
+            label="Kategorie"
+            value=${'b'}
+            options=${[
+            {label: 'A', value: 'a'},
+            {label: 'B', value: 'b'},
+        ]}
+        ></bln-select>
+        ```
+
+
+        Mehrfachauswahl:
+        ```html
+        <!-- HTML -->
+        <bln-select
+            label="Tags"
+            multiple
+            value=${['a', 'c']}
+            options=${[
+            {label: 'Tag A', value: 'a'},
+            {label: 'Tag B', value: 'b'},
+            {label: 'Tag C', value: 'c'},
+        ]}
+        ></bln-select>
+        ```
+
+
+        Optionen via Slot (statt .options):
+        ```html
+        <!-- HTML -->
+        <bln-select label="Status" placeholder="Bitte wählen">
+            <option value="" disabled hidden>Bitte wählen</option>
+            <option value="open">Offen</option>
+            <option value="closed" disabled>Geschlossen</option>
+        </bln-select>
+        ```
+
+
+        Retro-Design:
+        ```html
+        <!-- HTML -->
+        <bln-select label="Thema" retro-design options=${[{label: 'Hell', value: 'light'}, {
+            label: 'Dunkel',
+            value: 'dark'
+        }]}></bln-select>
+        ```
+
+
+        ## Eigenschaften (Properties/Attribute)
+
+        - label: string
+        - Sichtbares Label; wird korrekt mit dem Select verknüpft.
+
+        - corner-hint: string
+        - Kleiner Hinweis rechts neben dem Label (z. B. „Optional“).
+
+        - hint: string
+        - Hilfetext unter dem Feld; wird a11y-konform via aria-describedby referenziert.
+
+        - name: string
+        - Formularname (native Form-Unterstützung).
+
+        - placeholder: string
+        - Platzhalter für Single-Select; erscheint als erste disabled/hidden-Option, solange kein Wert gewählt ist.
+
+        - value: string | string[]
+        - Aktueller Wert (Single: string, Multiple: string[]).
+        - Bei multiple werden/erwartet Arrays.
+
+        - disabled: boolean
+        - Deaktiviert das Feld und verhindert Interaktion.
+
+        - required: boolean
+        - Markiert als Pflichtfeld (native Browservalidierung möglich).
+
+        - multiple: boolean
+        - Aktiviert Mehrfachauswahl. In diesem Modus wird kein Chevron angezeigt.
+
+        - size: 'small' | 'medium' | 'large'
+        - Steuert Innenabstände/Typografie.
+
+        - class: string
+        - Zusätzliche Utility-/Tailwind-Klassen für Feintuning.
+
+        - is-valid: boolean
+        - Erzwingt Validitätsanzeige (grün/rot inkl. Icon).
+        - Neutral, solange kein Wert gesetzt ist oder is-valid nicht explizit vom Consumer gesetzt wurde.
+
+        - aria-label, aria-labelledby, aria-describedby: string
+        - Feinsteuerung der Zugänglichkeit.
+
+        - retro-design: boolean
+        - Kantigere, retroartige Optik und Fokus-Stile.
+
+        - options: Array[ label: string; value: string; disabled?: boolean; ]>
+        - Programmatische Definition der Optionen. Alternativ können <option></option>-Kinder via Slot genutzt werden.
+
+        Hinweise zu Boolean-Attributen:
+        - Präsentes Attribut bedeutet true (z. B. multiple, required).
+        - Weglassen bedeutet false.
+
+        ## Ereignisse
+
+        - input
+        - Wird beim Ändern der Auswahl ausgelöst; dient zur Live-Reaktion (z. B. Formular-Dirty-State).
+
+        - change
+        - Standard-Change-Event, wenn eine Auswahl bestätigt wurde.
+
+        Beispiel:
+        ```html
+        <!-- HTML -->
+        <bln-select id="cat" label="Kategorie"></bln-select>
+        <script type="module">{`
+        // JavaScript/TypeScript
+        const el = document.getElementById('cat');
+        el.addEventListener('change', () => {
+        console.log('Wert:', el.value); // string oder string[] bei multiple
+        });
+        `}</script>
+                ```
+
+
+        ## A11y (Barrierefreiheit)
+
+        - Label-Verknüpfung:
+        - label ist per for/id korrekt mit dem <select></select> verbunden.
+
+        - Beschreibungen:
+        - hint wird via aria-describedby referenziert.
+        - aria-invalid wird abhängig von is-valid und Vorhandensein eines Wertes gesetzt:
+        - nicht gesetzt/kein Wert: neutral (aria-invalid="false")
+        - gültig: aria-invalid="false"
+        - ungültig: aria-invalid="true"
+
+        - Tastaturbedienung:
+        - Vollständig nativ (Pfeiltasten, Buchstabensuche, Space/Enter, etc.).
+
+        Best Practices:
+        - label immer setzen (placeholder ist kein Ersatz).
+        - Bei multiple dem Nutzer eine klare Ergebnisdarstellung oder Zähler zeigen (z. B. in der UI drumherum).
+
+        ## Validität und Status-Icons
+
+        - Validität wird visuell erst gezeigt, wenn:
+        - is-valid explizit gesetzt wurde (true/false) UND
+        - ein Wert gewählt ist (bei multiple: Array nicht leer).
+        - Es erscheinen entsprechende Status-Icons:
+        - Gültig: Check-Symbol
+        - Ungültig: Warn-/Error-Symbol
+
+        ## Optionen definieren
+
+        - Programmatisch (.options):
+        - Ideal, wenn Optionen aus Datenquellen stammen.
+        - placeholder wird automatisch als erste disabled/hidden-Option eingefügt (nur Single-Select).
+
+        - Per Slot:
+        - Geeignet, wenn Sie volle Kontrolle über die <option></option>-Elemente wünschen (z. B. eigene
+        disabled/hidden-Logik).
+
+        ## Größen & Styling
+
+        - size:
+        - small: kompakt
+        - medium: Standard
+        - large: großzügig
+
+        - class:
+        - Zusätzliche Utility-Klassen, z. B. volle Breite:
+        ```html
+        <!-- HTML -->
+        <bln-select label="Projekt" class="w-full"></bln-select>
+        ```
+
+
+        - retro-design:
+        - Kantiges Layout, markantere Fokus-/Border-Stile.
+
+        ## Praxisbeispiele
+
+        - Pflichtfeld mit Platzhalter:
+        ```html
+        <!-- HTML -->
+        <bln-select
+            label="Land"
+            placeholder="Bitte wählen"
+            required
+            options=${[
+            {label: 'Deutschland', value: 'de'},
+            {label: 'Österreich', value: 'at'},
+            {label: 'Schweiz', value: 'ch'},
+        ]}
+        />
+        ```
+
+
+        - Multiple mit vorgewählten Werten:
+        ```html
+        <!-- HTML -->
+        <bln-select
+            label="Interessen"
+            multiple
+            value=${['ux', 'dev']}
+            options=${[
+            {label: 'UX', value: 'ux'},
+            {label: 'Entwicklung', value: 'dev'},
+            {label: 'Marketing', value: 'mkt'},
+        ]}
+        />
+        ```
+
+
+        - Validitätsfeedback:
+        ```html
+        <!-- HTML -->
+        <bln-select
+            label="Kategorie"
+            value=${''}
+            is-valid=${false}
+            hint="Bitte wählen Sie eine Kategorie aus."
+            placeholder="Bitte wählen"
+            options=${[{label: 'A', value: 'a'}]}
+        />
+        ```
+
+
+        ## Integration in Anwendungen
+
+        - Controlled usage:
+        - value von außen setzen, auf change/input hören und State synchronisieren.
+
+        - Formular-Submission:
+        - name und value (bzw. Mehrfachwerte) werden nativ wie bei <select></select> verarbeitet.
+
+        - SSR/Prerender:
+        - placeholder und vorausgewählte Werte serverseitig setzen, damit der Initialzustand passt.
+
+        TypeScript/Lit-Beispiel:
+        ```typescript
+        // TypeScript
+        import {html} from 'lit';
+
+        export const view = (state: {`category: string`}) => html`
+        <bln-select
+            label="Kategorie"
+            placeholder="Bitte wählen"
+            value=${state.category}
+            options=${[
+            {label: 'A', value: 'a'},
+            {label: 'B', value: 'b'},
+        ]}
+            {`@change=${(e: Event) => {
+                // Bitte die `-Zeichen in der nächsten Zeile entfernen!
+                const el = 'e.currentTarget as any';
+                // el.value -> 'a' | 'b'
+            }}`}
+        ></bln-select>
+        `;
+        ```
+
+
+        ## Testen
+
+        - Rendering:
+        - Label vorhanden, Select vorhanden, placeholder bei leerem Wert sichtbar (Single-Select).
+
+        - Events:
+        - change/input werden korrekt ausgelöst; value spiegelt Auswahl (Array bei multiple).
+
+        - A11y:
+        - aria-describedby enthält Hint-ID, wenn hint gesetzt.
+        - aria-invalid korrekt gemäß is-valid und Wertbelegung.
+
+        - Validität:
+        - Icons und Borderfarben ändern sich erst, wenn is-valid explizit gesetzt wurde und eine Auswahl existiert.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-select
+        - Eigenschaften:
+        - label, corner-hint, hint
+        - name, placeholder, value (string | string[]), disabled, required, multiple
+        - size ('small' | 'medium' | 'large'), class, is-valid, retro-design
+        - aria-label, aria-labelledby, aria-describedby
+        - options: Array[label, value, disabled?]>
+        - Slots:
+        - default: eigene <option></option>-Kinder als Alternative zu .options
+        - Events:
+        - input, change
+
+
+        [zum Inhaltsverzeichnis](#start)
+    </div>
+
+</div>
+<div className="sb-container">
+    <div className='sb-section-title'>
+        <a name="blnToast"></a>
+        # BlnToast — Dokumentation
+
+        BlnToast ist eine leichtgewichtige, zugängliche Toast-/Alert-Komponente für temporäre Statusmeldungen. Sie
+        unterstützt verschiedene Varianten (Info, Erfolg, Warnung, Fehler), automatisches Ausblenden, einen optionalen
+        Schließen-Button, Retro-Design sowie A11y-konforme Live-Regionen.
+
+        - Tag-Name: bln-toast
+        - Zweck: Kurzlebige Statusmeldungen (z. B. nach Aktionen)
+        - Varianten: info | success | warning | error
+        - A11y: role="status", aria-live, aria-atomic
+        - Styling: Tailwind-Klassen via class-Attribut injizierbar
+        - Inhalte: Title, Message oder eigener Inhalt per Slot
+
+        ## Schnellstart
+
+        Ein einfaches Toast mit Titel und Nachricht:
+        ```html
+        <bln-toast
+            open
+            variant="info"
+            title="Gespeichert"
+            message="Ihre Änderungen wurden erfolgreich übernommen."
+        ></bln-toast>
+        ```
+
+
+        Erfolgsmeldung mit Auto-Hide (Standard: aktiv, 4000 ms):
+        ```html
+        <bln-toast
+            open
+            variant="success"
+            title="Erfolg"
+            message="Alles erledigt! Dieses Toast blendet sich gleich automatisch aus."
+        ></bln-toast>
+        ```
+
+
+        Warnung ohne Auto-Hide und mit Schließen-Button:
+        ```html
+        <bln-toast
+            open
+            variant="warning"
+            title="Achtung"
+            message="Bitte prüfen Sie Ihre Eingaben."
+            auto-hide="false"
+            close-button
+        ></bln-toast>
+        ```
+
+
+        Eigenen Inhalt per Slot einfügen (überschreibt message):
+        ```html
+        <bln-toast open variant="error" title="Fehler">
+            <div>
+                <p>Beim Speichern ist ein Fehler aufgetreten.</p>
+                <a href="/hilfe" class="underline">Mehr erfahren</a>
+            </div>
+        </bln-toast>
+        ```
+
+
+        Retro-Design aktivieren:
+        ```html
+        <bln-toast
+            open
+            variant="info"
+            title="Hinweis"
+            message="Retro-Look mit kantigen Rändern."
+            retro-design
+        ></bln-toast>
+        ```
+
+
+        ## Eigenschaften (Properties/Attribute)
+
+        - open: boolean (reflektiert)
+        - Sichtbarkeit des Toasts. Bei true wird das Toast angezeigt, bei false ausgeblendet.
+        - Als Attribut: open (ohne Wert) entspricht true.
+
+        - variant: 'info' | 'success' | 'warning' | 'error'
+        - Bestimmt Farbakzente und Icon.
+        - Standard: info
+
+        - title: string
+        - Überschrift des Toasts (optional, aber empfohlen).
+
+        - message: string
+        - Kurzer Inhaltstext. Wird ignoriert, wenn der Default-Slot belegt ist.
+
+        - auto-hide: boolean
+        - Ob das Toast nach einer Verzögerung automatisch geschlossen wird.
+        - Standard: true
+
+        - auto-hide-delay: number (ms)
+        - Verzögerung bis zum automatischen Ausblenden in Millisekunden.
+        - Praxis: 3000–6000 ms sind üblich.
+
+        - close-button: boolean
+        - Blendet einen Schließen-Button ein.
+        - Standard: true
+
+        - aria-live: 'polite' | 'assertive' | 'off'
+        - Steuerung des Screenreader-Verkündigungsgrads.
+        - Standard: polite
+
+        - aria-atomic: boolean
+        - Gibt an, ob der gesamte Inhalt als eine Einheit vorgelesen wird.
+        - Standard: true
+
+        - class: string
+        - Zusätzliche CSS-/Utility-Klassen (z. B. Tailwind). Werden auf das äußere Toast-Element angewendet.
+
+        - retro-design: boolean
+        - Schaltet auf einen kantigeren Look mit stärkeren Rändern.
+        - Standard: false
+
+        Hinweis zu Boolean-Attributen: Als HTML-Attribut ohne Wert setzen (z. B. auto-hide="false" für false; Attribut
+        ganz weglassen entspricht true, sofern es standardmäßig true ist, bzw. false, wenn standardmäßig false).
+
+        ## Slots
+
+        - Default-Slot
+        - Erlaubt vollständig eigenen Markup-Inhalt (z. B. Links, zusätzliche Hinweise).
+        - Überschreibt die Anzeige von message.
+
+        Beispiel:
+        ```html
+        <bln-toast open title="Update verfügbar">
+            <div class="space-y-1">
+                <p>Version 2.0.1 kann installiert werden.</p>
+                <button class="underline">Jetzt aktualisieren</button>
+            </div>
+        </bln-toast>
+        ```
+
+
+        ## Methoden und Ereignisse
+
+        - Methoden:
+        - show(): Öffnet das Toast programmatisch (setzt open auf true und feuert ein open-Event).
+        - close(): Schließt das Toast programmatisch (setzt open auf false und feuert ein close-Event).
+
+        - Ereignisse:
+        - open: Wird ausgelöst, wenn das Toast geöffnet wird.
+        - close: Wird ausgelöst, wenn das Toast geschlossen wird (manuell oder durch Auto-Hide).
+
+        Beispiel programmatische Steuerung:
+        ```html
+        <button id="showSuccess">Toast zeigen</button>
+        <bln-toast id="t1" variant="success" title="Gespeichert" message="Daten gespeichert."
+                   auto-hide-delay="3000"></bln-toast>
+
+        <script type="module">{`
+            const toast = document.getElementById('t1');
+            document.getElementById('showSuccess').addEventListener('click', () => {
+            toast.show();
+        });
+
+                            toast.addEventListener('open', () => console.log('Toast geöffnet'));
+                            toast.addEventListener('close', () => console.log('Toast geschlossen'));`}
+        </script>
+        ```
+
+
+        ## Barrierefreiheit (A11y)
+
+        - Rolle & Live-Region:
+        - Das Toast agiert als Live-Region mit role="status".
+        - aria-live steuert, wie dringlich Screenreader die Meldung ankündigen (polite vs. assertive).
+        - aria-atomic=true sorgt dafür, dass der gesamte Inhalt als Einheit vorgelesen wird.
+
+        - Fokusmanagement:
+        - Das Toast nimmt keinen Fokus, um Workflows nicht zu stören.
+        - Der optionale Schließen-Button ist fokussierbar und mit aria-label="Schließen" versehen.
+
+        - Best Practices:
+        - Kritische Fehler: aria-live="assertive" verwenden.
+        - Häufige Hintergrundhinweise: aria-live="polite".
+        - Inhalt kurz und prägnant halten; Titel + 1–2 Sätze.
+
+        ## Styling und Layout
+
+        - Außencontainer:
+        - Das Toast selbst ist nicht fest positioniert. Platzieren Sie es in einem Container, der die Position im
+        Viewport bestimmt (z. B. fixed bottom-4 right-4).
+        - Tailwind-/Utility-Klassen:
+        - Über das class-Attribut lassen sich Schatten, Abstände oder Breite anpassen.
+
+        Beispiele für Positionierung:
+
+        Rechts unten, ein Toast:
+        ```html
+        <div class="fixed bottom-4 right-4">
+            <bln-toast open title="Tipp" message="Nutzen Sie Shortcuts." class="mb-2"></bln-toast>
+        </div>
+        ```
+
+
+        Rechts unten, mehrere Toaster (gestapelt):
+        ```html
+        <div class="fixed bottom-4 right-4 flex flex-col gap-2 max-w-sm">
+            <bln-toast open variant="success" title="Erfolg" message="A erledigt."></bln-toast>
+            <bln-toast open variant="warning" title="Hinweis" message="Bitte prüfen."></bln-toast>
+        </div>
+        ```
+
+
+        ## Verhaltensdetails
+
+        - Auto-Hide:
+        - Wenn open=true und auto-hide=true, wird nach Ablauf der auto-hide-delay das Toast automatisch geschlossen und
+        das close-Event ausgelöst.
+        - Verhindern Sie ungewolltes Schließen, indem Sie auto-hide="false" setzen.
+
+        - Manuelles Schließen:
+        - Über den Schließen-Button oder per close().
+
+        - Varianten:
+        - Jede Variante nutzt passende Farbakzente und ein thematisches Icon.
+
+        - Übergänge:
+        - Sichtbarkeit wird weich ein-/ausgeblendet (Opacity-Transition). Für individuelle Animationen
+        ergänzen/überschreiben Sie Klassen via class.
+
+        ## Integration in Anwendungen
+
+        - Formular-Feedback:
+        - Nach erfolgreichem Submit ein success-Toast mit kurzem Text zeigen; Auto-Hide aktiv lassen.
+        - Fehlerfälle:
+        - Bei Fehlern error-Variante mit assertive-Live-Region verwenden.
+        - Hintergrundaktionen:
+        - Für unaufdringliche Hinweise info/polite nutzen.
+
+        Lit/TS-Beispiel:
+        ```typescript
+        // TypeScript
+        import {html} from 'lit';
+
+        export const view = (state: {`saved: boolean; error?: string`}) => html`
+        {` <div class="fixed bottom-4 right-4">
+            <bln-toast
+            .open=${state.saved}
+            variant="success"
+            title="Gespeichert"
+            message="Die Einstellungen wurden übernommen."
+            auto-hide
+            auto-hide-delay="3000"
+            ></bln-toast>
+
+                        <bln-toast
+                        .open=${Boolean(state.error)}
+        variant="error"
+        title="Fehler"
+        aria-live="assertive"
+        >
+        <p>${state.error ?? ''}</p>
+    </bln-toast>
+</div>
+    `}
+        ```
+
+
+        ## Testen
+
+        - Sichtbarkeit:
+        - Prüfen Sie das open-Attribut/Property und die visuelle Präsenz (Opacity).
+        - Auto-Hide:
+        - Setzen Sie auto-hide und auto-hide-delay; erwarten Sie ein close-Event nach Ablauf.
+        - A11y:
+        - role="status" und aria-live/-atomic korrekt gesetzt.
+        - Interaktion:
+        - Schließen-Button klickbar und löst close-Event aus.
+        - Slot-Inhalte:
+        - Bei belegtem Slot sollte message nicht angezeigt werden.
+
+        ## Fehlersuche (Troubleshooting)
+
+        - Toast erscheint nicht:
+        - open muss true sein (Attribut oder Property).
+        - Positionierung: Stellen Sie sicher, dass der äußere Container sichtbar ist (z. B. fixed + bottom/right).
+
+        - Toast schließt „zu schnell“:
+        - Erhöhen Sie auto-hide-delay oder deaktivieren Sie auto-hide.
+
+        - Screenreader liest Meldungen nicht vor:
+        - aria-live auf assertive/polite setzen und aria-atomic prüfen.
+        - Sehr lange Inhalte vermeiden; Live-Regionen sollten kurz sein.
+
+        - Überlagert Klicks auf darunterliegende Inhalte:
+        - Platzieren Sie den Toaster in einer Ecke (z. B. bottom-right) und achten Sie auf pointer-events beim Layout.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-toast
+        - Eigenschaften:
+        - open: boolean
+        - variant: 'info' | 'success' | 'warning' | 'error'
+        - title: string
+        - message: string
+        - auto-hide: boolean
+        - auto-hide-delay: number (ms)
+        - close-button: boolean
+        - aria-live: 'polite' | 'assertive' | 'off'
+        - aria-atomic: boolean
+        - class: string
+        - retro-design: boolean
+        - Slots:
+        - default: ersetzt message durch eigenen Inhalt
+        - Methoden:
+        - show(), close()
+        - Events:
+        - open, close
+        - A11y:
+        - role="status", aria-live, aria-atomic
+
+
+        [zum Inhaltsverzeichnis](#start)
+    </div>
+</div>
+<div className="sb-container">
+    <div className='sb-section-title'>
+        <a name="blnNavigation"></a>
+        # BlnNavigation — Dokumentation
+
+        Seitliche Navigation mit auf-/einklappbarem Inhalt für Web-Apps. Das Element zeigt einen Kopfbereich mit
+        optionalem Icon und Titel sowie einen ein-/ausblendbaren Inhaltsbereich, in den beliebige Navigationseinträge
+        per Slot eingefügt werden können (z. B. Links, Buttons oder Listenelemente).
+
+        - Tag-Name: bln-navigation
+        - Framework: Lit (Web Component)
+        - Layout/Styles: Tailwind-Klassen (per class-Attribut injizierbar)
+        - A11y: ARIA-Attribute für Toggle/Panel, semantisches nav-Element
+
+        ## Schnellstart
+
+        - Fügen Sie das Web Component-Bundle in Ihr Projekt ein (z. B. über Ihr Build-System).
+        - Verwenden Sie das Tag bln-navigation in Ihrem HTML.
+        - Platzieren Sie Ihre Navigationslinks in den Default-Slot.
+
+        ## Beispiele
+
+        Einfaches Grundgerüst:
+        ```html
+        <bln-navigation title="Navigation" icon="Menu">
+            <li><a href="#overview" class="px-4 py-2 hover:bg-gray-50">Übersicht</a></li>
+            <li><a href="#settings" class="px-4 py-2 hover:bg-gray-50">Einstellungen</a></li>
+            <li>
+                <button class="text-left w-full px-4 py-2 hover:bg-gray-50">Aktion</button>
+            </li>
+        </bln-navigation>
+        ```
+
+
+        Startzustand eingeklappt:
+        ```html
+        <bln-navigation title="Navigation" icon="Menu" collapsed>
+            <li><a href="#a" class="px-4 py-2">Eintrag A</a></li>
+            <li><a href="#b" class="px-4 py-2">Eintrag B</a></li>
+        </bln-navigation>
+        ```
+
+
+        Ohne Icon:
+        ```html
+        <bln-navigation title="Menü" icon="">
+            <li><a href="#one" class="px-4 py-2">Punkt 1</a></li>
+        </bln-navigation>
+        ```
+
+
+        Eigene Breite/Styles per Tailwind-Klassen:
+        ```html
+        <bln-navigation title="Projekt" class="w-72 border-r border-gray-200">
+            <li><a href="#home" class="px-4 py-2">Home</a></li>
+            <li><a href="#team" class="px-4 py-2">Team</a></li>
+        </bln-navigation>
+        ```
+
+
+        Programmgesteuert ein-/ausklappen (z. B. auf Button-Klick):
+        ```html
+        <button id="toggleNav">Toggle</button>
+
+        <bln-navigation id="sideNav" title="Inhalte">
+            <li><a href="#x" class="px-4 py-2">X</a></li>
+            <li><a href="#y" class="px-4 py-2">Y</a></li>
+        </bln-navigation>
+
+        <script type="module">{`
+            const nav = document.getElementById('sideNav');
+            document.getElementById('toggleNav').addEventListener('click', () => {
+            nav.collapsed = !nav.collapsed; // Property steuert den Zustand
+        });
+            `}
+        </script>
+        ```
+
+
+        ## Eigenschaften (Properties/Attribute)
+
+        - title: string
+        - Überschrift im Header der Navigation.
+        - Attribut: title
+        - Standard: "Navigation"
+
+        - icon?: string
+        - Name eines Lucide-Icons, das im Header angezeigt wird.
+        - Attribut: icon
+        - Leer lassen oder "" für kein Icon.
+        - Beispielwerte: "Menu", "Folder", "Settings"
+
+        - collapsed?: boolean
+        - Ein-/Ausklappzustand der Navigation.
+        - Attribut: collapsed (präsent = true, nicht präsent = false)
+        - Property ist reflektiert: Änderungen am Property aktualisieren das Attribut und umgekehrt.
+        - Standard: false (ausgeklappt)
+
+        - class?: string
+        - Zusätzliche CSS-Klassen (z. B. Tailwind-Klassen), die auf das äußere nav-Element angewandt werden.
+        - Attribut: class
+
+        Hinweis: boolean-Attribute wie collapsed werden ohne Wert gesetzt: <bln-navigation collapsed></bln-navigation>
+
+        ## Slots
+
+        - Default-Slot
+        - Enthält die eigentlichen Navigationseinträge, typischerweise als Listenelemente innerhalb eines ul.
+        - Beispiel:
+        ```html
+        <bln-navigation title="Menü">
+            <li><a href="#a" class="px-4 py-2">A</a></li>
+            <li><a href="#b" class="px-4 py-2">B</a></li>
+        </bln-navigation>
+        ```
+
+
+        Empfehlung: Nutzen Sie li-Elemente als direkte Kinder und stylen Sie Links/Buttons innen mit geeigneten Klassen
+        (Padding, Hover-Zustände).
+
+        ## Events
+
+        - toggle
+        - Wird ausgelöst, wenn der Nutzer über die Kopfzeile ein- oder ausklappt.
+        - Detail-Payload: {`collapsed: boolean`}
+        - Beispiel:
+        ```html
+        <bln-navigation id="nav" title="Sections"></bln-navigation>
+        <script type="module">{`}
+            document.getElementById('nav')?.addEventListener('toggle', (e) => {
+            console.log('Nav-Zustand:', e.detail.collapsed ? 'eingeklappt' : 'ausgeklappt');
+        });
+`}
+        </script>
+        ```
+
+
+        ## Barrierefreiheit (A11y)
+
+        - Semantik: Das Root-Element rendert ein nav mit aria-label="Seitennavigation".
+        - Header-Toggle:
+        - aria-controls verweist auf das Panel-Element.
+        - aria-expanded gibt den aktuellen Zustand an (true/false).
+        - Zugängliche Beschriftung via aria-label, z. B. "Navigation ausklappen" bzw. "Navigation einklappen".
+        - Panel:
+        - aria-hidden spiegelt den Sichtbarkeitszustand wider.
+        - Tastaturbedienung:
+        - Das Toggle ist per Tastatur fokussier- und aktivierbar.
+        - Die Inhalte im Slot sollten Links/Buttons mit standardkonformem Tastaturverhalten sein.
+        - Lesereihenfolge:
+        - Nutzen Sie die Default-Slot-Struktur mit ul/li für verständliche Screenreader-Ausgabe.
+
+        Best Practices:
+        - Titel (title) sollte kurz und aussagekräftig sein.
+        - Für lange Linktexte Trunkierung/Tooltip erwägen.
+        - Kontrastreiche Hover-/Focus-Styles für Links vergeben.
+
+        ## Styling und Layout
+
+        - Breite/Höhe:
+        - Standardbreite ist 16rem (w-64). Sie können diese über class überschreiben:
+        ```html
+        <bln-navigation class="w-80">...</bln-navigation>
+        ```
+
+        - Ränder/Trennlinien:
+        - Der Header hat eine untere Trennlinie. Weitere Umrandungen können Sie außen hinzufügen:
+        ```html
+        <bln-navigation class="w-64 border-r border-gray-200">...</bln-navigation>
+        ```
+
+        - Animation:
+        - Das Ein-/Ausklappen erfolgt über eine max-height/opacity-Transition. Sie können das über zusätzliche Klassen
+        in class ergänzen oder überschreiben.
+        - Icon-Größe:
+        - Das Icon ist kompakt. Wenn Sie größere Icons wünschen, fügen Sie eigene Klassen hinzu:
+        ```html
+        <bln-navigation icon="Menu" class="[&_lucide-icon]:w-6 [&_lucide-icon]:h-6">...</bln-navigation>
+        ```
+
+
+        ## Integrationstipps
+
+        - In Lit-Templates:
+        ```textmate
+        // TypeScript
+        import {html} from 'lit';
+
+        const view = () => html`
+        <bln-navigation title="Inhalte">
+            <li><a href="/docs" class="px-4 py-2">Dokumente</a></li>
+            <li><a href="/settings" class="px-4 py-2">Einstellungen</a></li>
+        </bln-navigation>
+        `;
+        ```
+
+
+        - Mit Router:
+        - Fügen Sie aktive Zustände anhand der aktuellen Route hinzu (z. B. aria-current="page" oder aktive Farben).
+
+        - SSR/Prerender:
+        - Das Attribut collapsed legt den Initialzustand fest. Setzen Sie es serverseitig, wenn die Navigation initial
+        eingeklappt sein soll.
+
+        ## Zustandssteuerung
+
+        - Gesteuert (controlled): Setzen Sie collapsed per Property/Attribut von außen, z. B. via Framework-State. Auf
+        das toggle-Event reagieren Sie, um den State zu synchronisieren.
+        - Ungesteuert (uncontrolled): Lassen Sie den User über das integrierte Toggle schalten; der interne Zustand wird
+        automatisch gepflegt und über das reflected-Attribut sichtbar.
+
+        Beispiel controlled:
+        ```html
+        <bln-navigation id="nav" title="Menü" collapsed></bln-navigation>
+        <script type="module">{`
+            const nav = document.getElementById('nav');
+            nav.addEventListener('toggle', (e) => {
+            // z. B. App-Store/State aktualisieren
+            // und ggf. nav.collapsed erneut setzen, um den Zustand zu kontrollieren
+            nav.collapsed = e.detail.collapsed;
+        });`}
+        </script>
+        ```
+
+
+        ## Muster für Einträge
+
+        - Link:
+        ```html
+        <li>
+            <a href="/reports" class="block px-4 py-2 hover:bg-gray-50 focus:bg-gray-100">Reports</a>
+        </li>
+        ```
+
+
+        - Button/Aktion:
+        ```html
+        <li>
+            <button class="w-full text-left block px-4 py-2 hover:bg-gray-50 focus:bg-gray-100">Neu erstellen</button>
+        </li>
+        ```
+
+
+        - Abschnittsüberschrift:
+        ```html
+        <li class="px-4 pt-3 pb-1 text-xs uppercase tracking-wide text-gray-500">Allgemein</li>
+        ```
+
+
+        - Geteilter Bereich:
+        ```html
+        <li>
+            <hr class="my-2 border-gray-200"></hr>
+        </li>
+        ```
+
+
+        ## Fehlerbehebung (Troubleshooting)
+
+        - Icon wird nicht angezeigt:
+        - Prüfen Sie, ob der Icon-Name korrekt ist. Lassen Sie icon leer, um das Icon auszublenden.
+
+        - Toggle reagiert nicht:
+        - Stellen Sie sicher, dass keine Pointer-Events blockiert werden und das Element nicht disabled ist.
+        - Prüfen Sie eventuelle Overlay-Elemente, die über der Kopfzeile liegen.
+
+        - Inhalt wird abgeschnitten:
+        - Die Animation nutzt max-height. Erhöhen Sie die zulässige Höhe via class:
+        ```html
+        <bln-navigation class="w-64 [&_#bln-nav-panel]:max-h-[90vh]">...</bln-navigation>
+        ```
+
+        - Alternativ overflow-y-auto im Panel-Kontext über anpassende Selektoren hinzufügen.
+
+        - Unerwartetes Zusammen-/Aufklappen beim externen Setzen von collapsed:
+        - Bei controlled-Nutzung State-Quelle (z. B. Store) mit dem toggle-Event synchron halten.
+
+        ## Zugriffs- und Testhinweise
+
+        - Selektoren:
+        - Tag: bln-navigation
+        - Header-Button kann über Rollen/Aria gefunden werden (z. B. getByRole('button', {`expanded: true/false`})).
+
+        - Event-Assertions:
+        - Auf das Custom-Event toggle hören und die detail.collapsed-Änderung prüfen.
+
+        ## Best Practices
+
+        - Inhalte als Liste strukturieren (ul > li) für bessere Semantik.
+        - Konsistente Abstände für Einträge (z. B. px-4 py-2).
+        - Aktiven Eintrag markieren (z. B. aria-current="page" und visuelle Hervorhebung).
+        - Titel (title) immer setzen, um die Navigation klar zu benennen.
+        - Bei schmalen Viewports die Startkonfiguration collapsed nutzen und bei Bedarf per Icon öffnen lassen.
+
+        ## API-Referenz (Kurzfassung)
+
+        - Element: bln-navigation
+        - Properties/Attribute:
+        - title: string
+        - icon?: string
+        - collapsed?: boolean (reflektiert)
+        - class?: string
+        - Slots:
+        - default: Liste der Navigationseinträge (z. B. li > a)
+        - Events:
+        - toggle: detail = {`collapsed: boolean`}
+        - A11y:
+        - nav[aria-label="Seitennavigation"], aria-controls/aria-expanded am Toggle, aria-hidden am Panel
+
+
+        [zum Inhaltsverzeichnis](#start)
+
+    </div>
+</div>
+<div className="sb-container">
+<div className='sb-section-title'>
+    <a name="blnTreeView"></a>
+    # BlnTreeView — Interaktiver, zugänglicher Tree für Web Components
+
+    BlnTreeView ist ein performanter, barrierearmer Tree-View als Web Component. Er unterstützt kontrollierte Auswahl und Expansion, asynchrones Nachladen von Kindknoten, Tastaturnavigation (Roving Tabindex), Single- und Multi-Select, verschieden große Darstellungen und ein Retro-Design.
+
+    - Tag-Name: bln-tree
+    - Zweck: Hierarchische Daten anzeigen, durchsuchen und selektieren
+    - Modus: Kontrollierte Komponente (items, selectedIds, expandedIds werden von außen verwaltet)
+    - A11y: role="tree"/"treeitem"/"group", aria-level, aria-expanded, aria-selected, roving tabindex
+    - Interaktion: Maus, Tastatur, Custom Events für Auswahl, Expand/Collapse und Lazy-Loading
+    - Styling: Utility-/Tailwind-Klassen via class, Größen small/medium/large, Retro-Design
+
+    ## Schnellstart
+
+    Ein einfacher statischer Tree mit Single-Select:
+
+    ```html
+    <!-- HTML -->
+    <bln-tree id="orgTree"></bln-tree>
+
+    <script type="module">{`
+        // JavaScript
+        const tree = document.getElementById('orgTree');
+        tree.items = [
+        { id: '1', label: 'Root', children: [
+        { id: '1.1', label: 'Child A' },
+        { id: '1.2', label: 'Child B' },
+            ]},
+        ];
+        tree.expandedIds = ['1'];
+        tree.selectedIds = ['1.1'];
+
+        tree.addEventListener('bln-tree:select', (e) => {
+        console.log('Auswahl geändert:', e.detail.selectedIds);
+    });`}
+    </script>
+    ```
+
+
+    Multi-Select aktivieren:
+
+    ```html
+    <bln-tree id="permTree" multiSelect></bln-tree>
+    <script type="module">{`
+        const t = document.getElementById('permTree');
+        t.items = [
+        { id: 'admin', label: 'Admin' },
+        { id: 'editor', label: 'Editor' },
+        { id: 'viewer', label: 'Viewer' },
+        ];
+        t.addEventListener('bln-tree:select', (e) => {
+        console.log('Gewählte Rollen:', e.detail.selectedIds);
+    });`}
+    </script>
+    ```
+
+
+    ## Datenmodell
+
+    - Knoten (BlnTreeNode)
+    - id: string – Eindeutige, stabile ID des Knotens (erforderlich)
+    - label: string – Sichtbarer Text
+    - children?: BlnTreeNode[] – Kindknoten (optional)
+    - hasChildren?: boolean – Knoten hat Kinder, die ggf. lazy geladen werden
+    - disabled?: boolean – Deaktiviert Interaktionen und fokussierbar
+
+    Beispiel:
+    ```textmate
+    /** JavaScript */
+{`const items = [
+    {
+        id: 'root',
+        label: 'Root',
+        hasChildren: true, // Kinder werden erst bei Bedarf geladen
+    }
+    ]; `}
+    ```
+
+
+    ## Eigenschaften (Properties/Attribute)
+
+    - items: BlnTreeNode[]
+    - Baumdaten. Änderungen sollten immutabel erfolgen (neues Array/Objekte).
+    - selectedIds: string[]
+    - Aktuell ausgewählte IDs. Bei Single-Select enthält das Array max. 1 ID.
+    - expandedIds: string[]
+    - IDs der ausgeklappten Knoten.
+    - multiSelect: boolean (Attribut: multiSelect)
+    - true = Mehrfachauswahl möglich. Standard: false.
+    - aria-label: string
+    - Beschriftung des Trees, wenn kein sichtbares Label vorhanden ist.
+    - aria-labelledby: string
+    - Verweist auf ein externes Label-Element.
+    - aria-describedby: string
+    - Verweist auf erklärenden Hilfetext außerhalb des Trees.
+    - class: string
+    - Zusätzliche Klassen. Werden sowohl am Tree-Container als auch an Items verwendet.
+    - size: 'small' | 'medium' | 'large'
+    - Kompakte vs. großzügige Darstellung. Standard: 'medium'.
+    - retro-design: boolean
+    - Alternative, kantige Optik mit Retro-Fokus-Styling.
+
+    Hinweise:
+    - Diese Komponente ist kontrolliert: selectedIds und expandedIds sollten Sie aus Ihrer App-Logik aktualisieren (z. B. in Event-Handlern).
+    - IDs sollten stabil bleiben, um Fokus- und Auswahlzustände konsistent zu halten.
+
+    ## Events
+
+    - bln-tree:select
+    - detail: {`{ id: string, selectedIds: string[] }`}
+    - Ausgelöst bei Auswahl eines Knotens (Enter, Space oder Klick).
+    - bln-tree:toggle
+    - detail: {`{ id: string, expanded: boolean }`}
+    - Ausgelöst beim Auf- oder Zuklappen eines Knotens.
+    - bln-tree:load-needed
+    - detail: {`{ id: string, resolve: (children: BlnTreeNode[]) => void }`}
+    - Wird beim ersten Expand eines Knotens mit hasChildren: true und leeren children ausgelöst.
+    - Rufen Sie detail.resolve(children) auf, um die geladenen Kindknoten zu übergeben.
+
+    Beispiel Lazy-Loading:
+    ```html
+    <bln-tree id="lazyTree"></bln-tree>
+    <script type="module">{`
+        const lazyTree = document.getElementById('lazyTree');
+        lazyTree.items = [{ id: 'root', label: 'Root', hasChildren: true }];
+
+        lazyTree.addEventListener('bln-tree:load-needed', async (e) => {
+        const { id, resolve } = e.detail;
+        // Laden Sie hier asynchron die Kinder
+        const children = await fetch("/api/tree/${encodeURIComponent(id)}").then(r => r.json());
+        // Übergabe an den Tree (setzt hasChildren entsprechend)
+        resolve(children);
+    });`}
+    </script>
+    ```
+
+
+    ## Tastatursteuerung (A11y)
+
+    - Fokus: Roving Tabindex (genau ein treeitem mit tabindex="0", alle anderen "-1")
+    - Enter oder Leertaste: Knoten auswählen
+    - Pfeil rechts: Knoten expandieren (falls möglich)
+    - Pfeil links: Knoten kollabieren (falls möglich)
+    - Pfeil hoch/runter: Fokus zum vorherigen/nächsten sichtbaren Knoten
+
+    A11y-Rollen und -Attribute pro Knoten:
+    - role="treeitem"
+    - aria-level="N" – Hierarchieebene (1-basiert)
+    - aria-selected="true|false"
+    - aria-expanded="true|false" – nur bei Knoten mit Kindern
+    - Wrapper: role="tree", optional aria-multiselectable="true|false"
+    - Kindcontainer: role="group"
+
+    ## Rendering- und Ladeverhalten
+
+    - Expand-Button:
+    - Zeigt +/−; bei Lazy-Loading kurz „…“ (Puls-Animation).
+    - disabled-Knoten:
+    - Nicht fokussierbar, keine Interaktionen.
+    - Children Rendering:
+    - Kinder werden nur gerendert, wenn der Knoten expandiert ist.
+
+    ## Beispiele
+
+    1) Gesteuerte Expansion/Selektion aus App-State:
+    ```html
+    <bln-tree id="controlled" size="small"></bln-tree>
+    <script type="module">{`
+        const el = document.getElementById('controlled');
+        el.items = [
+        { id: 'a', label: 'A', children: [{ id: 'a1', label: 'A1' }] },
+        { id: 'b', label: 'B' },
+        ];
+        el.expandedIds = ['a'];
+        el.selectedIds = ['a1'];
+
+        el.addEventListener('bln-tree:toggle', (e) => {
+        const set = new Set(el.expandedIds);
+        e.detail.expanded ? set.add(e.detail.id) : set.delete(e.detail.id);
+        el.expandedIds = [...set];
+    });
+
+        el.addEventListener('bln-tree:select', (e) => {
+        el.selectedIds = e.detail.selectedIds;
+    });`}
+    </script>
+    ```
+
+
+    2) Multi-Select inkl. deaktivierter Knoten:
+    ```html
+    <bln-tree id="multi" multiSelect size="large"></bln-tree>
+    <script type="module">{`
+        const multi = document.getElementById('multi');
+        multi.items = [
+        { id: 'p', label: 'Projekte', children: [
+        { id: 'p1', label: 'Projekt 1' },
+        { id: 'p2', label: 'Projekt 2', disabled: true },
+        { id: 'p3', label: 'Projekt 3' },
+            ]},
+        ];
+        multi.expandedIds = ['p'];
+        multi.selectedIds = ['p1'];
+    `}</script>
+    ```
+
+
+    3) Retro-Design mit Beschriftungen:
+    ```html
+    <label id="treeLabel">Organisation</label>
+    <small id="treeHint">Wählen Sie eine oder mehrere Abteilungen aus.</small>
+
+    <bln-tree
+        id="retro"
+        retro-design
+        aria-labelledby="treeLabel"
+        aria-describedby="treeHint"
+        class="border p-2"
+    ></bln-tree>
+
+    <script type="module">{`
+        const retro = document.getElementById('retro');
+        retro.items = [
+        { id: 'hr', label: 'HR', children: [{ id: 'hr-payroll', label: 'Payroll' }] },
+        { id: 'it', label: 'IT', hasChildren: true },
+        ]; `}
+    </script>
+    ```
+
+
+    ## Styling und Layout
+
+    - size:
+    - small: kompaktes Padding/Schrift
+    - medium: Standard
+    - large: großzügiges Padding/Schrift
+    - class:
+    - Zusätzliche Utility-Klassen für Wrapper und Items (z. B. Rahmen, Abstände).
+    - Retro-Design:
+    - Kantige Ecken, Retro-Fokus-Umrandung. Aktivieren per retro-design.
+
+    Beispiel für volle Breite und Rahmen:
+    ```html
+    <bln-tree class="w-full border rounded-md p-2"></bln-tree>
+    ```
+
+
+    ## Öffentliche Methoden
+
+    - applyChildren(id: string, children: BlnTreeNode[])
+    - Setzt die Kinder eines Knotens und aktualisiert hasChildren basierend auf children.length.
+    - Wird i. d. R. über detail.resolve innerhalb des bln-tree:load-needed Handlers indirekt genutzt; kann bei Bedarf auch direkt aufgerufen werden.
+
+    ```textmate
+    /** JavaScript */
+{` const tree = document.querySelector('bln-tree');
+    tree.applyChildren('root', [
+    { id: 'root-1', label: 'Loaded Child' },
+    ]); `}
+    ```
+
+
+    ## Best Practices
+
+    - IDs stabil halten: Vermeiden Sie, bei jedem Render neue IDs zu erzeugen.
+    - Kontrolliert bleiben: Passen Sie selectedIds und expandedIds in Event-Handlern an, um den Tree-Status zu steuern.
+    - Lazy-Loading: Nutzen Sie bln-tree:load-needed und rufen Sie detail.resolve(children) mit schlanken Kindlisten auf.
+    - Große Datenmengen: Nur expandierte Äste rendern lassen (Standardverhalten). Bei sehr großen Bäumen ggf. Paginierung oder serverseitige Filter ergänzen.
+    - A11y: aria-label/aria-labelledby setzen und sinnvolle Label verwenden.
+
+    ## Fehlerbehebung
+
+    - Expand-Button reagiert nicht:
+    - Prüfen, ob disabled: true gesetzt ist. Prüfen, ob hasChildren korrekt gesetzt wurde.
+    - Lazy-Loading wird nicht aufgerufen:
+    - hasChildren muss true sein und children leer/undefiniert, wenn der Event beim ersten Expand feuern soll.
+    - Auswahl „vergisst“ sich:
+    - Denken Sie daran, selectedIds/expandedIds in Ihren Handlern zu aktualisieren (kontrollierter Ansatz).
+    - Fokus springt „komisch“:
+    - IDs müssen stabil bleiben; sonst findet die Komponente das Ziel für roving tabindex nicht wieder.
+
+    ## API-Referenz (Kurz)
+
+    - Element: bln-tree
+    - Node: {`{ id: string; label: string; children?: Node[]; hasChildren?: boolean; disabled?: boolean }`}
+    - Props:
+    - items, selectedIds, expandedIds
+    - multiSelect (boolean)
+    - aria-label, aria-labelledby, aria-describedby
+    - class, size ('small' | 'medium' | 'large'), retro-design
+    - Events:
+    - bln-tree:select {`{ id, selectedIds }`}
+    - bln-tree:toggle {`{ id, expanded }`}
+    - bln-tree:load-needed {`{ id, resolve(children) }`}
+    - Methoden:
+    - applyChildren(id, children)
+
+
+    [zum Inhaltsverzeichnis](#start)
+</div></div>
+<div className="sb-container">
+    <div className='sb-section-title'>
+        <a name="formBuilder"></a>
+    # FormBuilder — Baukasten für Formulare, Validierung und UI-Komponenten
+
+    Der FormBuilder ist eine schlanke Hilfsklasse, mit der Sie Formularfragmente programmatisch zusammensetzen, synchron/asynchron validieren und häufige UI-Bausteine (Buttons, Tree, Checkbox, Select, Toast etc.) bequem hinzufügen können. Das Ergebnis sind Lit-Templates (TemplateResult[]), die Sie direkt in Ihre Webkomponente oder Seite rendern können.
+
+    - Paradigma: Builder-Pattern; alle add…()-Methoden sind kaskadierbar (fluent API)
+    - Ausgabe: Array aus TemplateResult via getFields()
+    - Validierung: synchron und asynchron, erweiterbar via eigene Validatoren
+    - Bequeme Helfer: addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
+
+    ## Schnellstart
+
+    ```textmate
+    // TypeScript
+    {` import {FormBuilder} from './FormBuilder';
+
+    const fb = new FormBuilder();
+
+    // Felder + einfache Validierung
+    fb.addField('email', 'E-Mail', '')
+    .addField('password', 'Passwort', '')
+    .addField('number', 'Alter', '18')
+    .addButton('Speichern', () => {
+    console.log('Speichern geklickt');
+});
+
+    // Später im Render-Kontext (z. B. in Ihrer Lit-Komponente):
+    const fields = fb.getFields(); // TemplateResult[]
+    // In Ihrem Template:
+    {/* ${fields} */}
+    `}
+    ```
+
+
+    Beispiel-Integration in eine Lit-Komponente:
+
+    ```textmate
+    // TypeScript
+    {`
+    import {LitElement, html} from 'lit';
+    import {customElement} from 'lit/decorators.js';
+    import {FormBuilder} from './FormBuilder';
+
+    @customElement('demo-form')
+    export class DemoForm extends LitElement {
+    private fb = new FormBuilder()
+    .addField('email', 'E-Mail')
+    .addField('password', 'Passwort')
+    .addField('number', 'Alter', '21')
+    .addButton('Absenden', () => this.submit());
+
+    private submit() {
+    console.log('Formular abgesendet');
+}
+
+    protected render() {
+    return html"<form class="space-y-3">${this.fb.getFields()}</form>";
+}
+}
+    `}
+    ```
+
+
+    ## Validierung
+
+    ### Standard-Validatoren (out of the box)
+    - email: prüft, ob ein „@“ enthalten ist; sonst Meldung „Falsches Email Format“
+    - password: mindestens 5 Zeichen; sonst Meldung „Passwort zu kurz (mindestens 5 Zeichen)“
+    - number: Muss Zahl sein und zwischen 10 und 99 (inkl.) liegen; andernfalls passende Fehlermeldung
+
+    Diese Validatoren werden von addField bei den entsprechenden Typen automatisch angewendet und als Text unter dem Feld gerendert (email, number). Für password wird im Ausgangscode kein Inline-Fehler gerendert; Sie können aber eigene Logik ergänzen.
+
+    ### Eigene (Sync) Validatoren registrieren
+    ```textmate
+    // TypeScript
+    {` type SyncValidator = (value: string) => string; // '' bedeutet „kein Fehler“
+
+    const fb = new FormBuilder()
+    .setCustomValidateFunction('iban', (value) => {
+    return /^DE\d{20}$/.test(value) ? '' : 'Ungültige IBAN';
+});
+
+    const msg = fb.validate('iban', 'DE123'); // -> 'Ungültige IBAN'
+`}
+    ```
+
+
+    - validate(type, value): Führt synchronen Validator aus. Rückgabe ist die Fehlernachricht oder ''.
+
+    ### Eigene (Async) Validatoren registrieren
+    ```textmate
+    // TypeScript
+    {`
+    type AsyncValidator = (value: string) => Promise<string>; // '' = OK
+
+    const fb = new FormBuilder()
+    .setCustomValidateFunctionAsync('username', async (value) => {
+        const res = await fetch("/api/exists?u=${encodeURIComponent(value)}").then(r => r.json());
+        return res.exists ? 'Benutzername bereits vergeben' : '';
+    });
+
+    // Verwendung
+    const err = await fb.validateAsync('username', 'alice');
+    // -> '' oder 'Benutzername bereits vergeben'
+    `}
+    ```
+
+
+    - validateAsync(type, value): Führt den asynchronen Validator aus. Fehlt ein Async-Validator, wird automatisch validate(type, value) (sync) verwendet. Falls der Async-Validator eine Exception wirft, wird „Validierung fehlgeschlagen“ zurückgegeben (oder der String der Exception, wenn es ein String ist).
+
+    ## Felder hinzufügen
+
+    ### addField(type, label, value?)
+    Erzeugt ein Basisfeld mit Label und optionalem Startwert.
+    - type: 'email' | 'password' | 'number' | 'text' (Default-Fall)
+    - label: sichtbarer Feldtitel
+    - value: Startwert (string, optional)
+
+    Beispiele:
+    ```textmate
+    // TypeScript
+    new FormBuilder()
+    .addField('email', 'E-Mail', '')
+    .addField('password', 'Passwort')
+    .addField('number', 'Mitarbeiteranzahl', '12')
+    .addField('text', 'Notiz', '…');
+    ```
+
+
+    Hinweise:
+    - Für 'email' und 'number' wird die Fehlermeldung direkt unter dem Feld angezeigt (basierend auf validate()).
+    - Für 'password' ist eine Standardprüfung (>= 5 Zeichen) hinterlegt, die im Standardmarkup nicht automatisch als Text ausgegeben wird. Sie können dieses Verhalten erweitern, indem Sie z. B. addField um eine eigene Darstellung ergänzen oder eine eigene Feldmethode schreiben.
+
+    ### addButton(text, onClick?)
+    Fügt einen Button hinzu. onClick ist optional.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder()
+    .addButton('Zurück', () => history.back())
+    .addButton('Speichern', () => this.save());
+    `}
+    ```
+
+
+    ## Komfort-Builder für UI-Komponenten
+
+    Die folgenden Methoden fügen gebrauchsfertige Web-Komponenten ein. Sie reichen Props durch und können so kontrollierte Zustände und A11y-Attribute setzen. Alle Methoden pushen ein Template in die interne Liste und geben this zurück (kaskadierbar).
+
+    ### addBlnTree(props?)
+    Fügt einen hierarchischen Tree ein.
+    - Unterstützt u. a. items, selectedIds, expandedIds, multiSelect, aria-Attribute, class.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnTree({
+        items: [{ id: 'root', label: 'Root', children: [{ id: 'a', label: 'A' }] }],
+        expandedIds: ['root'],
+        selectedIds: [],
+        multiSelect: false,
+        ariaLabel: 'Organisationsstruktur'
+    });
+    `}
+    ```
+
+
+    Typische Anwendungsfälle:
+    - Auswahl von Knoten
+    - Lazy Loading (über Tree-Events, die Sie in Ihrer Komponente behandeln)
+
+    ### addBlnCheckbox(props?)
+    Fügt eine Checkbox mit Label, Hint, Corner-Hint etc. ein.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnCheckbox({
+        label: 'AGB akzeptieren',
+        name: 'terms',
+        checked: false,
+        required: true,
+        hint: 'Bitte bestätigen, um fortzufahren'
+    });
+    `}
+    ```
+
+
+    ### addModernTree(model, opts?)
+    Fügt eine modern-tree-Komponente ein.
+    - model: Datenmodell
+    - opts.level?: Start-Ebene (Default 0)
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addModernTree(myModel, { level: 1 });
+    `}
+    ```
+
+
+    ### addBlnToast(props?)
+    Fügt eine Toast-Benachrichtigung ein (Info/Erfolg/Warnung/Fehler, Auto-Hide etc.).
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnToast({
+        open: true,
+        variant: 'success',
+        title: 'Gespeichert',
+        message: 'Ihre Einstellungen wurden übernommen',
+        autoHide: true,
+        autoHideDelay: 3000
+    });
+    `}
+    ```
+
+
+    ### addBlnSelect(props?)
+    Fügt ein Select-Feld ein (Single/Multi, Label, Hint, Optionen usw.).
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnSelect({
+        label: 'Land',
+        name: 'country',
+        placeholder: 'Bitte wählen',
+        options: [
+    { value: 'de', label: 'Deutschland' },
+    { value: 'at', label: 'Österreich' },
+        ],
+        required: true
+    });
+    `}
+    ```
+
+
+    ### addBlnButton(label, props?, onClick?)
+    Fügt einen stilisierten Button ein.
+
+    ```textmate
+    // TypeScript
+    {`
+    new FormBuilder().addBlnButton('Weiter', { variant: 'solid', size: 'medium' }, () => {
+        console.log('Weiter geklickt');
+    });
+    `}
+    ```
+
+
+    ## Ausgabe rendern
+
+    - getFields(): TemplateResult[] — gibt alle bisher hinzugefügten Templates zurück.
+    - Rendering: Binden Sie dieses Array an der gewünschten Stelle im Template ein.
+
+    ```textmate
+    // TypeScript
+    const fb = new FormBuilder().addField('email', 'E-Mail').addButton('OK');
+    const view = html`<section class="grid gap-4">${fb.getFields()}</section>`;
+    ```
+
+
+    ## Beispiele (End-to-End)
+
+    ### 1) Formular mit Sync- und Async-Validierung
+    ```textmate
+    // TypeScript
+{`
+    const fb = new FormBuilder()
+    .setCustomValidateFunction('postal', (v) => (/^\d{5}$/.test(v) ? '' : 'PLZ muss 5 Ziffern haben'))
+    .setCustomValidateFunctionAsync('username', async (v) => {
+        if (!v) return 'Benutzername erforderlich';
+        const ok = await fetch("/api/user/check?u=${encodeURIComponent(v)}").then(r => r.json());
+        return ok.free ? '' : 'Benutzername vergeben';
+    })
+    .addField('text', 'Benutzername') // Anzeige der Fehlermeldung müssten Sie bei Bedarf selbst ergänzen
+    .addField('email', 'E-Mail')
+    .addField('number', 'Mitarbeiterzahl', '10')
+    .addButton('Prüfen', async () => {
+        const e1 = fb.validate('postal', '10115'); // ''
+        const e2 = await fb.validateAsync('username', 'alice'); // '' oder Fehlermeldung
+        console.log({ e1, e2 });
+    });
+    `}
+    ```
+
+
+    ### 2) Formular mit Tree, Checkbox, Select und Actions
+    ```textmate
+    // TypeScript
+{`
+    const fb = new FormBuilder()
+    .addBlnTree({
+        items: [{ id: 'root', label: 'Root', children: [{ id: 'a', label: 'A' }] }],
+        expandedIds: ['root'],
+        ariaLabel: 'Bereiche'
+    })
+    .addBlnCheckbox({ label: 'Newsletter abonnieren', name: 'news' })
+    .addBlnSelect({
+        label: 'Sprache',
+        options: [{ value: 'de', label: 'Deutsch' }, { value: 'en', label: 'Englisch' }],
+        required: true
+    })
+    .addBlnButton('Speichern', { variant: 'solid' }, () => console.log('Speichern'))
+    .addBlnToast({ open: false, message: 'Gespeichert' });
+    `}
+    ```
+
+
+    ## Best Practices
+
+    - Builder kaskadieren: Nutzen Sie die fluente API, um lesbare Konfigurationen zu erhalten.
+    - Validierungslogik zentralisieren: Registrieren Sie eigene Validatoren (sync/async) einmal und verwenden Sie sie überall.
+    - Fehlertexte: Leere Strings '' bedeuten gültig; alles andere wird als Fehlermeldung interpretiert.
+    - Asynchrone Validierung robust machen: Fehler/Exceptions fangen; die API gibt im Fehlerfall „Validierung fehlgeschlagen“ zurück.
+    - Unveränderlichkeit: Wenn Sie Items/Props an UI-Komponenten übergeben, bevorzugen Sie neue Arrays/Objekte, um reaktive Updates zuverlässig auszulösen.
+    - i18n: Verwenden Sie Ihre eigene Übersetzungs-/Formatierungsschicht für Fehlermeldungen und Labels.
+
+    ## API-Referenz
+
+    Methoden:
+    - setCustomValidateFunction(type: string, func: (value: string) => string): this
+    - Registriert/überschreibt einen synchronen Validator.
+    - setCustomValidateFunctionAsync(type: string, func: (value: string) => Promise<string></string>): this
+        - Registriert/überschreibt einen asynchronen Validator.
+        - validate(type: string, value: string): string
+        - Führt Sync-Validierung aus; '' bedeutet „gültig“.
+        - validateAsync(type: string, value: string): Promise<string></string>
+            - Führt Async-Validierung aus; fällt zurück auf validate(), wenn kein Async-Validator vorhanden ist.
+            - addField(type: 'email'|'password'|'number'|'text', label: string, value?: string): this
+            - Fügt ein Eingabefeld ein; simple Inline-Fehleranzeige für 'email' und 'number'.
+            - addButton(text: string, onClick?: () => void): this
+            - Fügt einen Button ein.
+            - addBlnTree(props?: Partial {'<...>'}): this
+            - Fügt einen Tree ein; unterstützt Items, Auswahl, Expansion, Multi-Select, aria-*.
+            - addBlnCheckbox(props?: Partial{'<...>'}): this
+            - Fügt eine Checkbox ein.
+            - addModernTree(model: IDataModel, opts?: {`{ level?: number }): this `}
+            - Fügt modern-tree mit Datenmodell ein.
+            - addBlnToast(props?: Partial{'<...>'}): this
+            - Fügt eine Toast-Notification ein.
+            - addBlnSelect(props?: Partial{'<...>'}): this
+            - Fügt ein Select-Feld ein.
+            - addBlnButton(label: string, props?: Partial{'<...>'}, onClick?: (e: MouseEvent) => void): this
+            - Fügt einen stilisierten Button ein.
+            - getFields(): TemplateResult[]
+            - Liefert das Array der aufgebauten UI-Templates
+    </div></div>
+
