@@ -211,7 +211,6 @@ export default class FormBuilder {
     const tpl = html`<bln-button
       .variant=${(props.variant as any) ?? 'solid'}
       .size=${props.size ?? 'medium'}
-      .withArrow=${props.withArrow ?? false}
       .withStripes=${props.withStripes ?? false}
       .disabled=${props.disabled ?? false}
       .class=${props.class ?? ''}

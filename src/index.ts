@@ -3,8 +3,8 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 
-import './BlnSelect';
-import type { BlnSelectProps } from '../src/components/BlnSelect';
+import './components/BlnSelect';
+import type { BlnSelectProps } from './components/BlnSelect';
 
 
 const modules = import.meta.glob([
