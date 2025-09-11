@@ -20,7 +20,7 @@ export interface BlnInputProps {
     type: string;
     size: 'small' | 'medium' | 'large';
     cornerHint: string;
-    isValid: boolean;
+    isValid: boolean |undefined;
     retroDesign: boolean;
     minlength: number;
     maxlength: number;
@@ -64,7 +64,7 @@ export class BlnInput extends TailwindElement {
     // Sizing/Styles
     @property() size: BlnInputProps['size'] = "medium";
     @property() class: BlnInputProps['class'] = "";
-    @property({attribute: 'is-valid', reflect: true, converter: booleanStringFalseConverter}) isValid: BlnInputProps['isValid'] = false;
+    @property({attribute: 'is-valid', reflect: true, converter: booleanStringFalseConverter}) isValid: BlnInputProps['isValid'] = undefined;
 
     // A11y
     @property({attribute: 'aria-label'}) ariaLabel: BlnInputProps['ariaLabel'] = "";

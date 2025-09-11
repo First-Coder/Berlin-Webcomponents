@@ -22,7 +22,7 @@ export interface BlnSelectProps {
     multiple: boolean;
     size: "small" | "medium" | "large";
     class: string;
-    isValid: boolean;
+    isValid: boolean |undefined;
     retroDesign: boolean;
     options: BlnSelectOption[];
     ariaLabel: string;
@@ -48,7 +48,7 @@ export class BlnSelect extends TailwindElement {
     // Sizing/Styles
     @property() size: BlnSelectProps["size"] = "medium";
     @property() class: BlnSelectProps["class"] = "";
-    @property({attribute: "is-valid", reflect: true, converter: booleanStringFalseConverter}) isValid: BlnSelectProps["isValid"] = false;
+    @property({attribute: "is-valid", reflect: true, converter: booleanStringFalseConverter}) isValid: BlnSelectProps["isValid"] = undefined;
 
     // A11y
     @property({attribute: "aria-label"}) ariaLabel: BlnSelectProps["ariaLabel"] = "";
