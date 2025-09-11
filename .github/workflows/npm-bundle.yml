@@ -16,6 +16,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Remove files containing '.test.'
+        run: |
+          echo "Folgende Dateien werden gelöscht:"
+          find . -type f -name "*\.test\.*" -print
+          find . -type f -name "*\.test\.*" -delete
+
       # Beispiel: Abhängigkeiten installieren und Build erstellen
       - name: Set up Node.js
         uses: actions/setup-node@v4
