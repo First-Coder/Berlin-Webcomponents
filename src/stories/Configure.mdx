@@ -33,7 +33,9 @@ export const RightArrow = () => <svg
     <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z"/>
 </svg>
 
+
 <Meta title="Configure your project"/>
+<div><a name="start"></a></div>
 
 # Inhaltsverzeichnis
 - [Einführung](#einfuehrung)
@@ -44,10 +46,12 @@ export const RightArrow = () => <svg
 - [BlnSelect](#blnSelect)
 - [BlnToast](#blnToast)
 - [BlnNavigation](#blnNavigation)
+- [BlnTreeView](#blnTreeView)
 
 
 
 ## Kurzer Überblick
+
 <div className="sb-container">
     <div className='sb-section-title'>
         <a name="einfuehrung"></a>
@@ -55,7 +59,44 @@ export const RightArrow = () => <svg
         Diese Dokumentation beschreibt die Installation der BerlinWebKomponenten und gibt
         zu jeder Komponente eine ausführliche Dokumentation.
 
-    </div>
+        ## Web Komponenten:
+        Web Components ist eine Suite verschiedener Technologien, die es Ihnen ermöglichen, wiederverwendbare benutzerdefinierte Elemente zu erstellen — mit Funktionalität, die vom Rest Ihres Codes gekapselt ist — und diese in Ihren Webanwendungen zu verwenden.
+
+
+        Als Entwickler wissen wir alle, dass es eine gute Idee ist, Code so oft wie möglich wiederzuverwenden. Traditionell war dies bei benutzerdefinierten Markup-Strukturen nicht so einfach — denken Sie an das komplexe HTML (sowie die zugehörigen Stile und Skripte), das Sie manchmal schreiben mussten, um benutzerdefinierte UI-Elemente zu rendieren, und wie die mehrfache Verwendung dieser Elemente Ihre Seite in ein Chaos verwandeln kann, wenn Sie nicht vorsichtig sind.
+
+        Web Components zielt darauf ab, solche Probleme zu lösen — es besteht aus drei Haupttechnologien, die zusammen verwendet werden können, um vielseitige benutzerdefinierte Elemente mit gekapselter Funktionalität zu erstellen, die problemlos überall wiederverwendet werden können, ohne Angst vor Codekollisionen zu haben.
+
+        Benutzerdefinierte Elemente
+        Eine Reihe von JavaScript-APIs, die es Ihnen ermöglichen, benutzerdefinierte Elemente und deren Verhalten zu definieren, die dann wie gewünscht in Ihrer Benutzeroberfläche verwendet werden können.
+
+        Shadow DOM
+        Eine Reihe von JavaScript-APIs zum Anhängen eines gekapselten "Shadow"-DOM-Baums an ein Element — das getrennt vom Hauptdokument-DOM gerendert wird — und zur Steuerung der zugehörigen Funktionalität. Auf diese Weise können Sie die Funktionen eines Elements privat halten, sodass sie geskriptet und gestylt werden können, ohne die Angst vor Kollisionen mit anderen Teilen des Dokuments.
+
+        HTML-Vorlagen
+        Die {`<template>`}- und {`<slot>`}-Elemente ermöglichen es Ihnen, Markup-Vorlagen zu schreiben, die nicht auf der gerenderten Seite angezeigt werden. Diese können dann mehrfach als Grundlage für die Struktur eines benutzerdefinierten Elements wiederverwendet werden.
+
+        Der grundlegende Ansatz zur Implementierung eines Web-Components sieht im Allgemeinen etwa so aus:
+
+        Erstellen Sie eine Klasse, in der Sie die Funktionalität Ihres Web-Components mit der class-Syntax angeben.
+        Registrieren Sie Ihr neues benutzerdefiniertes Element mithilfe der Methode CustomElementRegistry.define(), indem Sie den zu definierenden Elementnamen, die Klasse oder Funktion, in der die Funktionalität angegeben ist, und optional das zu ererbende Element übergeben.
+        Falls erforderlich, hängen Sie ein Shadow DOM an das benutzerdefinierte Element mithilfe der Methode Element.attachShadow(). Fügen Sie dem Shadow DOM mit regulären DOM-Methoden untergeordnete Elemente, Event-Listener usw. hinzu.
+        Falls erforderlich, definieren Sie eine HTML-Vorlage mit {`<template>`}- und {`<slot>`}. Verwenden Sie erneut reguläre DOM-Methoden, um die Vorlage zu klonen und an Ihr Shadow DOM anzuhängen.
+        Verwenden Sie Ihr benutzerdefiniertes Element überall auf Ihrer Seite, genau wie Sie es mit einem regulären HTML-Element tun würden.
+
+
+        ## Lit-Bibliothek:
+        Lit ist eine einfache JavaScript-Bibliothek von Google, die die Erstellung von schnellen, leichtgewichtigen und wiederverwendbaren Webkomponenten vereinfacht. Es bietet eine Basisklasse (LitElement), die Funktionen für reaktive Eigenschaften, deklarative Vorlagen (lit-html) und kapselte Stile bereitstellt. Lit-Komponenten funktionieren in jedem Framework oder ganz ohne Framework und ermöglichen die Erstellung von wiederverwendbaren Bausteinen für Apps und Designsysteme.
+        <a href="https://lit.dev/" target="_blank">Lit-Webkomponenten</a>
+
+
+        ## Wichtiger Hinweis:
+        In den Codebeispielen dieser Dokumentation werden mitunter folgende Zeichen verwendet ( geschweifte Klammer auf und Backtick   und  Backtick mit geschweifte Klammer zu), da es Probleme beim markdown gab.
+        Diese Zeichen sind ggf. zu entfernen.
+
+
+        [zum Inhaltsverzeichnis](#start)
+</div>
 </div>
 <div className="sb-container">
     <div className='sb-section-title'>
@@ -74,6 +115,9 @@ export const RightArrow = () => <svg
         #### Schritt 4: In Ihrem eigenen Projekt wo Sie die Komponenten verwenden möchten zur Index.html navigieren das
         folgende Script Tag einfügen
         <pre><code> type="module" src="~/js/components/bundle.js"</code></pre>
+
+
+        [zum Inhaltsverzeichnis](#start)
     </div>
 </div>
 <div className="sb-container">
@@ -407,8 +451,8 @@ export const RightArrow = () => <svg
         - Slots:
         - keine (Inhalt ist das native <input></input>)/)
 
-        Wenn Sie Beispiele für Ihr Framework (React, Vue, Svelte, Angular) oder Formular-Validierungsrezepte brauchen,
-        sagen Sie mir bitte Ihr Setup. Ich, AI Assistant, stelle passende Snippets bereit.
+
+        [zum Inhaltsverzeichnis](#start)
     </div>
 </div>
 <div className="sb-container">
@@ -674,8 +718,8 @@ export const RightArrow = () => <svg
         - Events:
         - input, change
 
-        Benötigen Sie ein Beispiel für Framework-Integration (React/Vue/Svelte/Angular) oder Formularvalidierung mit
-        mehreren Abhängigkeiten? Ich, AI Assistant, helfe gern mit passenden Snippets.
+
+        [zum Inhaltsverzeichnis](#start)
     </div>
 </div>
 <div className="sb-container">
@@ -924,8 +968,8 @@ export const RightArrow = () => <svg
         - Events:
         - click
 
-        Benötigen Sie Framework-spezifische Beispiele (React/Vue/Svelte/Angular) oder Guidelines für Zustandswechsel
-        (Loading, Erfolgs-/Fehlerfeedback)? Ich, AI Assistant, helfe gern mit passenden Snippets.
+
+        [zum Inhaltsverzeichnis](#start)
     </div>
 </div>
 <div className="sb-container">
@@ -1256,6 +1300,9 @@ export const RightArrow = () => <svg
         - default: eigene <option></option>-Kinder als Alternative zu .options
         - Events:
         - input, change
+
+
+        [zum Inhaltsverzeichnis](#start)
     </div>
 
 </div>
@@ -1577,8 +1624,8 @@ export const RightArrow = () => <svg
         - A11y:
         - role="status", aria-live, aria-atomic
 
-        Brauchen Sie Beispiele für Ihr Framework (React, Vue, Svelte, Angular) oder eine Toaster-Manager-Implementierung
-        (z. B. Queue/Stack)? Ich, AI Assistant, stelle gerne passende Snippets bereit.
+
+        [zum Inhaltsverzeichnis](#start)
     </div>
 </div>
 <div className="sb-container">
@@ -1890,8 +1937,310 @@ export const RightArrow = () => <svg
         - A11y:
         - nav[aria-label="Seitennavigation"], aria-controls/aria-expanded am Toggle, aria-hidden am Panel
 
-        Wenn Sie weitere Beispiele oder eine Integration mit Ihrem Framework (z. B. React/Vue/Svelte) wünschen, sagen
-        Sie mir, welches Setup Sie nutzen. Ich, AI Assistant, helfe gerne mit passenden Snippets.
+
+        [zum Inhaltsverzeichnis](#start)
 
     </div>
 </div>
+<div className="sb-container">
+<div className='sb-section-title'>
+    <a name="blnTreeView"></a>
+    # BlnTreeView — Interaktiver, zugänglicher Tree für Web Components
+
+    BlnTreeView ist ein performanter, barrierearmer Tree-View als Web Component. Er unterstützt kontrollierte Auswahl und Expansion, asynchrones Nachladen von Kindknoten, Tastaturnavigation (Roving Tabindex), Single- und Multi-Select, verschieden große Darstellungen und ein Retro-Design.
+
+    - Tag-Name: bln-tree
+    - Zweck: Hierarchische Daten anzeigen, durchsuchen und selektieren
+    - Modus: Kontrollierte Komponente (items, selectedIds, expandedIds werden von außen verwaltet)
+    - A11y: role="tree"/"treeitem"/"group", aria-level, aria-expanded, aria-selected, roving tabindex
+    - Interaktion: Maus, Tastatur, Custom Events für Auswahl, Expand/Collapse und Lazy-Loading
+    - Styling: Utility-/Tailwind-Klassen via class, Größen small/medium/large, Retro-Design
+
+    ## Schnellstart
+
+    Ein einfacher statischer Tree mit Single-Select:
+
+    ```html
+    <!-- HTML -->
+    <bln-tree id="orgTree"></bln-tree>
+
+    <script type="module">{`
+        // JavaScript
+        const tree = document.getElementById('orgTree');
+        tree.items = [
+        { id: '1', label: 'Root', children: [
+        { id: '1.1', label: 'Child A' },
+        { id: '1.2', label: 'Child B' },
+            ]},
+        ];
+        tree.expandedIds = ['1'];
+        tree.selectedIds = ['1.1'];
+
+        tree.addEventListener('bln-tree:select', (e) => {
+        console.log('Auswahl geändert:', e.detail.selectedIds);
+    });`}
+    </script>
+    ```
+
+
+    Multi-Select aktivieren:
+
+    ```html
+    <bln-tree id="permTree" multiSelect></bln-tree>
+    <script type="module">{`
+        const t = document.getElementById('permTree');
+        t.items = [
+        { id: 'admin', label: 'Admin' },
+        { id: 'editor', label: 'Editor' },
+        { id: 'viewer', label: 'Viewer' },
+        ];
+        t.addEventListener('bln-tree:select', (e) => {
+        console.log('Gewählte Rollen:', e.detail.selectedIds);
+    });`}
+    </script>
+    ```
+
+
+    ## Datenmodell
+
+    - Knoten (BlnTreeNode)
+    - id: string – Eindeutige, stabile ID des Knotens (erforderlich)
+    - label: string – Sichtbarer Text
+    - children?: BlnTreeNode[] – Kindknoten (optional)
+    - hasChildren?: boolean – Knoten hat Kinder, die ggf. lazy geladen werden
+    - disabled?: boolean – Deaktiviert Interaktionen und fokussierbar
+
+    Beispiel:
+    ```textmate
+    /** JavaScript */
+{`const items = [
+    {
+        id: 'root',
+        label: 'Root',
+        hasChildren: true, // Kinder werden erst bei Bedarf geladen
+    }
+    ]; `}
+    ```
+
+
+    ## Eigenschaften (Properties/Attribute)
+
+    - items: BlnTreeNode[]
+    - Baumdaten. Änderungen sollten immutabel erfolgen (neues Array/Objekte).
+    - selectedIds: string[]
+    - Aktuell ausgewählte IDs. Bei Single-Select enthält das Array max. 1 ID.
+    - expandedIds: string[]
+    - IDs der ausgeklappten Knoten.
+    - multiSelect: boolean (Attribut: multiSelect)
+    - true = Mehrfachauswahl möglich. Standard: false.
+    - aria-label: string
+    - Beschriftung des Trees, wenn kein sichtbares Label vorhanden ist.
+    - aria-labelledby: string
+    - Verweist auf ein externes Label-Element.
+    - aria-describedby: string
+    - Verweist auf erklärenden Hilfetext außerhalb des Trees.
+    - class: string
+    - Zusätzliche Klassen. Werden sowohl am Tree-Container als auch an Items verwendet.
+    - size: 'small' | 'medium' | 'large'
+    - Kompakte vs. großzügige Darstellung. Standard: 'medium'.
+    - retro-design: boolean
+    - Alternative, kantige Optik mit Retro-Fokus-Styling.
+
+    Hinweise:
+    - Diese Komponente ist kontrolliert: selectedIds und expandedIds sollten Sie aus Ihrer App-Logik aktualisieren (z. B. in Event-Handlern).
+    - IDs sollten stabil bleiben, um Fokus- und Auswahlzustände konsistent zu halten.
+
+    ## Events
+
+    - bln-tree:select
+    - detail: {`{ id: string, selectedIds: string[] }`}
+    - Ausgelöst bei Auswahl eines Knotens (Enter, Space oder Klick).
+    - bln-tree:toggle
+    - detail: {`{ id: string, expanded: boolean }`}
+    - Ausgelöst beim Auf- oder Zuklappen eines Knotens.
+    - bln-tree:load-needed
+    - detail: {`{ id: string, resolve: (children: BlnTreeNode[]) => void }`}
+    - Wird beim ersten Expand eines Knotens mit hasChildren: true und leeren children ausgelöst.
+    - Rufen Sie detail.resolve(children) auf, um die geladenen Kindknoten zu übergeben.
+
+    Beispiel Lazy-Loading:
+    ```html
+    <bln-tree id="lazyTree"></bln-tree>
+    <script type="module">{`
+        const lazyTree = document.getElementById('lazyTree');
+        lazyTree.items = [{ id: 'root', label: 'Root', hasChildren: true }];
+
+        lazyTree.addEventListener('bln-tree:load-needed', async (e) => {
+        const { id, resolve } = e.detail;
+        // Laden Sie hier asynchron die Kinder
+        const children = await fetch("/api/tree/${encodeURIComponent(id)}").then(r => r.json());
+        // Übergabe an den Tree (setzt hasChildren entsprechend)
+        resolve(children);
+    });`}
+    </script>
+    ```
+
+
+    ## Tastatursteuerung (A11y)
+
+    - Fokus: Roving Tabindex (genau ein treeitem mit tabindex="0", alle anderen "-1")
+    - Enter oder Leertaste: Knoten auswählen
+    - Pfeil rechts: Knoten expandieren (falls möglich)
+    - Pfeil links: Knoten kollabieren (falls möglich)
+    - Pfeil hoch/runter: Fokus zum vorherigen/nächsten sichtbaren Knoten
+
+    A11y-Rollen und -Attribute pro Knoten:
+    - role="treeitem"
+    - aria-level="N" – Hierarchieebene (1-basiert)
+    - aria-selected="true|false"
+    - aria-expanded="true|false" – nur bei Knoten mit Kindern
+    - Wrapper: role="tree", optional aria-multiselectable="true|false"
+    - Kindcontainer: role="group"
+
+    ## Rendering- und Ladeverhalten
+
+    - Expand-Button:
+    - Zeigt +/−; bei Lazy-Loading kurz „…“ (Puls-Animation).
+    - disabled-Knoten:
+    - Nicht fokussierbar, keine Interaktionen.
+    - Children Rendering:
+    - Kinder werden nur gerendert, wenn der Knoten expandiert ist.
+
+    ## Beispiele
+
+    1) Gesteuerte Expansion/Selektion aus App-State:
+    ```html
+    <bln-tree id="controlled" size="small"></bln-tree>
+    <script type="module">{`
+        const el = document.getElementById('controlled');
+        el.items = [
+        { id: 'a', label: 'A', children: [{ id: 'a1', label: 'A1' }] },
+        { id: 'b', label: 'B' },
+        ];
+        el.expandedIds = ['a'];
+        el.selectedIds = ['a1'];
+
+        el.addEventListener('bln-tree:toggle', (e) => {
+        const set = new Set(el.expandedIds);
+        e.detail.expanded ? set.add(e.detail.id) : set.delete(e.detail.id);
+        el.expandedIds = [...set];
+    });
+
+        el.addEventListener('bln-tree:select', (e) => {
+        el.selectedIds = e.detail.selectedIds;
+    });`}
+    </script>
+    ```
+
+
+    2) Multi-Select inkl. deaktivierter Knoten:
+    ```html
+    <bln-tree id="multi" multiSelect size="large"></bln-tree>
+    <script type="module">{`
+        const multi = document.getElementById('multi');
+        multi.items = [
+        { id: 'p', label: 'Projekte', children: [
+        { id: 'p1', label: 'Projekt 1' },
+        { id: 'p2', label: 'Projekt 2', disabled: true },
+        { id: 'p3', label: 'Projekt 3' },
+            ]},
+        ];
+        multi.expandedIds = ['p'];
+        multi.selectedIds = ['p1'];
+    `}</script>
+    ```
+
+
+    3) Retro-Design mit Beschriftungen:
+    ```html
+    <label id="treeLabel">Organisation</label>
+    <small id="treeHint">Wählen Sie eine oder mehrere Abteilungen aus.</small>
+
+    <bln-tree
+        id="retro"
+        retro-design
+        aria-labelledby="treeLabel"
+        aria-describedby="treeHint"
+        class="border p-2"
+    ></bln-tree>
+
+    <script type="module">{`
+        const retro = document.getElementById('retro');
+        retro.items = [
+        { id: 'hr', label: 'HR', children: [{ id: 'hr-payroll', label: 'Payroll' }] },
+        { id: 'it', label: 'IT', hasChildren: true },
+        ]; `}
+    </script>
+    ```
+
+
+    ## Styling und Layout
+
+    - size:
+    - small: kompaktes Padding/Schrift
+    - medium: Standard
+    - large: großzügiges Padding/Schrift
+    - class:
+    - Zusätzliche Utility-Klassen für Wrapper und Items (z. B. Rahmen, Abstände).
+    - Retro-Design:
+    - Kantige Ecken, Retro-Fokus-Umrandung. Aktivieren per retro-design.
+
+    Beispiel für volle Breite und Rahmen:
+    ```html
+    <bln-tree class="w-full border rounded-md p-2"></bln-tree>
+    ```
+
+
+    ## Öffentliche Methoden
+
+    - applyChildren(id: string, children: BlnTreeNode[])
+    - Setzt die Kinder eines Knotens und aktualisiert hasChildren basierend auf children.length.
+    - Wird i. d. R. über detail.resolve innerhalb des bln-tree:load-needed Handlers indirekt genutzt; kann bei Bedarf auch direkt aufgerufen werden.
+
+    ```textmate
+    /** JavaScript */
+{` const tree = document.querySelector('bln-tree');
+    tree.applyChildren('root', [
+    { id: 'root-1', label: 'Loaded Child' },
+    ]); `}
+    ```
+
+
+    ## Best Practices
+
+    - IDs stabil halten: Vermeiden Sie, bei jedem Render neue IDs zu erzeugen.
+    - Kontrolliert bleiben: Passen Sie selectedIds und expandedIds in Event-Handlern an, um den Tree-Status zu steuern.
+    - Lazy-Loading: Nutzen Sie bln-tree:load-needed und rufen Sie detail.resolve(children) mit schlanken Kindlisten auf.
+    - Große Datenmengen: Nur expandierte Äste rendern lassen (Standardverhalten). Bei sehr großen Bäumen ggf. Paginierung oder serverseitige Filter ergänzen.
+    - A11y: aria-label/aria-labelledby setzen und sinnvolle Label verwenden.
+
+    ## Fehlerbehebung
+
+    - Expand-Button reagiert nicht:
+    - Prüfen, ob disabled: true gesetzt ist. Prüfen, ob hasChildren korrekt gesetzt wurde.
+    - Lazy-Loading wird nicht aufgerufen:
+    - hasChildren muss true sein und children leer/undefiniert, wenn der Event beim ersten Expand feuern soll.
+    - Auswahl „vergisst“ sich:
+    - Denken Sie daran, selectedIds/expandedIds in Ihren Handlern zu aktualisieren (kontrollierter Ansatz).
+    - Fokus springt „komisch“:
+    - IDs müssen stabil bleiben; sonst findet die Komponente das Ziel für roving tabindex nicht wieder.
+
+    ## API-Referenz (Kurz)
+
+    - Element: bln-tree
+    - Node: {`{ id: string; label: string; children?: Node[]; hasChildren?: boolean; disabled?: boolean }`}
+    - Props:
+    - items, selectedIds, expandedIds
+    - multiSelect (boolean)
+    - aria-label, aria-labelledby, aria-describedby
+    - class, size ('small' | 'medium' | 'large'), retro-design
+    - Events:
+    - bln-tree:select {`{ id, selectedIds }`}
+    - bln-tree:toggle {`{ id, expanded }`}
+    - bln-tree:load-needed {`{ id, resolve(children) }`}
+    - Methoden:
+    - applyChildren(id, children)
+
+
+    [zum Inhaltsverzeichnis](#start)
+</div></div>
