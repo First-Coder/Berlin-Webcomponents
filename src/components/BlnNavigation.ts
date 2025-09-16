@@ -48,7 +48,9 @@ export class BlnNavigation extends TailwindElement {
             <h2 class="text-base font-semibold truncate">${this.title}</h2>
           </div>
           <bln-button size="small" variant="ghost" aria-controls="${this._panelId}" aria-expanded="${String(!isCollapsed)}" aria-label="${isCollapsed ? 'Navigation ausklappen' : 'Navigation einklappen'}" .onClick=${this.toggle}>
-            ${isCollapsed ? html`<span>Öffnen</span>` : html`<span>Schließen</span>`}
+            ${isCollapsed 
+              ? html`<lucide-icon name="ChevronDown" cls="w-5 h-5" aria-hidden="true"></lucide-icon>`
+              : html`<lucide-icon name="X" cls="w-5 h-5" aria-hidden="true"></lucide-icon>`}
           </bln-button>
         </div>
         <div id="${this._panelId}" aria-hidden="${String(isCollapsed)}" class="overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[80vh] opacity-100'}">

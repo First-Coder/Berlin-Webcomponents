@@ -13,6 +13,7 @@ import type { BlnTreePropsType, BlnTreeNodeType } from './BlnTreeView';
 import type { IDataModel } from './ModernTree';
 import type { BlnToastProps } from './BlnToast';
 import type { BlnButtonProps } from './BlnButton';
+import {BlnInputProps} from "./BlnInput";
 
 // A small, framework-agnostic builder that produces lit TemplateResults for our inputs/buttons
 // and offers a simple validate API. Tests focus on validate().
@@ -79,45 +80,42 @@ export default class FormBuilder {
     return Promise.resolve(this.validate(type, value));
   }
 
-  // Builder: add different field types. These are minimal and not used by tests, but kept for completeness.
-  addField(type: FieldType, label: string, value = '') {
-    let field: TemplateResult;
-    switch (type) {
-      case 'email':
-        field = html`
-          <div class="form-group">
-            <label>${label}</label>
-            <bln-input type="email" value=${value} />
-            <small class="form-text">${this.validate('email', value)}</small>
-          </div>`;
-        break;
-      case 'password':
-        field = html`
-          <div class="form-group">
-            <label>${label}</label>
-            <bln-input type="password" value=${value} />
-          </div>`;
-        break;
-      case 'number':
-        field = html`
-          <div class="form-group">
-            <label>${label}</label>
-            <bln-input type="number" value=${value} />
-            <small class="form-text">${this.validate('number', value)}</small>
-          </div>`;
-        break;
-      default:
-        field = html`
-          <div class="form-group">
-            <label>${label}</label>
-            <bln-input type="text" value=${value} />
-          </div>`;
+    addBlnInput(props: Partial<BlnInputProps> = {}) {
+        const tpl = html`<bln-input
+      .label=${props.label ?? ''}
+      .name=${props.name ?? ''}
+      .placeholder=${props.placeholder ?? ''}
+      .hint=${props.hint ?? ''}
+      .error=${props.error ?? ''}
+      .value=${props.value ?? ''}
+      .disabled=${props.disabled ?? false}
+      .required=${props.required ?? false}
+      .readonly=${props.readonly ?? false}
+      .class=${props.class ?? ''}
+      .type=${props.type ?? 'text'}
+      .size=${props.size ?? 'medium'}
+      .cornerHint=${props.cornerHint ?? ''}
+      .isValid=${props.isValid ?? undefined}
+      .retroDesign=${props.retroDesign ?? false}
+      .minlength=${props.minlength ?? undefined}
+      .maxlength=${props.maxlength ?? undefined}
+      .pattern=${props.pattern ?? ''}
+      .min=${props.min ?? ''}
+      .max=${props.max ?? ''}
+      .step=${props.step ?? undefined}
+      .inputmode=${props.inputmode ?? undefined}
+      .autocomplete=${props.autocomplete ?? ''}
+      .ariaLabel=${props.ariaLabel ?? ''}
+      .ariaLabelledby=${props.ariaLabelledby ?? ''}
+      .ariaDescribedby=${props.ariaDescribedby ?? ''}
+      .validator=${props.validator ?? undefined}
+    ></bln-input>`;
+        this.fields.push(tpl);
+        return this;
     }
-    this.fields.push(field);
-    return this;
-  }
 
-  addButton(text: string, onClick?: () => void) {
+
+    addButton(text: string, onClick?: () => void) {
     this.fields.push(html`<button type="button" @click=${onClick}>${text}</button>`);
     return this;
   }

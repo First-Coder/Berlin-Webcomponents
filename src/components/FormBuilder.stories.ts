@@ -24,9 +24,9 @@ const meta = {
     const fb = new FormBuilder();
 
     fb
-      .addField('email', 'E-Mail', args.email ?? '')
-      .addField('password', 'Passwort', args.password ?? '')
-      .addField('number', 'Zahl (10-99)', args.number ?? '');
+      .addBlnInput({ label: 'E-Mail', name: 'email', type: 'email', value: args.email ?? '' })
+      .addBlnInput({ label: 'Passwort', name: 'password', type: 'password', value: args.password ?? '' })
+      .addBlnInput({ label: 'Zahl (10-99)', name: 'number', type: 'number', value: args.number ?? '' });
 
     if (args.withBlnSelect) {
       fb.addBlnSelect({

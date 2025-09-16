@@ -2267,9 +2267,9 @@ export const RightArrow = () => <svg
     const fb = new FormBuilder();
 
     // Felder + einfache Validierung
-    fb.addField('email', 'E-Mail', '')
-    .addField('password', 'Passwort', '')
-    .addField('number', 'Alter', '18')
+    fb.addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' })
+    .addBlnInput({ label: 'Passwort', name: 'password', type: 'password' })
+    .addBlnInput({ label: 'Alter', name: 'age', type: 'number', value: '18' })
     .addButton('Speichern', () => {
     console.log('Speichern geklickt');
 });
@@ -2294,9 +2294,9 @@ export const RightArrow = () => <svg
     @customElement('demo-form')
     export class DemoForm extends LitElement {
     private fb = new FormBuilder()
-    .addField('email', 'E-Mail')
-    .addField('password', 'Passwort')
-    .addField('number', 'Alter', '21')
+    .addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' })
+    .addBlnInput({ label: 'Passwort', name: 'password', type: 'password' })
+    .addBlnInput({ label: 'Alter', name: 'age', type: 'number', value: '21' })
     .addButton('Absenden', () => this.submit());
 
     private submit() {
@@ -2318,7 +2318,7 @@ export const RightArrow = () => <svg
     - password: mindestens 5 Zeichen; sonst Meldung „Passwort zu kurz (mindestens 5 Zeichen)“
     - number: Muss Zahl sein und zwischen 10 und 99 (inkl.) liegen; andernfalls passende Fehlermeldung
 
-    Diese Validatoren werden von addField bei den entsprechenden Typen automatisch angewendet und als Text unter dem Feld gerendert (email, number). Für password wird im Ausgangscode kein Inline-Fehler gerendert; Sie können aber eigene Logik ergänzen.
+    Diese Validatoren stehen direkt über die Methoden validate()/validateAsync() zur Verfügung. Inline-Fehlertexte können Sie bei Bedarf über BlnInput selbst steuern (Property error).
 
     ### Eigene (Sync) Validatoren registrieren
     ```textmate
@@ -2360,26 +2360,25 @@ export const RightArrow = () => <svg
 
     ## Felder hinzufügen
 
-    ### addField(type, label, value?)
-    Erzeugt ein Basisfeld mit Label und optionalem Startwert.
-    - type: 'email' | 'password' | 'number' | 'text' (Default-Fall)
-    - label: sichtbarer Feldtitel
-    - value: Startwert (string, optional)
+    ### addBlnInput(props?)
+    Fügt ein BlnInput-Feld hinzu. Sie können alle BlnInput-Properties als Props übergeben (z. B. label, name, type, placeholder, hint, error, value, required usw.).
 
     Beispiele:
     ```textmate
     // TypeScript
+    {`
     new FormBuilder()
-    .addField('email', 'E-Mail', '')
-    .addField('password', 'Passwort')
-    .addField('number', 'Mitarbeiteranzahl', '12')
-    .addField('text', 'Notiz', '…');
+    .addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' })
+    .addBlnInput({ label: 'Passwort', name: 'password', type: 'password' })
+    .addBlnInput({ label: 'Mitarbeiteranzahl', name: 'employees', type: 'number', value: '12' })
+    .addBlnInput({ label: 'Notiz', name: 'note', type: 'text', value: '…' });
+    `}
     ```
 
 
     Hinweise:
-    - Für 'email' und 'number' wird die Fehlermeldung direkt unter dem Feld angezeigt (basierend auf validate()).
-    - Für 'password' ist eine Standardprüfung (>= 5 Zeichen) hinterlegt, die im Standardmarkup nicht automatisch als Text ausgegeben wird. Sie können dieses Verhalten erweitern, indem Sie z. B. addField um eine eigene Darstellung ergänzen oder eine eigene Feldmethode schreiben.
+    - Validierung läuft unabhängig über FormBuilder.validate()/validateAsync(), wenn Sie diese verwenden möchten.
+    - Für Inline-Fehlertexte können Sie die BlnInput-Property error setzen.
 
     ### addButton(text, onClick?)
     Fügt einen Button hinzu. onClick ist optional.
@@ -2508,8 +2507,10 @@ export const RightArrow = () => <svg
 
     ```textmate
     // TypeScript
-    const fb = new FormBuilder().addField('email', 'E-Mail').addButton('OK');
-    const view = html`<section class="grid gap-4">${fb.getFields()}</section>`;
+    {`
+    const fb = new FormBuilder().addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' }).addButton('OK');
+    const view = html"<section class=\"grid gap-4\">${fb.getFields()}</section>";
+    `}
     ```
 
 
@@ -2526,9 +2527,9 @@ export const RightArrow = () => <svg
         const ok = await fetch("/api/user/check?u=${encodeURIComponent(v)}").then(r => r.json());
         return ok.free ? '' : 'Benutzername vergeben';
     })
-    .addField('text', 'Benutzername') // Anzeige der Fehlermeldung müssten Sie bei Bedarf selbst ergänzen
-    .addField('email', 'E-Mail')
-    .addField('number', 'Mitarbeiterzahl', '10')
+    .addBlnInput({ label: 'Benutzername', name: 'username', type: 'text' }) // Anzeige der Fehlermeldung müssten Sie bei Bedarf selbst ergänzen
+    .addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' })
+    .addBlnInput({ label: 'Mitarbeiterzahl', name: 'count', type: 'number', value: '10' })
     .addButton('Prüfen', async () => {
         const e1 = fb.validate('postal', '10115'); // ''
         const e2 = await fb.validateAsync('username', 'alice'); // '' oder Fehlermeldung
@@ -2580,8 +2581,8 @@ export const RightArrow = () => <svg
         - Führt Sync-Validierung aus; '' bedeutet „gültig“.
         - validateAsync(type: string, value: string): Promise<string></string>
             - Führt Async-Validierung aus; fällt zurück auf validate(), wenn kein Async-Validator vorhanden ist.
-            - addField(type: 'email'|'password'|'number'|'text', label: string, value?: string): this
-            - Fügt ein Eingabefeld ein; simple Inline-Fehleranzeige für 'email' und 'number'.
+            - addBlnInput(props?: Partial von BlnInputProps): this
+            - Fügt ein BlnInput-Feld ein; alle BlnInput-Properties können gesetzt werden (z. B. label, name, type, value, hint, error, required usw.).
             - addButton(text: string, onClick?: () => void): this
             - Fügt einen Button ein.
             - addBlnTree(props?: Partial {'<...>'}): this
