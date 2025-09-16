@@ -137,6 +137,21 @@ export const RightArrow = () => <svg
         - Styling: Utility-/Tailwind-Klassen via class und Retro-Design
         - Ereignisse: input, change, focus, blur, keydown, keyup
 
+        ### Externe Validierung über eine Funktion
+        Über die Property validator kann eine eigene Prüf-Funktion von außen gesetzt werden (nur als JS-Property, nicht als HTML-Attribut).
+        Die Funktion wird bei Eingaben (input/change) und bei programmatischen Wertänderungen aufgerufen. Sie kann entweder
+        true/false zurückgeben oder ein Objekt mit den Feldern valid (boolean) und message (string, optional).
+        Bei leerem Wert bleibt der Zustand neutral (keine grünen/roten Icons). Ein Ereignis validitychange wird mit den aktuellen Werten ausgelöst.
+
+        Beispiel:
+        ```html
+        <bln-input id="u" label="Username"></bln-input>
+        <script type="module">{`
+          const el = document.getElementById('u');
+          el.validator = (v) => ({ valid: v.length >= 3, message: 'Mindestens 3 Zeichen' });
+        `}</script>
+        ```
+
         ## Schnellstart
 
         Ein einfaches Textfeld mit Label und Platzhalter:

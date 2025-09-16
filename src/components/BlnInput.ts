@@ -34,6 +34,8 @@ export interface BlnInputProps {
     ariaLabel: string;
     ariaLabelledby: string;
     ariaDescribedby: string;
+    /** Optional externe Validierungsfunktion. Nur als Property (nicht als Attribut) setzbar. */
+    validator?: (value: string, el: BlnInput) => boolean | { valid: boolean; message?: string };
 }
 
 @customElement('bln-input')
@@ -60,6 +62,8 @@ export class BlnInput extends TailwindElement {
     @property() step: BlnInputProps['step'] = undefined as any;
     @property() inputmode: BlnInputProps['inputmode'] = undefined as any;
     @property() autocomplete: BlnInputProps['autocomplete'] = "";
+    /** Externe Validierungsfunktion: nur als Property setzbar (attribute: false). */
+    @property({attribute: false}) validator?: BlnInputProps['validator'];
 
     // Sizing/Styles
     @property() size: BlnInputProps['size'] = "medium";
@@ -80,15 +84,22 @@ export class BlnInput extends TailwindElement {
     private onInput = (e: Event) => {
         const input = e.currentTarget as HTMLInputElement;
         this.value = input.value;
+        // Run external validation if provided
+        this.runValidation();
         this.dispatchEvent(new Event('input', {bubbles: true, composed: true}));
     };
 
     private onChange = (_e: Event) => {
+        this.runValidation();
         this.dispatchEvent(new Event('change', {bubbles: true, composed: true}));
     };
 
     protected willUpdate(changed: Map<string, any>) {
         if (changed.has('isValid')) this._isValidSet = true;
+        if (changed.has('value')) {
+            // When value changes programmatically, also re-run validation if provided
+            this.runValidation();
+        }
     }
 
     protected render() {
@@ -173,6 +184,32 @@ export class BlnInput extends TailwindElement {
         ${this.hint ? html`<p id="${this._hintId}" class="mt-2 text-sm text-gray-500">${this.hint}</p>` : ''}
         ${this.error ? html`<span id="${this._errorId}" class="mt-1 text-sm text-red-600" role="alert" aria-live="polite">${this.error}</span>` : ''}
       </div>`;
+    }
+    private runValidation() {
+        if (!this.validator) return;
+        const v = (this.value ?? '');
+        // Neutral state for empty unless validator explicitly handles it
+        if (v === '') {
+            // Clear validity and error for neutral display
+            this.isValid = undefined as any;
+            this.error = '' as any;
+            return;
+        }
+        try {
+            const res = this.validator(v, this as any);
+            const result = typeof res === 'boolean' ? { valid: res } : res ?? { valid: true };
+            this.isValid = result.valid as any;
+            // If invalid and message provided, set error; otherwise clear error to avoid stale messages
+            this.error = (!result.valid && result.message) ? result.message : (!result.valid ? (this.error || '') : '');
+            // Ensure we show validity icons once validator ran
+            this._isValidSet = true;
+            this.dispatchEvent(new CustomEvent('validitychange', { detail: { isValid: this.isValid, message: this.error }, bubbles: true, composed: true }));
+        } catch (e) {
+            // On validator error, do not break UI; mark invalid with generic message
+            this.isValid = false as any;
+            this.error = this.error || 'Ungültiger Wert';
+            this._isValidSet = true;
+        }
     }
 }
 

@@ -140,3 +140,34 @@ describe('<bln-input>', () => {
     expect(input.getAttribute('autocomplete')).toBe('email');
   });
 });
+
+  it('unterstützt externe Validierung über validator-Property', async () => {
+    const el = await mount({ label: 'Test' }) as any;
+    // Set validator as property (cannot be attribute)
+    el.validator = (v: string) => ({ valid: v.length >= 3, message: 'Mindestens 3 Zeichen' });
+    await el.updateComplete;
+    const input = el.shadowRoot!.querySelector('input')! as HTMLInputElement;
+
+    // Empty -> neutral (no icons, no error)
+    expect(el.isValid).toBeUndefined();
+    expect(el.shadowRoot!.querySelector('lucide-icon[name="Check"]')).toBeFalsy();
+    expect(el.shadowRoot!.querySelector('lucide-icon[name="CircleAlert"]')).toBeFalsy();
+
+    // Type 2 chars -> invalid
+    input.value = 'ab';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    expect(el.isValid).toBe(false);
+    // icon rendered
+    expect(el.shadowRoot!.querySelector('lucide-icon[name="CircleAlert"]')).toBeTruthy();
+    // error shown
+    const err = el.shadowRoot!.querySelector('span[role="alert"]');
+    expect(err?.textContent).toContain('Mindestens 3 Zeichen');
+
+    // Type 3 chars -> valid
+    input.value = 'abc';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    expect(el.isValid).toBe(true);
+    expect(el.shadowRoot!.querySelector('lucide-icon[name="Check"]')).toBeTruthy();
+  });
