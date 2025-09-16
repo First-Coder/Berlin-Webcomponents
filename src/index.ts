@@ -31,6 +31,7 @@ export * from './components/BlnInput';
 export * from './components/BlnHeader';
 export * from './components/BlnFooter';
 export * from './components/BlnNavigation';
+export * from './components/FormBuilder';
 
 
 const meta = {
