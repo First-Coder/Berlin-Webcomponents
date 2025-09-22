@@ -5,6 +5,7 @@ import './BlnFormular';
 import './BlnInput';
 import './BlnButton';
 import './BlnCheckBox';
+import { FormBuilder } from './FormBuilder';
 
 interface BlnFormularProps {
   ariaLabel: string;
@@ -428,6 +429,103 @@ export const RetroDesign: Story = {
     docs: {
       description: {
         story: 'Retro-Design-Variante mit schwarzen Rändern, klassischem Styling und passenden Retro-Komponenten. Das Formular erhält einen schwarzen Rahmen, die Überschrift wird fett und großgeschrieben, und die Trennlinie wird dicker.',
+      },
+    },
+  },
+};
+
+export const WithFormBuilder: Story = {
+  render: (args) => {
+    const formularId = `formular-fb-${Math.random().toString(36).slice(2)}`;
+    
+    // Use setTimeout to ensure the DOM is ready before manipulating it
+    setTimeout(() => {
+      const formular = document.getElementById(formularId) as any;
+      if (!formular) return;
+      
+      // Create FormBuilder instance with fields
+      const fb = new FormBuilder()
+        .addBlnInput({ 
+          label: 'Vorname', 
+          name: 'firstname', 
+          placeholder: 'Ihr Vorname',
+          required: true 
+        })
+        .addBlnInput({ 
+          label: 'E-Mail', 
+          name: 'email', 
+          type: 'email', 
+          placeholder: 'name@example.com',
+          required: true 
+        })
+        .addBlnInput({ 
+          label: 'Alter', 
+          name: 'age', 
+          type: 'number', 
+          value: '25' 
+        })
+        .addBlnCheckbox({ 
+          name: 'newsletter', 
+          label: 'Newsletter', 
+          checked: true 
+        });
+      
+      // Pass FormBuilder fields to BlnFormular
+      formular.templateResult = fb.getFields();
+    }, 100);
+    
+    return html`
+      <bln-formular 
+        id=${formularId}
+        legend="FormBuilder Integration"
+        @bln-submit=${(e: any) => console.log('📋 FormBuilder Submit:', e.detail.data)}
+        @bln-clear=${() => console.log('🧹 FormBuilder Clear')} 
+        @bln-delete=${() => console.log('🗑️ FormBuilder Delete')}>
+        
+        <div slot="actions" class="flex gap-2">
+          <bln-button @click=${(e: Event) => (e.currentTarget as HTMLElement).closest('bln-formular')?.submit?.()}>Speichern</bln-button>
+          <bln-button variant="outline" @click=${(e: any) => (e.currentTarget as any).closest('bln-formular')?.delete?.()}>Löschen</bln-button>
+          <bln-button variant="ghost" @click=${(e: any) => (e.currentTarget as any).closest('bln-formular')?.clear?.()}>Leeren</bln-button>
+        </div>
+      </bln-formular>
+      <div class="mt-4 p-4 bg-gray-50 rounded">
+        <h4 class="font-semibold mb-2">FormBuilder Integration Code:</h4>
+        <pre class="text-sm bg-gray-800 text-green-400 p-3 rounded overflow-x-auto"><code>import { FormBuilder } from './FormBuilder';
+
+// Create FormBuilder with fields
+const fb = new FormBuilder()
+  .addBlnInput({ label: 'Name', name: 'name', required: true })
+  .addBlnCheckbox({ name: 'newsletter', checked: true })
+  .addBlnSelect({ name: 'city', options: [...] });
+
+// Get formular element
+const formular = document.getElementById('myForm');
+
+// Pass FormBuilder fields to BlnFormular
+formular.templateResult = fb.getFields();</code></pre>
+      </div>
+    `;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**FormBuilder Integration mit BlnFormular**
+
+Dieses Beispiel zeigt, wie Sie FormBuilder-Felder direkt an ein BlnFormular übergeben können:
+
+**Integration:**
+1. **FormBuilder erstellen:** \`new FormBuilder()\` mit gewünschten Feldern
+2. **Felder übergeben:** \`formular.templateResult = fb.getFields()\`
+3. **Automatische Sammlung:** BlnFormular sammelt alle Daten beim Submit
+
+**Unterstützte FormBuilder-Methoden:**
+- \`addBlnInput()\` - Text, Email, Password, Number inputs
+- \`addBlnCheckbox()\` - Checkboxen mit boolean values
+- \`addBlnSelect()\` - Dropdown-Auswahlen
+
+Die FormBuilder-Felder werden automatisch im BlnFormular gerendert und bei submit() in den Event-Daten erfasst. Öffnen Sie die Browser-Konsole, um die Daten zu sehen.
+        `.trim(),
       },
     },
   },

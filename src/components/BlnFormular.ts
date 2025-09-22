@@ -1,5 +1,5 @@
 import {customElement, property, queryAssignedElements} from 'lit/decorators.js';
-import {html, nothing} from 'lit';
+import {html, nothing, TemplateResult} from 'lit';
 import TailwindElement from '../app/TailwindElement';
 
 import './BlnInput';
@@ -27,6 +27,9 @@ export class BlnFormular extends TailwindElement {
 
   /** Enable retro design styling. */
   @property({type: Boolean, reflect: true, attribute: 'retro-design'}) retroDesign: boolean = false;
+
+  /** Template results from FormBuilder - only settable as property, not attribute */
+  @property({attribute: false}) templateResult: TemplateResult[] = [];
 
   // Grab slotted elements we can read values from
   @queryAssignedElements({flatten: true}) private _slotted!: Element[];
@@ -161,6 +164,7 @@ export class BlnFormular extends TailwindElement {
         )}">${this.legend}</h2>` : nothing}
         <div class="contents">
           <slot></slot>
+          ${this.templateResult.length > 0 ? html`${this.templateResult}` : nothing}
         </div>
         <div class="${this.cn(
           ['mt-4 pt-4 flex flex-wrap gap-2 justify-end'],
