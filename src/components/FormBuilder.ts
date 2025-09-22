@@ -24,7 +24,7 @@ type SyncValidator = (value: string) => string;
 
 type AsyncValidator = (value: string) => Promise<string>;
 
-export default class FormBuilder {
+class FormBuilder {
   private fields: TemplateResult[] = [];
 
   private validateFunctions: Map<string, SyncValidator> = new Map();
@@ -222,3 +222,6 @@ export default class FormBuilder {
     return this.fields;
   }
 }
+
+export default FormBuilder;
+export { FormBuilder };
