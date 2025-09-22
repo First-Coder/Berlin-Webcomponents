@@ -34,6 +34,7 @@ export * from './components/BlnNavigation';
 export * from './components/FormBuilder';
 export * from './components/BlnButton';
 export * from './components/BlnRadioButton';
+export * from './components/BlnFormular';
 
 
 const meta = {

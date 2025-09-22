@@ -62,43 +62,68 @@ export const RightArrow = () => <svg
         zu jeder Komponente eine ausführliche Dokumentation.
 
         ## Web Komponenten:
-        Web Components ist eine Suite verschiedener Technologien, die es Ihnen ermöglichen, wiederverwendbare benutzerdefinierte Elemente zu erstellen — mit Funktionalität, die vom Rest Ihres Codes gekapselt ist — und diese in Ihren Webanwendungen zu verwenden.
+        Web Components ist eine Suite verschiedener Technologien, die es Ihnen ermöglichen, wiederverwendbare
+        benutzerdefinierte Elemente zu erstellen — mit Funktionalität, die vom Rest Ihres Codes gekapselt ist — und
+        diese in Ihren Webanwendungen zu verwenden.
 
 
-        Als Entwickler wissen wir alle, dass es eine gute Idee ist, Code so oft wie möglich wiederzuverwenden. Traditionell war dies bei benutzerdefinierten Markup-Strukturen nicht so einfach — denken Sie an das komplexe HTML (sowie die zugehörigen Stile und Skripte), das Sie manchmal schreiben mussten, um benutzerdefinierte UI-Elemente zu rendieren, und wie die mehrfache Verwendung dieser Elemente Ihre Seite in ein Chaos verwandeln kann, wenn Sie nicht vorsichtig sind.
+        Als Entwickler wissen wir alle, dass es eine gute Idee ist, Code so oft wie möglich wiederzuverwenden.
+        Traditionell war dies bei benutzerdefinierten Markup-Strukturen nicht so einfach — denken Sie an das komplexe
+        HTML (sowie die zugehörigen Stile und Skripte), das Sie manchmal schreiben mussten, um benutzerdefinierte
+        UI-Elemente zu rendieren, und wie die mehrfache Verwendung dieser Elemente Ihre Seite in ein Chaos verwandeln
+        kann, wenn Sie nicht vorsichtig sind.
 
-        Web Components zielt darauf ab, solche Probleme zu lösen — es besteht aus drei Haupttechnologien, die zusammen verwendet werden können, um vielseitige benutzerdefinierte Elemente mit gekapselter Funktionalität zu erstellen, die problemlos überall wiederverwendet werden können, ohne Angst vor Codekollisionen zu haben.
+        Web Components zielt darauf ab, solche Probleme zu lösen — es besteht aus drei Haupttechnologien, die zusammen
+        verwendet werden können, um vielseitige benutzerdefinierte Elemente mit gekapselter Funktionalität zu erstellen,
+        die problemlos überall wiederverwendet werden können, ohne Angst vor Codekollisionen zu haben.
 
         Benutzerdefinierte Elemente
-        Eine Reihe von JavaScript-APIs, die es Ihnen ermöglichen, benutzerdefinierte Elemente und deren Verhalten zu definieren, die dann wie gewünscht in Ihrer Benutzeroberfläche verwendet werden können.
+        Eine Reihe von JavaScript-APIs, die es Ihnen ermöglichen, benutzerdefinierte Elemente und deren Verhalten zu
+        definieren, die dann wie gewünscht in Ihrer Benutzeroberfläche verwendet werden können.
 
         Shadow DOM
-        Eine Reihe von JavaScript-APIs zum Anhängen eines gekapselten "Shadow"-DOM-Baums an ein Element — das getrennt vom Hauptdokument-DOM gerendert wird — und zur Steuerung der zugehörigen Funktionalität. Auf diese Weise können Sie die Funktionen eines Elements privat halten, sodass sie geskriptet und gestylt werden können, ohne die Angst vor Kollisionen mit anderen Teilen des Dokuments.
+        Eine Reihe von JavaScript-APIs zum Anhängen eines gekapselten "Shadow"-DOM-Baums an ein Element — das getrennt
+        vom Hauptdokument-DOM gerendert wird — und zur Steuerung der zugehörigen Funktionalität. Auf diese Weise können
+        Sie die Funktionen eines Elements privat halten, sodass sie geskriptet und gestylt werden können, ohne die Angst
+        vor Kollisionen mit anderen Teilen des Dokuments.
 
         HTML-Vorlagen
-        Die {`<template>`}- und {`<slot>`}-Elemente ermöglichen es Ihnen, Markup-Vorlagen zu schreiben, die nicht auf der gerenderten Seite angezeigt werden. Diese können dann mehrfach als Grundlage für die Struktur eines benutzerdefinierten Elements wiederverwendet werden.
+        Die {`<template>`}- und {`<slot>`}-Elemente ermöglichen es Ihnen, Markup-Vorlagen zu schreiben, die nicht auf
+        der gerenderten Seite angezeigt werden. Diese können dann mehrfach als Grundlage für die Struktur eines
+        benutzerdefinierten Elements wiederverwendet werden.
 
         Der grundlegende Ansatz zur Implementierung eines Web-Components sieht im Allgemeinen etwa so aus:
 
         Erstellen Sie eine Klasse, in der Sie die Funktionalität Ihres Web-Components mit der class-Syntax angeben.
-        Registrieren Sie Ihr neues benutzerdefiniertes Element mithilfe der Methode CustomElementRegistry.define(), indem Sie den zu definierenden Elementnamen, die Klasse oder Funktion, in der die Funktionalität angegeben ist, und optional das zu ererbende Element übergeben.
-        Falls erforderlich, hängen Sie ein Shadow DOM an das benutzerdefinierte Element mithilfe der Methode Element.attachShadow(). Fügen Sie dem Shadow DOM mit regulären DOM-Methoden untergeordnete Elemente, Event-Listener usw. hinzu.
-        Falls erforderlich, definieren Sie eine HTML-Vorlage mit {`<template>`}- und {`<slot>`}. Verwenden Sie erneut reguläre DOM-Methoden, um die Vorlage zu klonen und an Ihr Shadow DOM anzuhängen.
-        Verwenden Sie Ihr benutzerdefiniertes Element überall auf Ihrer Seite, genau wie Sie es mit einem regulären HTML-Element tun würden.
+        Registrieren Sie Ihr neues benutzerdefiniertes Element mithilfe der Methode CustomElementRegistry.define(),
+        indem Sie den zu definierenden Elementnamen, die Klasse oder Funktion, in der die Funktionalität angegeben ist,
+        und optional das zu ererbende Element übergeben.
+        Falls erforderlich, hängen Sie ein Shadow DOM an das benutzerdefinierte Element mithilfe der Methode
+        Element.attachShadow(). Fügen Sie dem Shadow DOM mit regulären DOM-Methoden untergeordnete Elemente,
+        Event-Listener usw. hinzu.
+        Falls erforderlich, definieren Sie eine HTML-Vorlage mit {`<template>`}- und {`<slot>`}. Verwenden Sie erneut
+        reguläre DOM-Methoden, um die Vorlage zu klonen und an Ihr Shadow DOM anzuhängen.
+        Verwenden Sie Ihr benutzerdefiniertes Element überall auf Ihrer Seite, genau wie Sie es mit einem regulären
+        HTML-Element tun würden.
 
 
         ## Lit-Bibliothek:
-        Lit ist eine einfache JavaScript-Bibliothek von Google, die die Erstellung von schnellen, leichtgewichtigen und wiederverwendbaren Webkomponenten vereinfacht. Es bietet eine Basisklasse (LitElement), die Funktionen für reaktive Eigenschaften, deklarative Vorlagen (lit-html) und kapselte Stile bereitstellt. Lit-Komponenten funktionieren in jedem Framework oder ganz ohne Framework und ermöglichen die Erstellung von wiederverwendbaren Bausteinen für Apps und Designsysteme.
+        Lit ist eine einfache JavaScript-Bibliothek von Google, die die Erstellung von schnellen, leichtgewichtigen und
+        wiederverwendbaren Webkomponenten vereinfacht. Es bietet eine Basisklasse (LitElement), die Funktionen für
+        reaktive Eigenschaften, deklarative Vorlagen (lit-html) und kapselte Stile bereitstellt. Lit-Komponenten
+        funktionieren in jedem Framework oder ganz ohne Framework und ermöglichen die Erstellung von wiederverwendbaren
+        Bausteinen für Apps und Designsysteme.
         <a href="https://lit.dev/" target="_blank">Lit-Webkomponenten</a>
 
 
         ## Wichtiger Hinweis:
-        In den Codebeispielen dieser Dokumentation werden mitunter folgende Zeichen verwendet ( geschweifte Klammer auf und Backtick   und  Backtick mit geschweifte Klammer zu), da es Probleme beim markdown gab.
+        In den Codebeispielen dieser Dokumentation werden mitunter folgende Zeichen verwendet ( geschweifte Klammer auf
+        und Backtick und Backtick mit geschweifte Klammer zu), da es Probleme beim markdown gab.
         Diese Zeichen sind ggf. zu entfernen.
 
 
         [zum Inhaltsverzeichnis](#start)
-</div>
+    </div>
 </div>
 <div className="sb-container">
     <div className='sb-section-title'>
@@ -116,7 +141,7 @@ export const RightArrow = () => <svg
 
         #### Schritt 4: In Ihrem eigenen Projekt wo Sie die Komponenten verwenden möchten zur Index.html navigieren das
         folgende Script Tag einfügen
-        <pre><code> type="module" src="~/js/components/bundle.js"</code></pre>
+        <pre><code> type="module" src="~/js/bundle.js"</code></pre>
 
 
         [zum Inhaltsverzeichnis](#start)
@@ -138,10 +163,13 @@ export const RightArrow = () => <svg
         - Ereignisse: input, change, focus, blur, keydown, keyup
 
         ### Externe Validierung über eine Funktion
-        Über die Property validator kann eine eigene Prüf-Funktion von außen gesetzt werden (nur als JS-Property, nicht als HTML-Attribut).
-        Die Funktion wird bei Eingaben (input/change) und bei programmatischen Wertänderungen aufgerufen. Sie kann entweder
+        Über die Property validator kann eine eigene Prüf-Funktion von außen gesetzt werden (nur als JS-Property, nicht
+        als HTML-Attribut).
+        Die Funktion wird bei Eingaben (input/change) und bei programmatischen Wertänderungen aufgerufen. Sie kann
+        entweder
         true/false zurückgeben oder ein Objekt mit den Feldern valid (boolean) und message (string, optional).
-        Bei leerem Wert bleibt der Zustand neutral (keine grünen/roten Icons). Ein Ereignis validitychange wird mit den aktuellen Werten ausgelöst.
+        Bei leerem Wert bleibt der Zustand neutral (keine grünen/roten Icons). Ein Ereignis validitychange wird mit den
+        aktuellen Werten ausgelöst.
 
         Beispiel:
         ```html
@@ -314,14 +342,14 @@ export const RightArrow = () => <svg
         <bln-input id="iban" label="IBAN"></bln-input>
         <script type="module">{`
         const el = document.getElementById('iban');
-
-                el.addEventListener('input', () => {
-                console.log('Wert:', el.value);
-            });
-
-                el.addEventListener('keydown', (e) => {
-                console.log('Taste gedrückt:', e.detail.key);
-            });
+        
+                        el.addEventListener('input', () => {
+                        console.log('Wert:', el.value);
+                    });
+        
+                        el.addEventListener('keydown', (e) => {
+                        console.log('Taste gedrückt:', e.detail.key);
+                    });
 `}
         </script>
         ```
@@ -1147,7 +1175,7 @@ export const RightArrow = () => <svg
         console.log('Wert:', el.value); // string oder string[] bei multiple
         });
         `}</script>
-                ```
+        ```
 
 
         ## A11y (Barrierefreiheit)
@@ -1483,9 +1511,9 @@ export const RightArrow = () => <svg
             document.getElementById('showSuccess').addEventListener('click', () => {
             toast.show();
         });
-
-                            toast.addEventListener('open', () => console.log('Toast geöffnet'));
-                            toast.addEventListener('close', () => console.log('Toast geschlossen'));`}
+        
+                                    toast.addEventListener('open', () => console.log('Toast geöffnet'));
+                                    toast.addEventListener('close', () => console.log('Toast geschlossen'));`}
         </script>
         ```
 
@@ -1574,9 +1602,9 @@ export const RightArrow = () => <svg
             auto-hide
             auto-hide-delay="3000"
             ></bln-toast>
-
-                        <bln-toast
-                        .open=${Boolean(state.error)}
+        
+                                <bln-toast
+                                .open=${Boolean(state.error)}
         variant="error"
         title="Fehler"
         aria-live="assertive"
@@ -1960,28 +1988,30 @@ export const RightArrow = () => <svg
     </div>
 </div>
 <div className="sb-container">
-<div className='sb-section-title'>
-    <a name="blnTreeView"></a>
-    # BlnTreeView — Interaktiver, zugänglicher Tree für Web Components
+    <div className='sb-section-title'>
+        <a name="blnTreeView"></a>
+        # BlnTreeView — Interaktiver, zugänglicher Tree für Web Components
 
-    BlnTreeView ist ein performanter, barrierearmer Tree-View als Web Component. Er unterstützt kontrollierte Auswahl und Expansion, asynchrones Nachladen von Kindknoten, Tastaturnavigation (Roving Tabindex), Single- und Multi-Select, verschieden große Darstellungen und ein Retro-Design.
+        BlnTreeView ist ein performanter, barrierearmer Tree-View als Web Component. Er unterstützt kontrollierte
+        Auswahl und Expansion, asynchrones Nachladen von Kindknoten, Tastaturnavigation (Roving Tabindex), Single- und
+        Multi-Select, verschieden große Darstellungen und ein Retro-Design.
 
-    - Tag-Name: bln-tree
-    - Zweck: Hierarchische Daten anzeigen, durchsuchen und selektieren
-    - Modus: Kontrollierte Komponente (items, selectedIds, expandedIds werden von außen verwaltet)
-    - A11y: role="tree"/"treeitem"/"group", aria-level, aria-expanded, aria-selected, roving tabindex
-    - Interaktion: Maus, Tastatur, Custom Events für Auswahl, Expand/Collapse und Lazy-Loading
-    - Styling: Utility-/Tailwind-Klassen via class, Größen small/medium/large, Retro-Design
+        - Tag-Name: bln-tree
+        - Zweck: Hierarchische Daten anzeigen, durchsuchen und selektieren
+        - Modus: Kontrollierte Komponente (items, selectedIds, expandedIds werden von außen verwaltet)
+        - A11y: role="tree"/"treeitem"/"group", aria-level, aria-expanded, aria-selected, roving tabindex
+        - Interaktion: Maus, Tastatur, Custom Events für Auswahl, Expand/Collapse und Lazy-Loading
+        - Styling: Utility-/Tailwind-Klassen via class, Größen small/medium/large, Retro-Design
 
-    ## Schnellstart
+        ## Schnellstart
 
-    Ein einfacher statischer Tree mit Single-Select:
+        Ein einfacher statischer Tree mit Single-Select:
 
-    ```html
-    <!-- HTML -->
-    <bln-tree id="orgTree"></bln-tree>
+        ```html
+        <!-- HTML -->
+        <bln-tree id="orgTree"></bln-tree>
 
-    <script type="module">{`
+        <script type="module">{`
         // JavaScript
         const tree = document.getElementById('orgTree');
         tree.items = [
@@ -1992,19 +2022,19 @@ export const RightArrow = () => <svg
         ];
         tree.expandedIds = ['1'];
         tree.selectedIds = ['1.1'];
+        
+                tree.addEventListener('bln-tree:select', (e) => {
+                console.log('Auswahl geändert:', e.detail.selectedIds);
+            });`}
+        </script>
+        ```
 
-        tree.addEventListener('bln-tree:select', (e) => {
-        console.log('Auswahl geändert:', e.detail.selectedIds);
-    });`}
-    </script>
-    ```
 
+        Multi-Select aktivieren:
 
-    Multi-Select aktivieren:
-
-    ```html
-    <bln-tree id="permTree" multiSelect></bln-tree>
-    <script type="module">{`
+        ```html
+        <bln-tree id="permTree" multiSelect></bln-tree>
+        <script type="module">{`
         const t = document.getElementById('permTree');
         t.items = [
         { id: 'admin', label: 'Admin' },
@@ -2014,121 +2044,122 @@ export const RightArrow = () => <svg
         t.addEventListener('bln-tree:select', (e) => {
         console.log('Gewählte Rollen:', e.detail.selectedIds);
     });`}
-    </script>
-    ```
+        </script>
+        ```
 
 
-    ## Datenmodell
+        ## Datenmodell
 
-    - Knoten (BlnTreeNode)
-    - id: string – Eindeutige, stabile ID des Knotens (erforderlich)
-    - label: string – Sichtbarer Text
-    - children?: BlnTreeNode[] – Kindknoten (optional)
-    - hasChildren?: boolean – Knoten hat Kinder, die ggf. lazy geladen werden
-    - disabled?: boolean – Deaktiviert Interaktionen und fokussierbar
+        - Knoten (BlnTreeNode)
+        - id: string – Eindeutige, stabile ID des Knotens (erforderlich)
+        - label: string – Sichtbarer Text
+        - children?: BlnTreeNode[] – Kindknoten (optional)
+        - hasChildren?: boolean – Knoten hat Kinder, die ggf. lazy geladen werden
+        - disabled?: boolean – Deaktiviert Interaktionen und fokussierbar
 
-    Beispiel:
-    ```textmate
-    /** JavaScript */
-{`const items = [
+        Beispiel:
+        ```textmate
+        /** JavaScript */
+        {`const items = [
     {
         id: 'root',
         label: 'Root',
         hasChildren: true, // Kinder werden erst bei Bedarf geladen
     }
     ]; `}
-    ```
+        ```
 
 
-    ## Eigenschaften (Properties/Attribute)
+        ## Eigenschaften (Properties/Attribute)
 
-    - items: BlnTreeNode[]
-    - Baumdaten. Änderungen sollten immutabel erfolgen (neues Array/Objekte).
-    - selectedIds: string[]
-    - Aktuell ausgewählte IDs. Bei Single-Select enthält das Array max. 1 ID.
-    - expandedIds: string[]
-    - IDs der ausgeklappten Knoten.
-    - multiSelect: boolean (Attribut: multiSelect)
-    - true = Mehrfachauswahl möglich. Standard: false.
-    - aria-label: string
-    - Beschriftung des Trees, wenn kein sichtbares Label vorhanden ist.
-    - aria-labelledby: string
-    - Verweist auf ein externes Label-Element.
-    - aria-describedby: string
-    - Verweist auf erklärenden Hilfetext außerhalb des Trees.
-    - class: string
-    - Zusätzliche Klassen. Werden sowohl am Tree-Container als auch an Items verwendet.
-    - size: 'small' | 'medium' | 'large'
-    - Kompakte vs. großzügige Darstellung. Standard: 'medium'.
-    - retro-design: boolean
-    - Alternative, kantige Optik mit Retro-Fokus-Styling.
+        - items: BlnTreeNode[]
+        - Baumdaten. Änderungen sollten immutabel erfolgen (neues Array/Objekte).
+        - selectedIds: string[]
+        - Aktuell ausgewählte IDs. Bei Single-Select enthält das Array max. 1 ID.
+        - expandedIds: string[]
+        - IDs der ausgeklappten Knoten.
+        - multiSelect: boolean (Attribut: multiSelect)
+        - true = Mehrfachauswahl möglich. Standard: false.
+        - aria-label: string
+        - Beschriftung des Trees, wenn kein sichtbares Label vorhanden ist.
+        - aria-labelledby: string
+        - Verweist auf ein externes Label-Element.
+        - aria-describedby: string
+        - Verweist auf erklärenden Hilfetext außerhalb des Trees.
+        - class: string
+        - Zusätzliche Klassen. Werden sowohl am Tree-Container als auch an Items verwendet.
+        - size: 'small' | 'medium' | 'large'
+        - Kompakte vs. großzügige Darstellung. Standard: 'medium'.
+        - retro-design: boolean
+        - Alternative, kantige Optik mit Retro-Fokus-Styling.
 
-    Hinweise:
-    - Diese Komponente ist kontrolliert: selectedIds und expandedIds sollten Sie aus Ihrer App-Logik aktualisieren (z. B. in Event-Handlern).
-    - IDs sollten stabil bleiben, um Fokus- und Auswahlzustände konsistent zu halten.
+        Hinweise:
+        - Diese Komponente ist kontrolliert: selectedIds und expandedIds sollten Sie aus Ihrer App-Logik aktualisieren
+        (z. B. in Event-Handlern).
+        - IDs sollten stabil bleiben, um Fokus- und Auswahlzustände konsistent zu halten.
 
-    ## Events
+        ## Events
 
-    - bln-tree:select
-    - detail: {`{ id: string, selectedIds: string[] }`}
-    - Ausgelöst bei Auswahl eines Knotens (Enter, Space oder Klick).
-    - bln-tree:toggle
-    - detail: {`{ id: string, expanded: boolean }`}
-    - Ausgelöst beim Auf- oder Zuklappen eines Knotens.
-    - bln-tree:load-needed
-    - detail: {`{ id: string, resolve: (children: BlnTreeNode[]) => void }`}
-    - Wird beim ersten Expand eines Knotens mit hasChildren: true und leeren children ausgelöst.
-    - Rufen Sie detail.resolve(children) auf, um die geladenen Kindknoten zu übergeben.
+        - bln-tree:select
+        - detail: {`{ id: string, selectedIds: string[] }`}
+        - Ausgelöst bei Auswahl eines Knotens (Enter, Space oder Klick).
+        - bln-tree:toggle
+        - detail: {`{ id: string, expanded: boolean }`}
+        - Ausgelöst beim Auf- oder Zuklappen eines Knotens.
+        - bln-tree:load-needed
+        - detail: {`{ id: string, resolve: (children: BlnTreeNode[]) => void }`}
+        - Wird beim ersten Expand eines Knotens mit hasChildren: true und leeren children ausgelöst.
+        - Rufen Sie detail.resolve(children) auf, um die geladenen Kindknoten zu übergeben.
 
-    Beispiel Lazy-Loading:
-    ```html
-    <bln-tree id="lazyTree"></bln-tree>
-    <script type="module">{`
+        Beispiel Lazy-Loading:
+        ```html
+        <bln-tree id="lazyTree"></bln-tree>
+        <script type="module">{`
         const lazyTree = document.getElementById('lazyTree');
         lazyTree.items = [{ id: 'root', label: 'Root', hasChildren: true }];
-
-        lazyTree.addEventListener('bln-tree:load-needed', async (e) => {
-        const { id, resolve } = e.detail;
-        // Laden Sie hier asynchron die Kinder
-        const children = await fetch("/api/tree/${encodeURIComponent(id)}").then(r => r.json());
+        
+                lazyTree.addEventListener('bln-tree:load-needed', async (e) => {
+                const { id, resolve } = e.detail;
+                // Laden Sie hier asynchron die Kinder
+                const children = await fetch("/api/tree/${encodeURIComponent(id)}").then(r => r.json());
         // Übergabe an den Tree (setzt hasChildren entsprechend)
         resolve(children);
     });`}
-    </script>
-    ```
+        </script>
+        ```
 
 
-    ## Tastatursteuerung (A11y)
+        ## Tastatursteuerung (A11y)
 
-    - Fokus: Roving Tabindex (genau ein treeitem mit tabindex="0", alle anderen "-1")
-    - Enter oder Leertaste: Knoten auswählen
-    - Pfeil rechts: Knoten expandieren (falls möglich)
-    - Pfeil links: Knoten kollabieren (falls möglich)
-    - Pfeil hoch/runter: Fokus zum vorherigen/nächsten sichtbaren Knoten
+        - Fokus: Roving Tabindex (genau ein treeitem mit tabindex="0", alle anderen "-1")
+        - Enter oder Leertaste: Knoten auswählen
+        - Pfeil rechts: Knoten expandieren (falls möglich)
+        - Pfeil links: Knoten kollabieren (falls möglich)
+        - Pfeil hoch/runter: Fokus zum vorherigen/nächsten sichtbaren Knoten
 
-    A11y-Rollen und -Attribute pro Knoten:
-    - role="treeitem"
-    - aria-level="N" – Hierarchieebene (1-basiert)
-    - aria-selected="true|false"
-    - aria-expanded="true|false" – nur bei Knoten mit Kindern
-    - Wrapper: role="tree", optional aria-multiselectable="true|false"
-    - Kindcontainer: role="group"
+        A11y-Rollen und -Attribute pro Knoten:
+        - role="treeitem"
+        - aria-level="N" – Hierarchieebene (1-basiert)
+        - aria-selected="true|false"
+        - aria-expanded="true|false" – nur bei Knoten mit Kindern
+        - Wrapper: role="tree", optional aria-multiselectable="true|false"
+        - Kindcontainer: role="group"
 
-    ## Rendering- und Ladeverhalten
+        ## Rendering- und Ladeverhalten
 
-    - Expand-Button:
-    - Zeigt +/−; bei Lazy-Loading kurz „…“ (Puls-Animation).
-    - disabled-Knoten:
-    - Nicht fokussierbar, keine Interaktionen.
-    - Children Rendering:
-    - Kinder werden nur gerendert, wenn der Knoten expandiert ist.
+        - Expand-Button:
+        - Zeigt +/−; bei Lazy-Loading kurz „…“ (Puls-Animation).
+        - disabled-Knoten:
+        - Nicht fokussierbar, keine Interaktionen.
+        - Children Rendering:
+        - Kinder werden nur gerendert, wenn der Knoten expandiert ist.
 
-    ## Beispiele
+        ## Beispiele
 
-    1) Gesteuerte Expansion/Selektion aus App-State:
-    ```html
-    <bln-tree id="controlled" size="small"></bln-tree>
-    <script type="module">{`
+        1) Gesteuerte Expansion/Selektion aus App-State:
+        ```html
+        <bln-tree id="controlled" size="small"></bln-tree>
+        <script type="module">{`
         const el = document.getElementById('controlled');
         el.items = [
         { id: 'a', label: 'A', children: [{ id: 'a1', label: 'A1' }] },
@@ -2136,24 +2167,24 @@ export const RightArrow = () => <svg
         ];
         el.expandedIds = ['a'];
         el.selectedIds = ['a1'];
+        
+                el.addEventListener('bln-tree:toggle', (e) => {
+                const set = new Set(el.expandedIds);
+                e.detail.expanded ? set.add(e.detail.id) : set.delete(e.detail.id);
+                el.expandedIds = [...set];
+            });
+        
+                el.addEventListener('bln-tree:select', (e) => {
+                el.selectedIds = e.detail.selectedIds;
+            });`}
+        </script>
+        ```
 
-        el.addEventListener('bln-tree:toggle', (e) => {
-        const set = new Set(el.expandedIds);
-        e.detail.expanded ? set.add(e.detail.id) : set.delete(e.detail.id);
-        el.expandedIds = [...set];
-    });
 
-        el.addEventListener('bln-tree:select', (e) => {
-        el.selectedIds = e.detail.selectedIds;
-    });`}
-    </script>
-    ```
-
-
-    2) Multi-Select inkl. deaktivierter Knoten:
-    ```html
-    <bln-tree id="multi" multiSelect size="large"></bln-tree>
-    <script type="module">{`
+        2) Multi-Select inkl. deaktivierter Knoten:
+        ```html
+        <bln-tree id="multi" multiSelect size="large"></bln-tree>
+        <script type="module">{`
         const multi = document.getElementById('multi');
         multi.items = [
         { id: 'p', label: 'Projekte', children: [
@@ -2165,143 +2196,156 @@ export const RightArrow = () => <svg
         multi.expandedIds = ['p'];
         multi.selectedIds = ['p1'];
     `}</script>
-    ```
+        ```
 
 
-    3) Retro-Design mit Beschriftungen:
-    ```html
-    <label id="treeLabel">Organisation</label>
-    <small id="treeHint">Wählen Sie eine oder mehrere Abteilungen aus.</small>
+        3) Retro-Design mit Beschriftungen:
+        ```html
+        <label id="treeLabel">Organisation</label>
+        <small id="treeHint">Wählen Sie eine oder mehrere Abteilungen aus.</small>
 
-    <bln-tree
-        id="retro"
-        retro-design
-        aria-labelledby="treeLabel"
-        aria-describedby="treeHint"
-        class="border p-2"
-    ></bln-tree>
+        <bln-tree
+            id="retro"
+            retro-design
+            aria-labelledby="treeLabel"
+            aria-describedby="treeHint"
+            class="border p-2"
+        ></bln-tree>
 
-    <script type="module">{`
+        <script type="module">{`
         const retro = document.getElementById('retro');
         retro.items = [
         { id: 'hr', label: 'HR', children: [{ id: 'hr-payroll', label: 'Payroll' }] },
         { id: 'it', label: 'IT', hasChildren: true },
         ]; `}
-    </script>
-    ```
+        </script>
+        ```
 
 
-    ## Styling und Layout
+        ## Styling und Layout
 
-    - size:
-    - small: kompaktes Padding/Schrift
-    - medium: Standard
-    - large: großzügiges Padding/Schrift
-    - class:
-    - Zusätzliche Utility-Klassen für Wrapper und Items (z. B. Rahmen, Abstände).
-    - Retro-Design:
-    - Kantige Ecken, Retro-Fokus-Umrandung. Aktivieren per retro-design.
+        - size:
+        - small: kompaktes Padding/Schrift
+        - medium: Standard
+        - large: großzügiges Padding/Schrift
+        - class:
+        - Zusätzliche Utility-Klassen für Wrapper und Items (z. B. Rahmen, Abstände).
+        - Retro-Design:
+        - Kantige Ecken, Retro-Fokus-Umrandung. Aktivieren per retro-design.
 
-    Beispiel für volle Breite und Rahmen:
-    ```html
-    <bln-tree class="w-full border rounded-md p-2"></bln-tree>
-    ```
+        Beispiel für volle Breite und Rahmen:
+        ```html
+        <bln-tree class="w-full border rounded-md p-2"></bln-tree>
+        ```
 
 
-    ## Öffentliche Methoden
+        ## Öffentliche Methoden
 
-    - applyChildren(id: string, children: BlnTreeNode[])
-    - Setzt die Kinder eines Knotens und aktualisiert hasChildren basierend auf children.length.
-    - Wird i. d. R. über detail.resolve innerhalb des bln-tree:load-needed Handlers indirekt genutzt; kann bei Bedarf auch direkt aufgerufen werden.
+        - applyChildren(id: string, children: BlnTreeNode[])
+        - Setzt die Kinder eines Knotens und aktualisiert hasChildren basierend auf children.length.
+        - Wird i. d. R. über detail.resolve innerhalb des bln-tree:load-needed Handlers indirekt genutzt; kann bei
+        Bedarf auch direkt aufgerufen werden.
 
-    ```textmate
-    /** JavaScript */
-{` const tree = document.querySelector('bln-tree');
+        ```textmate
+        /** JavaScript */
+        {` const tree = document.querySelector('bln-tree');
     tree.applyChildren('root', [
     { id: 'root-1', label: 'Loaded Child' },
     ]); `}
-    ```
+        ```
 
 
-    ## Best Practices
+        ## Best Practices
 
-    - IDs stabil halten: Vermeiden Sie, bei jedem Render neue IDs zu erzeugen.
-    - Kontrolliert bleiben: Passen Sie selectedIds und expandedIds in Event-Handlern an, um den Tree-Status zu steuern.
-    - Lazy-Loading: Nutzen Sie bln-tree:load-needed und rufen Sie detail.resolve(children) mit schlanken Kindlisten auf.
-    - Große Datenmengen: Nur expandierte Äste rendern lassen (Standardverhalten). Bei sehr großen Bäumen ggf. Paginierung oder serverseitige Filter ergänzen.
-    - A11y: aria-label/aria-labelledby setzen und sinnvolle Label verwenden.
+        - IDs stabil halten: Vermeiden Sie, bei jedem Render neue IDs zu erzeugen.
+        - Kontrolliert bleiben: Passen Sie selectedIds und expandedIds in Event-Handlern an, um den Tree-Status zu
+        steuern.
+        - Lazy-Loading: Nutzen Sie bln-tree:load-needed und rufen Sie detail.resolve(children) mit schlanken Kindlisten
+        auf.
+        - Große Datenmengen: Nur expandierte Äste rendern lassen (Standardverhalten). Bei sehr großen Bäumen ggf.
+        Paginierung oder serverseitige Filter ergänzen.
+        - A11y: aria-label/aria-labelledby setzen und sinnvolle Label verwenden.
 
-    ## Fehlerbehebung
+        ## Fehlerbehebung
 
-    - Expand-Button reagiert nicht:
-    - Prüfen, ob disabled: true gesetzt ist. Prüfen, ob hasChildren korrekt gesetzt wurde.
-    - Lazy-Loading wird nicht aufgerufen:
-    - hasChildren muss true sein und children leer/undefiniert, wenn der Event beim ersten Expand feuern soll.
-    - Auswahl „vergisst“ sich:
-    - Denken Sie daran, selectedIds/expandedIds in Ihren Handlern zu aktualisieren (kontrollierter Ansatz).
-    - Fokus springt „komisch“:
-    - IDs müssen stabil bleiben; sonst findet die Komponente das Ziel für roving tabindex nicht wieder.
+        - Expand-Button reagiert nicht:
+        - Prüfen, ob disabled: true gesetzt ist. Prüfen, ob hasChildren korrekt gesetzt wurde.
+        - Lazy-Loading wird nicht aufgerufen:
+        - hasChildren muss true sein und children leer/undefiniert, wenn der Event beim ersten Expand feuern soll.
+        - Auswahl „vergisst“ sich:
+        - Denken Sie daran, selectedIds/expandedIds in Ihren Handlern zu aktualisieren (kontrollierter Ansatz).
+        - Fokus springt „komisch“:
+        - IDs müssen stabil bleiben; sonst findet die Komponente das Ziel für roving tabindex nicht wieder.
 
-    ## API-Referenz (Kurz)
+        ## API-Referenz (Kurz)
 
-    - Element: bln-tree
-    - Node: {`{ id: string; label: string; children?: Node[]; hasChildren?: boolean; disabled?: boolean }`}
-    - Props:
-    - items, selectedIds, expandedIds
-    - multiSelect (boolean)
-    - aria-label, aria-labelledby, aria-describedby
-    - class, size ('small' | 'medium' | 'large'), retro-design
-    - Events:
-    - bln-tree:select {`{ id, selectedIds }`}
-    - bln-tree:toggle {`{ id, expanded }`}
-    - bln-tree:load-needed {`{ id, resolve(children) }`}
-    - Methoden:
-    - applyChildren(id, children)
+        - Element: bln-tree
+        - Node: {`{ id: string; label: string; children?: Node[]; hasChildren?: boolean; disabled?: boolean }`}
+        - Props:
+        - items, selectedIds, expandedIds
+        - multiSelect (boolean)
+        - aria-label, aria-labelledby, aria-describedby
+        - class, size ('small' | 'medium' | 'large'), retro-design
+        - Events:
+        - bln-tree:select {`{ id, selectedIds }`}
+        - bln-tree:toggle {`{ id, expanded }`}
+        - bln-tree:load-needed {`{ id, resolve(children) }`}
+        - Methoden:
+        - applyChildren(id, children)
 
 
-    [zum Inhaltsverzeichnis](#start)
-</div></div>
+        [zum Inhaltsverzeichnis](#start)
+    </div>
+</div>
 <div className="sb-container">
     <div className='sb-section-title'>
         <a name="formBuilder"></a>
-    # FormBuilder — Baukasten für Formulare, Validierung und UI-Komponenten
+        # FormBuilder — Baukasten für Formulare, Validierung und UI-Komponenten
 
-    Der FormBuilder ist eine schlanke Hilfsklasse, mit der Sie Formularfragmente programmatisch zusammensetzen, synchron/asynchron validieren und häufige UI-Bausteine (Buttons, Tree, Checkbox, Select, Toast etc.) bequem hinzufügen können. Das Ergebnis sind Lit-Templates (TemplateResult[]), die Sie direkt in Ihre Webkomponente oder Seite rendern können.
+        Der FormBuilder ist eine schlanke Hilfsklasse, mit der Sie Formularfragmente programmatisch zusammensetzen,
+        synchron/asynchron validieren und häufige UI-Bausteine (Buttons, Tree, Checkbox, Select, Toast etc.) bequem
+        hinzufügen können. Das Ergebnis sind Lit-Templates (TemplateResult[]), die Sie direkt in Ihre Webkomponente oder
+        Seite rendern können.
 
-    - Paradigma: Builder-Pattern; alle add…()-Methoden sind kaskadierbar (fluent API)
-    - Ausgabe: Array aus TemplateResult via getFields()
-    - Validierung: synchron und asynchron, erweiterbar via eigene Validatoren
-    - Bequeme Helfer: addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
+        - Paradigma: Builder-Pattern; alle add…()-Methoden sind kaskadierbar (fluent API)
+        - Ausgabe: Array aus TemplateResult via getFields()
+        - Validierung: synchron und asynchron, erweiterbar via eigene Validatoren
+        - Bequeme Helfer: addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
 
-    ## Schnellstart
+        ## Schnellstart
 
-    ```textmate
-    // TypeScript
-    {` import {FormBuilder} from './FormBuilder';
+        ```textmate
+        Im Javascript wie folgt:
+
+        {`
+<script type="module">
+    import {FormBuilder} from './js/bundle.js';
 
     const fb = new FormBuilder();
+    fb.addBlnInput({label: "Ebam", name: "mail"})
+    const form = document.getElementById("formular")
+    form.templateResult = fb.getFields()
+        
+        </script>
+`}
+        Erläuterung: Nachdem Import des FormBuilders wird ein neues FormBuilder-Objekt erstellt.
+        Mit diesem erzeugen wir ein BlnInput mit dem Label Ebam und dem Name mail.
+        Anschließend erzeugen wir ein Objekt von der id, auf der das BlnInput Element erscheinen soll.
+        In diesem Element (in diesem Fall 'formular'), welches eine WebKomponente ist müssen sie innerhalb der
+        Properties
+        eine neue Property erzeugen welche KEIN Attribute sein darf und vom Typ 'Object' ist
+        Da bei Verwendung des FormBuilders alle erzeugten Elemente in Array vom Typ 'TemplateResult' gelegt werden,
+        müssen wir dieses Array
+        an die render() Funktion des Formulars senden. Dies geschieht mit der Anweisung form.templateResult =
+        fb.getFields()
+        ```
 
-    // Felder + einfache Validierung
-    fb.addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' })
-    .addBlnInput({ label: 'Passwort', name: 'password', type: 'password' })
-    .addBlnInput({ label: 'Alter', name: 'age', type: 'number', value: '18' })
-    .addButton('Speichern', () => {
-    console.log('Speichern geklickt');
-});
 
-    // Später im Render-Kontext (z. B. in Ihrer Lit-Komponente):
-    const fields = fb.getFields(); // TemplateResult[]
-    // In Ihrem Template:
-    {/* ${fields} */}
-    `}
-    ```
+        Beispiel-Integration in eine Lit-Komponente:
 
-
-    Beispiel-Integration in eine Lit-Komponente:
-
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     import {LitElement, html} from 'lit';
     import {customElement} from 'lit/decorators.js';
     import {FormBuilder} from './FormBuilder';
@@ -2313,112 +2357,118 @@ export const RightArrow = () => <svg
     .addBlnInput({ label: 'Passwort', name: 'password', type: 'password' })
     .addBlnInput({ label: 'Alter', name: 'age', type: 'number', value: '21' })
     .addButton('Absenden', () => this.submit());
-
-    private submit() {
-    console.log('Formular abgesendet');
-}
-
-    protected render() {
-    return html"<form class="space-y-3">${this.fb.getFields()}</form>";
+        
+            private submit() {
+            console.log('Formular abgesendet');
+        }
+        
+            protected render() {
+            return html"<form class="space-y-3">${this.fb.getFields()}</form>";
 }
 }
     `}
-    ```
+        ```
 
 
-    ## Validierung
+        ## Validierung
 
-    ### Standard-Validatoren (out of the box)
-    - email: prüft, ob ein „@“ enthalten ist; sonst Meldung „Falsches Email Format“
-    - password: mindestens 5 Zeichen; sonst Meldung „Passwort zu kurz (mindestens 5 Zeichen)“
-    - number: Muss Zahl sein und zwischen 10 und 99 (inkl.) liegen; andernfalls passende Fehlermeldung
+        ### Standard-Validatoren (out of the box)
+        - email: prüft, ob ein „@“ enthalten ist; sonst Meldung „Falsches Email Format“
+        - password: mindestens 5 Zeichen; sonst Meldung „Passwort zu kurz (mindestens 5 Zeichen)“
+        - number: Muss Zahl sein und zwischen 10 und 99 (inkl.) liegen; andernfalls passende Fehlermeldung
 
-    Diese Validatoren stehen direkt über die Methoden validate()/validateAsync() zur Verfügung. Inline-Fehlertexte können Sie bei Bedarf über BlnInput selbst steuern (Property error).
+        Diese Validatoren stehen direkt über die Methoden validate()/validateAsync() zur Verfügung. Inline-Fehlertexte
+        können Sie bei Bedarf über BlnInput selbst steuern (Property error).
 
-    ### Eigene (Sync) Validatoren registrieren
-    ```textmate
-    // TypeScript
-    {` type SyncValidator = (value: string) => string; // '' bedeutet „kein Fehler“
-
-    const fb = new FormBuilder()
-    .setCustomValidateFunction('iban', (value) => {
-    return /^DE\d{20}$/.test(value) ? '' : 'Ungültige IBAN';
-});
-
-    const msg = fb.validate('iban', 'DE123'); // -> 'Ungültige IBAN'
+        ### Eigene (Sync) Validatoren registrieren
+        ```textmate
+        // TypeScript
+        {` type SyncValidator = (value: string) => string; // '' bedeutet „kein Fehler“
+        
+            const fb = new FormBuilder()
+            .setCustomValidateFunction('iban', (value) => {
+            return /^DE\d{20}$/.test(value) ? '' : 'Ungültige IBAN';
+        });
+        
+            const msg = fb.validate('iban', 'DE123'); // -> 'Ungültige IBAN'
 `}
-    ```
+        ```
 
 
-    - validate(type, value): Führt synchronen Validator aus. Rückgabe ist die Fehlernachricht oder ''.
+        - validate(type, value): Führt synchronen Validator aus. Rückgabe ist die Fehlernachricht oder ''.
 
-    ### Eigene (Async) Validatoren registrieren
-    ```textmate
-    // TypeScript
-    {`
+        ### Eigene (Async) Validatoren registrieren
+        ```textmate
+        // TypeScript
+        {`
     type AsyncValidator = (value: string) => Promise<string>; // '' = OK
-
-    const fb = new FormBuilder()
-    .setCustomValidateFunctionAsync('username', async (value) => {
-        const res = await fetch("/api/exists?u=${encodeURIComponent(value)}").then(r => r.json());
+        
+            const fb = new FormBuilder()
+            .setCustomValidateFunctionAsync('username', async (value) => {
+                const res = await fetch("/api/exists?u=${encodeURIComponent(value)}").then(r => r.json());
         return res.exists ? 'Benutzername bereits vergeben' : '';
     });
+        
+            // Verwendung
+            const err = await fb.validateAsync('username', 'alice');
+            // -> '' oder 'Benutzername bereits vergeben'
+`}
+        ```
 
-    // Verwendung
-    const err = await fb.validateAsync('username', 'alice');
-    // -> '' oder 'Benutzername bereits vergeben'
-    `}
-    ```
 
+        - validateAsync(type, value): Führt den asynchronen Validator aus. Fehlt ein Async-Validator, wird automatisch
+        validate(type, value) (sync) verwendet. Falls der Async-Validator eine Exception wirft, wird „Validierung
+        fehlgeschlagen“ zurückgegeben (oder der String der Exception, wenn es ein String ist).
 
-    - validateAsync(type, value): Führt den asynchronen Validator aus. Fehlt ein Async-Validator, wird automatisch validate(type, value) (sync) verwendet. Falls der Async-Validator eine Exception wirft, wird „Validierung fehlgeschlagen“ zurückgegeben (oder der String der Exception, wenn es ein String ist).
+        ## Felder hinzufügen
 
-    ## Felder hinzufügen
+        ### addBlnInput(props?)
+        Fügt ein BlnInput-Feld hinzu. Sie können alle BlnInput-Properties als Props übergeben (z. B. label, name, type,
+        placeholder, hint, error, value, required usw.).
 
-    ### addBlnInput(props?)
-    Fügt ein BlnInput-Feld hinzu. Sie können alle BlnInput-Properties als Props übergeben (z. B. label, name, type, placeholder, hint, error, value, required usw.).
-
-    Beispiele:
-    ```textmate
-    // TypeScript
-    {`
+        Beispiele:
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder()
     .addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' })
     .addBlnInput({ label: 'Passwort', name: 'password', type: 'password' })
     .addBlnInput({ label: 'Mitarbeiteranzahl', name: 'employees', type: 'number', value: '12' })
     .addBlnInput({ label: 'Notiz', name: 'note', type: 'text', value: '…' });
     `}
-    ```
+        ```
 
 
-    Hinweise:
-    - Validierung läuft unabhängig über FormBuilder.validate()/validateAsync(), wenn Sie diese verwenden möchten.
-    - Für Inline-Fehlertexte können Sie die BlnInput-Property error setzen.
+        Hinweise:
+        - Validierung läuft unabhängig über FormBuilder.validate()/validateAsync(), wenn Sie diese verwenden möchten.
+        - Für Inline-Fehlertexte können Sie die BlnInput-Property error setzen.
 
-    ### addButton(text, onClick?)
-    Fügt einen Button hinzu. onClick ist optional.
+        ### addButton(text, onClick?)
+        Fügt einen Button hinzu. onClick ist optional.
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder()
     .addButton('Zurück', () => history.back())
     .addButton('Speichern', () => this.save());
     `}
-    ```
+        ```
 
 
-    ## Komfort-Builder für UI-Komponenten
+        ## Komfort-Builder für UI-Komponenten
 
-    Die folgenden Methoden fügen gebrauchsfertige Web-Komponenten ein. Sie reichen Props durch und können so kontrollierte Zustände und A11y-Attribute setzen. Alle Methoden pushen ein Template in die interne Liste und geben this zurück (kaskadierbar).
+        Die folgenden Methoden fügen gebrauchsfertige Web-Komponenten ein. Sie reichen Props durch und können so
+        kontrollierte Zustände und A11y-Attribute setzen. Alle Methoden pushen ein Template in die interne Liste und
+        geben this zurück (kaskadierbar).
 
-    ### addBlnTree(props?)
-    Fügt einen hierarchischen Tree ein.
-    - Unterstützt u. a. items, selectedIds, expandedIds, multiSelect, aria-Attribute, class.
+        ### addBlnTree(props?)
+        Fügt einen hierarchischen Tree ein.
+        - Unterstützt u. a. items, selectedIds, expandedIds, multiSelect, aria-Attribute, class.
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder().addBlnTree({
         items: [{ id: 'root', label: 'Root', children: [{ id: 'a', label: 'A' }] }],
         expandedIds: ['root'],
@@ -2427,19 +2477,19 @@ export const RightArrow = () => <svg
         ariaLabel: 'Organisationsstruktur'
     });
     `}
-    ```
+        ```
 
 
-    Typische Anwendungsfälle:
-    - Auswahl von Knoten
-    - Lazy Loading (über Tree-Events, die Sie in Ihrer Komponente behandeln)
+        Typische Anwendungsfälle:
+        - Auswahl von Knoten
+        - Lazy Loading (über Tree-Events, die Sie in Ihrer Komponente behandeln)
 
-    ### addBlnCheckbox(props?)
-    Fügt eine Checkbox mit Label, Hint, Corner-Hint etc. ein.
+        ### addBlnCheckbox(props?)
+        Fügt eine Checkbox mit Label, Hint, Corner-Hint etc. ein.
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder().addBlnCheckbox({
         label: 'AGB akzeptieren',
         name: 'terms',
@@ -2448,28 +2498,28 @@ export const RightArrow = () => <svg
         hint: 'Bitte bestätigen, um fortzufahren'
     });
     `}
-    ```
+        ```
 
 
-    ### addModernTree(model, opts?)
-    Fügt eine modern-tree-Komponente ein.
-    - model: Datenmodell
-    - opts.level?: Start-Ebene (Default 0)
+        ### addModernTree(model, opts?)
+        Fügt eine modern-tree-Komponente ein.
+        - model: Datenmodell
+        - opts.level?: Start-Ebene (Default 0)
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder().addModernTree(myModel, { level: 1 });
     `}
-    ```
+        ```
 
 
-    ### addBlnToast(props?)
-    Fügt eine Toast-Benachrichtigung ein (Info/Erfolg/Warnung/Fehler, Auto-Hide etc.).
+        ### addBlnToast(props?)
+        Fügt eine Toast-Benachrichtigung ein (Info/Erfolg/Warnung/Fehler, Auto-Hide etc.).
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder().addBlnToast({
         open: true,
         variant: 'success',
@@ -2479,15 +2529,15 @@ export const RightArrow = () => <svg
         autoHideDelay: 3000
     });
     `}
-    ```
+        ```
 
 
-    ### addBlnSelect(props?)
-    Fügt ein Select-Feld ein (Single/Multi, Label, Hint, Optionen usw.).
+        ### addBlnSelect(props?)
+        Fügt ein Select-Feld ein (Single/Multi, Label, Hint, Optionen usw.).
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder().addBlnSelect({
         label: 'Land',
         name: 'country',
@@ -2499,42 +2549,42 @@ export const RightArrow = () => <svg
         required: true
     });
     `}
-    ```
+        ```
 
 
-    ### addBlnButton(label, props?, onClick?)
-    Fügt einen stilisierten Button ein.
+        ### addBlnButton(label, props?, onClick?)
+        Fügt einen stilisierten Button ein.
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     new FormBuilder().addBlnButton('Weiter', { variant: 'solid', size: 'medium' }, () => {
         console.log('Weiter geklickt');
     });
     `}
-    ```
+        ```
 
 
-    ## Ausgabe rendern
+        ## Ausgabe rendern
 
-    - getFields(): TemplateResult[] — gibt alle bisher hinzugefügten Templates zurück.
-    - Rendering: Binden Sie dieses Array an der gewünschten Stelle im Template ein.
+        - getFields(): TemplateResult[] — gibt alle bisher hinzugefügten Templates zurück.
+        - Rendering: Binden Sie dieses Array an der gewünschten Stelle im Template ein.
 
-    ```textmate
-    // TypeScript
-    {`
+        ```textmate
+        // TypeScript
+        {`
     const fb = new FormBuilder().addBlnInput({ label: 'E-Mail', name: 'email', type: 'email' }).addButton('OK');
     const view = html"<section class=\"grid gap-4\">${fb.getFields()}</section>";
     `}
-    ```
+        ```
 
 
-    ## Beispiele (End-to-End)
+        ## Beispiele (End-to-End)
 
-    ### 1) Formular mit Sync- und Async-Validierung
-    ```textmate
-    // TypeScript
-{`
+        ### 1) Formular mit Sync- und Async-Validierung
+        ```textmate
+        // TypeScript
+        {`
     const fb = new FormBuilder()
     .setCustomValidateFunction('postal', (v) => (/^\d{5}$/.test(v) ? '' : 'PLZ muss 5 Ziffern haben'))
     .setCustomValidateFunctionAsync('username', async (v) => {
@@ -2551,13 +2601,13 @@ export const RightArrow = () => <svg
         console.log({ e1, e2 });
     });
     `}
-    ```
+        ```
 
 
-    ### 2) Formular mit Tree, Checkbox, Select und Actions
-    ```textmate
-    // TypeScript
-{`
+        ### 2) Formular mit Tree, Checkbox, Select und Actions
+        ```textmate
+        // TypeScript
+        {`
     const fb = new FormBuilder()
     .addBlnTree({
         items: [{ id: 'root', label: 'Root', children: [{ id: 'a', label: 'A' }] }],
@@ -2573,46 +2623,54 @@ export const RightArrow = () => <svg
     .addBlnButton('Speichern', { variant: 'solid' }, () => console.log('Speichern'))
     .addBlnToast({ open: false, message: 'Gespeichert' });
     `}
-    ```
+        ```
 
 
-    ## Best Practices
+        ## Best Practices
 
-    - Builder kaskadieren: Nutzen Sie die fluente API, um lesbare Konfigurationen zu erhalten.
-    - Validierungslogik zentralisieren: Registrieren Sie eigene Validatoren (sync/async) einmal und verwenden Sie sie überall.
-    - Fehlertexte: Leere Strings '' bedeuten gültig; alles andere wird als Fehlermeldung interpretiert.
-    - Asynchrone Validierung robust machen: Fehler/Exceptions fangen; die API gibt im Fehlerfall „Validierung fehlgeschlagen“ zurück.
-    - Unveränderlichkeit: Wenn Sie Items/Props an UI-Komponenten übergeben, bevorzugen Sie neue Arrays/Objekte, um reaktive Updates zuverlässig auszulösen.
-    - i18n: Verwenden Sie Ihre eigene Übersetzungs-/Formatierungsschicht für Fehlermeldungen und Labels.
+        - Builder kaskadieren: Nutzen Sie die fluente API, um lesbare Konfigurationen zu erhalten.
+        - Validierungslogik zentralisieren: Registrieren Sie eigene Validatoren (sync/async) einmal und verwenden Sie
+        sie überall.
+        - Fehlertexte: Leere Strings '' bedeuten gültig; alles andere wird als Fehlermeldung interpretiert.
+        - Asynchrone Validierung robust machen: Fehler/Exceptions fangen; die API gibt im Fehlerfall „Validierung
+        fehlgeschlagen“ zurück.
+        - Unveränderlichkeit: Wenn Sie Items/Props an UI-Komponenten übergeben, bevorzugen Sie neue Arrays/Objekte, um
+        reaktive Updates zuverlässig auszulösen.
+        - i18n: Verwenden Sie Ihre eigene Übersetzungs-/Formatierungsschicht für Fehlermeldungen und Labels.
 
-    ## API-Referenz
+        ## API-Referenz
 
-    Methoden:
-    - setCustomValidateFunction(type: string, func: (value: string) => string): this
-    - Registriert/überschreibt einen synchronen Validator.
-    - setCustomValidateFunctionAsync(type: string, func: (value: string) => Promise<string></string>): this
+        Methoden:
+        - setCustomValidateFunction(type: string, func: (value: string) => string): this
+        - Registriert/überschreibt einen synchronen Validator.
+        - setCustomValidateFunctionAsync(type: string, func: (value: string) => Promise
+        <string></string>
+        ): this
         - Registriert/überschreibt einen asynchronen Validator.
         - validate(type: string, value: string): string
         - Führt Sync-Validierung aus; '' bedeutet „gültig“.
-        - validateAsync(type: string, value: string): Promise<string></string>
-            - Führt Async-Validierung aus; fällt zurück auf validate(), wenn kein Async-Validator vorhanden ist.
-            - addBlnInput(props?: Partial von BlnInputProps): this
-            - Fügt ein BlnInput-Feld ein; alle BlnInput-Properties können gesetzt werden (z. B. label, name, type, value, hint, error, required usw.).
-            - addButton(text: string, onClick?: () => void): this
-            - Fügt einen Button ein.
-            - addBlnTree(props?: Partial {'<...>'}): this
-            - Fügt einen Tree ein; unterstützt Items, Auswahl, Expansion, Multi-Select, aria-*.
-            - addBlnCheckbox(props?: Partial{'<...>'}): this
-            - Fügt eine Checkbox ein.
-            - addModernTree(model: IDataModel, opts?: {`{ level?: number }): this `}
-            - Fügt modern-tree mit Datenmodell ein.
-            - addBlnToast(props?: Partial{'<...>'}): this
-            - Fügt eine Toast-Notification ein.
-            - addBlnSelect(props?: Partial{'<...>'}): this
-            - Fügt ein Select-Feld ein.
-            - addBlnButton(label: string, props?: Partial{'<...>'}, onClick?: (e: MouseEvent) => void): this
-            - Fügt einen stilisierten Button ein.
-            - getFields(): TemplateResult[]
-            - Liefert das Array der aufgebauten UI-Templates
-    </div></div>
+        - validateAsync(type: string, value: string): Promise
+        <string></string>
+        - Führt Async-Validierung aus; fällt zurück auf validate(), wenn kein Async-Validator vorhanden ist.
+        - addBlnInput(props?: Partial von BlnInputProps): this
+        - Fügt ein BlnInput-Feld ein; alle BlnInput-Properties können gesetzt werden (z. B. label, name, type, value,
+        hint, error, required usw.).
+        - addButton(text: string, onClick?: () => void): this
+        - Fügt einen Button ein.
+        - addBlnTree(props?: Partial {'<...>'}): this
+        - Fügt einen Tree ein; unterstützt Items, Auswahl, Expansion, Multi-Select, aria-*.
+        - addBlnCheckbox(props?: Partial{'<...>'}): this
+        - Fügt eine Checkbox ein.
+        - addModernTree(model: IDataModel, opts?: {`{ level?: number }): this `}
+        - Fügt modern-tree mit Datenmodell ein.
+        - addBlnToast(props?: Partial{'<...>'}): this
+        - Fügt eine Toast-Notification ein.
+        - addBlnSelect(props?: Partial{'<...>'}): this
+        - Fügt ein Select-Feld ein.
+        - addBlnButton(label: string, props?: Partial{'<...>'}, onClick?: (e: MouseEvent) => void): this
+        - Fügt einen stilisierten Button ein.
+        - getFields(): TemplateResult[]
+        - Liefert das Array der aufgebauten UI-Templates
+    </div>
+</div>
 
