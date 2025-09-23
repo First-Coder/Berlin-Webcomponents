@@ -2,12 +2,14 @@ import {html, TemplateResult} from "lit";
 // Ensure components are registered when templates are used
 import './BlnButton';
 import './BlnSelect';
+import './BlnAutocompleteSelect';
 import './BlnCheckBox';
 import './BlnTreeView';
 import './ModernTree';
 import './BlnToast';
 import './BlnInput';
 import type { BlnSelectProps } from './BlnSelect';
+import type { BlnAutocompleteSelectProps } from './BlnAutocompleteSelect';
 import type { BlnCheckBoxProps } from './BlnCheckBox';
 import type { BlnTreePropsType, BlnTreeNodeType } from './BlnTreeView';
 import type { IDataModel } from './ModernTree';
@@ -200,6 +202,35 @@ class FormBuilder {
       .ariaLabelledby=${props.ariaLabelledby ?? ''}
       .ariaDescribedby=${props.ariaDescribedby ?? ''}
     ></bln-select>`;
+    this.fields.push(tpl);
+    return this;
+  }
+
+  // Convenience: add a BlnAutocompleteSelect
+  addBlnAutocompleteSelect(props: Partial<BlnAutocompleteSelectProps> = {}) {
+    const tpl = html`<bln-autocomplete-select
+      .label=${props.label ?? ''}
+      .cornerHint=${props.cornerHint ?? ''}
+      .hint=${props.hint ?? ''}
+      .name=${props.name ?? ''}
+      .placeholder=${props.placeholder ?? ''}
+      .searchPlaceholder=${props.searchPlaceholder ?? 'Suchen...'}
+      .value=${props.value ?? ''}
+      .disabled=${props.disabled ?? false}
+      .required=${props.required ?? false}
+      .multiple=${props.multiple ?? false}
+      .size=${props.size ?? 'medium'}
+      .class=${props.class ?? ''}
+      .isValid=${props.isValid ?? undefined}
+      .retroDesign=${props.retroDesign ?? false}
+      .minSearchChars=${props.minSearchChars ?? 1}
+      .noResultsText=${props.noResultsText ?? 'Keine Ergebnisse gefunden'}
+      .loadingText=${props.loadingText ?? 'Laden...'}
+      .options=${props.options ?? []}
+      .ariaLabel=${props.ariaLabel ?? ''}
+      .ariaLabelledby=${props.ariaLabelledby ?? ''}
+      .ariaDescribedby=${props.ariaDescribedby ?? ''}
+    ></bln-autocomplete-select>`;
     this.fields.push(tpl);
     return this;
   }

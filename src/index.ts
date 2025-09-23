@@ -5,6 +5,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 import './components/BlnSelect';
 import type { BlnSelectProps } from './components/BlnSelect';
+import './components/BlnAutocompleteSelect';
+import type { BlnAutocompleteSelectProps } from './components/BlnAutocompleteSelect';
 
 
 const modules = import.meta.glob([
@@ -24,6 +26,7 @@ console.debug('Geladene Module:', Object.keys(modules));
 
 
 export * from './components/BlnSelect';
+export * from './components/BlnAutocompleteSelect';
 export * from './components/BlnCheckBox';
 export * from './components/BlnTreeView';
 export * from './components/BlnToast';
