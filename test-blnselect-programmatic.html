@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlnSelect Programmatic Selection Test</title>
+    <script type="module" src="./dist/index.js"></script>
+    <link rel="stylesheet" href="./dist/style.css">
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            padding: 2rem; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        .demo-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+        .buttons {
+            margin: 1rem 0;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>BlnSelect - Programmatisches Auswählen von Items</h1>
+    
+    <div class="demo-section">
+        <h2>Einfach-Auswahl (Single Select)</h2>
+        <p>Verwende die <code>value</code> Eigenschaft, um ein Item auszuwählen:</p>
+        
+        <bln-select 
+            id="singleSelect" 
+            label="Wähle eine Stadt" 
+            name="city"
+            placeholder="-- Bitte wählen --">
+        </bln-select>
+        
+        <div class="buttons">
+            <button onclick="selectBerlin()">Berlin auswählen</button>
+            <button onclick="selectMunich()">München auswählen</button>
+            <button onclick="selectHamburg()">Hamburg auswählen</button>
+            <button onclick="clearSingleSelection()">Auswahl löschen</button>
+        </div>
+        
+        <div class="info" id="singleInfo">Aktueller Wert: (leer)</div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Mehrfach-Auswahl (Multiple Select)</h2>
+        <p>Verwende ein Array von Strings für die <code>value</code> Eigenschaft:</p>
+        
+        <bln-select 
+            id="multiSelect" 
+            label="Wähle Hobbys" 
+            name="hobbies"
+            multiple
+            placeholder="-- Hobbys auswählen --">
+        </bln-select>
+        
+        <div class="buttons">
+            <button onclick="selectSports()">Sport + Lesen</button>
+            <button onclick="selectAll()">Alle auswählen</button>
+            <button onclick="addMusic()">Musik hinzufügen</button>
+            <button onclick="clearMultiSelection()">Auswahl löschen</button>
+        </div>
+        
+        <div class="info" id="multiInfo">Aktuelle Werte: (leer)</div>
+    </div>
+
+    <script>
+        // Optionen für Single Select definieren
+        const cityOptions = [
+            { label: 'Berlin', value: 'berlin' },
+            { label: 'München', value: 'munich' },
+            { label: 'Hamburg', value: 'hamburg' },
+            { label: 'Köln', value: 'cologne' },
+            { label: 'Frankfurt', value: 'frankfurt' }
+        ];
+
+        // Optionen für Multiple Select definieren
+        const hobbyOptions = [
+            { label: 'Sport', value: 'sport' },
+            { label: 'Lesen', value: 'reading' },
+            { label: 'Musik', value: 'music' },
+            { label: 'Kochen', value: 'cooking' },
+            { label: 'Reisen', value: 'travel' }
+        ];
+
+        // Warten bis die Web Components geladen sind
+        window.addEventListener('DOMContentLoaded', () => {
+            const singleSelect = document.getElementById('singleSelect');
+            const multiSelect = document.getElementById('multiSelect');
+
+            // Optionen setzen
+            singleSelect.options = cityOptions;
+            multiSelect.options = hobbyOptions;
+
+            // Event Listener für Änderungen
+            singleSelect.addEventListener('change', updateSingleInfo);
+            multiSelect.addEventListener('change', updateMultiInfo);
+
+            // Initial Info aktualisieren
+            updateSingleInfo();
+            updateMultiInfo();
+        });
+
+        // Funktionen für Single Select
+        function selectBerlin() {
+            const select = document.getElementById('singleSelect');
+            select.value = 'berlin';
+            updateSingleInfo();
+        }
+
+        function selectMunich() {
+            const select = document.getElementById('singleSelect');
+            select.value = 'munich';
+            updateSingleInfo();
+        }
+
+        function selectHamburg() {
+            const select = document.getElementById('singleSelect');
+            select.value = 'hamburg';
+            updateSingleInfo();
+        }
+
+        function clearSingleSelection() {
+            const select = document.getElementById('singleSelect');
+            select.value = '';
+            updateSingleInfo();
+        }
+
+        function updateSingleInfo() {
+            const select = document.getElementById('singleSelect');
+            const info = document.getElementById('singleInfo');
+            const value = select.value;
+            info.textContent = `Aktueller Wert: ${value || '(leer)'}`;
+        }
+
+        // Funktionen für Multiple Select
+        function selectSports() {
+            const select = document.getElementById('multiSelect');
+            select.value = ['sport', 'reading'];
+            updateMultiInfo();
+        }
+
+        function selectAll() {
+            const select = document.getElementById('multiSelect');
+            select.value = ['sport', 'reading', 'music', 'cooking', 'travel'];
+            updateMultiInfo();
+        }
+
+        function addMusic() {
+            const select = document.getElementById('multiSelect');
+            const currentValue = Array.isArray(select.value) ? select.value : [];
+            if (!currentValue.includes('music')) {
+                select.value = [...currentValue, 'music'];
+                updateMultiInfo();
+            }
+        }
+
+        function clearMultiSelection() {
+            const select = document.getElementById('multiSelect');
+            select.value = [];
+            updateMultiInfo();
+        }
+
+        function updateMultiInfo() {
+            const select = document.getElementById('multiSelect');
+            const info = document.getElementById('multiInfo');
+            const values = select.value;
+            if (Array.isArray(values) && values.length > 0) {
+                info.textContent = `Aktuelle Werte: [${values.join(', ')}]`;
+            } else {
+                info.textContent = 'Aktuelle Werte: (leer)';
+            }
+        }
+    </script>
+</body>
+</html>
