@@ -8,6 +8,7 @@ import './BlnTreeView';
 import './ModernTree';
 import './BlnToast';
 import './BlnInput';
+import './BlnTextarea';
 import type { BlnSelectProps } from './BlnSelect';
 import type { BlnAutocompleteSelectProps } from './BlnAutocompleteSelect';
 import type { BlnCheckBoxProps } from './BlnCheckBox';
@@ -16,6 +17,7 @@ import type { IDataModel } from './ModernTree';
 import type { BlnToastProps } from './BlnToast';
 import type { BlnButtonProps } from './BlnButton';
 import {BlnInputProps} from "./BlnInput";
+import {BlnTextareaProps} from "./BlnTextarea";
 
 // A small, framework-agnostic builder that produces lit TemplateResults for our inputs/buttons
 // and offers a simple validate API. Tests focus on validate().
@@ -112,6 +114,38 @@ class FormBuilder {
       .ariaDescribedby=${props.ariaDescribedby ?? ''}
       .validator=${props.validator ?? undefined}
     ></bln-input>`;
+        this.fields.push(tpl);
+        return this;
+    }
+
+    addBlnTextarea(props: Partial<BlnTextareaProps> = {}) {
+        const tpl = html`<bln-textarea
+      .label=${props.label ?? ''}
+      .name=${props.name ?? ''}
+      .placeholder=${props.placeholder ?? ''}
+      .hint=${props.hint ?? ''}
+      .error=${props.error ?? ''}
+      .value=${props.value ?? ''}
+      .disabled=${props.disabled ?? false}
+      .required=${props.required ?? false}
+      .readonly=${props.readonly ?? false}
+      .class=${props.class ?? ''}
+      .size=${props.size ?? 'medium'}
+      .cornerHint=${props.cornerHint ?? ''}
+      .isValid=${props.isValid ?? undefined}
+      .retroDesign=${props.retroDesign ?? false}
+      .minlength=${props.minlength ?? undefined}
+      .maxlength=${props.maxlength ?? undefined}
+      .rows=${props.rows ?? 4}
+      .cols=${props.cols ?? undefined}
+      .wrap=${props.wrap ?? 'soft'}
+      .resize=${props.resize ?? 'vertical'}
+      .autocomplete=${props.autocomplete ?? ''}
+      .ariaLabel=${props.ariaLabel ?? ''}
+      .ariaLabelledby=${props.ariaLabelledby ?? ''}
+      .ariaDescribedby=${props.ariaDescribedby ?? ''}
+      .validator=${props.validator ?? undefined}
+    ></bln-textarea>`;
         this.fields.push(tpl);
         return this;
     }
