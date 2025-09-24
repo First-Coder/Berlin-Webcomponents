@@ -213,3 +213,5 @@ export class BlnTextarea extends TailwindElement {
         }
     }
 }
+
+const nothing = undefined;
