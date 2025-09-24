@@ -2310,7 +2310,7 @@ export const RightArrow = () => <svg
         - Paradigma: Builder-Pattern; alle add…()-Methoden sind kaskadierbar (fluent API)
         - Ausgabe: Array aus TemplateResult via getFields()
         - Validierung: synchron und asynchron, erweiterbar via eigene Validatoren
-        - Bequeme Helfer: addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
+        - Bequeme Helfer: addBlnInput, addBlnTextarea, addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
 
         ## Schnellstart
 
@@ -2655,6 +2655,9 @@ export const RightArrow = () => <svg
         - addBlnInput(props?: Partial von BlnInputProps): this
         - Fügt ein BlnInput-Feld ein; alle BlnInput-Properties können gesetzt werden (z. B. label, name, type, value,
         hint, error, required usw.).
+        - addBlnTextarea(props?: Partial von BlnTextareaProps): this
+        - Fügt ein BlnTextarea-Feld ein; alle BlnTextarea-Properties können gesetzt werden (z. B. label, name, value,
+        rows, cols, wrap, resize, hint, error, required usw.).
         - addButton(text: string, onClick?: () => void): this
         - Fügt einen Button ein.
         - addBlnTree(props?: Partial {'<...>'}): this
