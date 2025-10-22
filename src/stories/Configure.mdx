@@ -2310,7 +2310,7 @@ export const RightArrow = () => <svg
         - Paradigma: Builder-Pattern; alle add…()-Methoden sind kaskadierbar (fluent API)
         - Ausgabe: Array aus TemplateResult via getFields()
         - Validierung: synchron und asynchron, erweiterbar via eigene Validatoren
-        - Bequeme Helfer: addBlnInput, addBlnTextarea, addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
+        - Bequeme Helfer: addBlnInput, addBlnTextarea, addBlnTabs, addBlnCalendar, addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
 
         ## Schnellstart
 
@@ -2658,6 +2658,12 @@ export const RightArrow = () => <svg
         - addBlnTextarea(props?: Partial von BlnTextareaProps): this
         - Fügt ein BlnTextarea-Feld ein; alle BlnTextarea-Properties können gesetzt werden (z. B. label, name, value,
         rows, cols, wrap, resize, hint, error, required usw.).
+        - addBlnTabs(props?: Partial von BlnTabsProps): this
+        - Fügt ein BlnTabs-Element ein; alle BlnTabs-Properties können gesetzt werden (z. B. items, activeId, variant,
+        size, orientation, disabled, ariaLabel usw.). Items ist ein Array von Tab-Objekten mit id, label, content, disabled, icon.
+        - addBlnCalendar(props?: Partial von BlnCalendarProps): this
+        - Fügt ein BlnCalendar-Element ein; alle BlnCalendar-Properties können gesetzt werden (z. B. startDate, endDate, dateFormat,
+        minDate, maxDate, showTodayButton, showClearButton, locale, size, disabled, readonly, validator usw.).
         - addButton(text: string, onClick?: () => void): this
         - Fügt einen Button ein.
         - addBlnTree(props?: Partial {'<...>'}): this

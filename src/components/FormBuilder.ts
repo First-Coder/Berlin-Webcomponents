@@ -9,6 +9,8 @@ import './ModernTree';
 import './BlnToast';
 import './BlnInput';
 import './BlnTextarea';
+import './BlnTabs';
+import './BlnCalendar';
 import type { BlnSelectProps } from './BlnSelect';
 import type { BlnAutocompleteSelectProps } from './BlnAutocompleteSelect';
 import type { BlnCheckBoxProps } from './BlnCheckBox';
@@ -18,6 +20,8 @@ import type { BlnToastProps } from './BlnToast';
 import type { BlnButtonProps } from './BlnButton';
 import {BlnInputProps} from "./BlnInput";
 import {BlnTextareaProps} from "./BlnTextarea";
+import {BlnTabsProps} from "./BlnTabs";
+import {BlnCalendarProps} from "./BlnCalendar";
 
 // A small, framework-agnostic builder that produces lit TemplateResults for our inputs/buttons
 // and offers a simple validate API. Tests focus on validate().
@@ -146,6 +150,54 @@ class FormBuilder {
       .ariaDescribedby=${props.ariaDescribedby ?? ''}
       .validator=${props.validator ?? undefined}
     ></bln-textarea>`;
+        this.fields.push(tpl);
+        return this;
+    }
+
+    addBlnTabs(props: Partial<BlnTabsProps> = {}) {
+        const tpl = html`<bln-tabs
+      .items=${props.items ?? []}
+      .activeId=${props.activeId ?? ''}
+      .variant=${props.variant ?? 'default'}
+      .size=${props.size ?? 'medium'}
+      .orientation=${props.orientation ?? 'horizontal'}
+      .disabled=${props.disabled ?? false}
+      .class=${props.class ?? ''}
+      .ariaLabel=${props.ariaLabel ?? ''}
+      .ariaLabelledby=${props.ariaLabelledby ?? ''}
+      .ariaDescribedby=${props.ariaDescribedby ?? ''}
+    ></bln-tabs>`;
+        this.fields.push(tpl);
+        return this;
+    }
+
+    addBlnCalendar(props: Partial<BlnCalendarProps> = {}) {
+        const tpl = html`<bln-calendar
+      .label=${props.label ?? ''}
+      .name=${props.name ?? ''}
+      .hint=${props.hint ?? ''}
+      .error=${props.error ?? ''}
+      .startDate=${props.startDate ?? ''}
+      .endDate=${props.endDate ?? ''}
+      .dateFormat=${props.dateFormat ?? 'dd.MM.yyyy'}
+      .disabled=${props.disabled ?? false}
+      .required=${props.required ?? false}
+      .readonly=${props.readonly ?? false}
+      .class=${props.class ?? ''}
+      .size=${props.size ?? 'medium'}
+      .cornerHint=${props.cornerHint ?? ''}
+      .isValid=${props.isValid ?? undefined}
+      .retroDesign=${props.retroDesign ?? false}
+      .minDate=${props.minDate ?? ''}
+      .maxDate=${props.maxDate ?? ''}
+      .showTodayButton=${props.showTodayButton ?? true}
+      .showClearButton=${props.showClearButton ?? true}
+      .locale=${props.locale ?? 'de-DE'}
+      .ariaLabel=${props.ariaLabel ?? ''}
+      .ariaLabelledby=${props.ariaLabelledby ?? ''}
+      .ariaDescribedby=${props.ariaDescribedby ?? ''}
+      .validator=${props.validator ?? undefined}
+    ></bln-calendar>`;
         this.fields.push(tpl);
         return this;
     }

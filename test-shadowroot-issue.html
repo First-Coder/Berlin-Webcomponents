@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlnTextarea ShadowRoot Test</title>
+</head>
+<body>
+    <h1>BlnTextarea ShadowRoot Test</h1>
+    <div id="test-container">
+        <bln-textarea label="Test Textarea" name="test" placeholder="Test placeholder"></bln-textarea>
+    </div>
+
+    <script type="module">
+        // Import the component
+        import './src/components/BlnTextarea.js';
+
+        // Wait for the component to be defined
+        await customElements.whenDefined('bln-textarea');
+
+        // Test shadowRoot existence
+        const textarea = document.querySelector('bln-textarea');
+        console.log('BlnTextarea element:', textarea);
+        console.log('ShadowRoot exists:', !!textarea.shadowRoot);
+        
+        if (textarea.shadowRoot) {
+            console.log('✓ ShadowRoot successfully created');
+            console.log('ShadowRoot contents:', textarea.shadowRoot.innerHTML);
+        } else {
+            console.error('✗ ShadowRoot not found!');
+        }
+
+        // Test via FormBuilder integration
+        import('./src/components/FormBuilder.js').then(({ FormBuilder }) => {
+            const fb = new FormBuilder();
+            fb.addBlnTextarea({ label: 'FormBuilder Textarea', name: 'fb-test' });
+            
+            const container = document.createElement('div');
+            container.id = 'formbuilder-test';
+            document.body.appendChild(container);
+            
+            // Render the form
+            const fields = fb.getFields();
+            console.log('FormBuilder fields:', fields);
+            
+            // Test if we can render without errors
+            setTimeout(() => {
+                try {
+                    container.innerHTML = fields.map(field => field.strings.join('')).join('');
+                    console.log('✓ FormBuilder integration works');
+                } catch (error) {
+                    console.error('✗ FormBuilder integration failed:', error);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

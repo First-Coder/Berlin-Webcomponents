@@ -32,6 +32,8 @@ export * from './components/BlnTreeView';
 export * from './components/BlnToast';
 export * from './components/BlnInput';
 export * from './components/BlnTextarea';
+export * from './components/BlnTabs';
+export * from './components/BlnCalendar';
 export * from './components/BlnHeader';
 export * from './components/BlnFooter';
 export * from './components/BlnNavigation';
