@@ -2310,7 +2310,7 @@ export const RightArrow = () => <svg
         - Paradigma: Builder-Pattern; alle add…()-Methoden sind kaskadierbar (fluent API)
         - Ausgabe: Array aus TemplateResult via getFields()
         - Validierung: synchron und asynchron, erweiterbar via eigene Validatoren
-        - Bequeme Helfer: addBlnInput, addBlnTextarea, addBlnTabs, addBlnCalendar, addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
+        - Bequeme Helfer: addBlnInput, addBlnTextarea, addBlnTabs, addBlnCalendar, addBlnModalDialog, addBlnTree, addBlnCheckbox, addModernTree, addBlnToast, addBlnSelect, addBlnButton
 
         ## Schnellstart
 
@@ -2664,6 +2664,9 @@ export const RightArrow = () => <svg
         - addBlnCalendar(props?: Partial von BlnCalendarProps): this
         - Fügt ein BlnCalendar-Element ein; alle BlnCalendar-Properties können gesetzt werden (z. B. startDate, endDate, dateFormat,
         minDate, maxDate, showTodayButton, showClearButton, locale, size, disabled, readonly, validator usw.).
+        - addBlnModalDialog(props?: Partial von BlnModalProps): this
+        - Fügt ein BlnModalDialog-Element ein; alle BlnModalDialog-Properties können gesetzt werden (z. B. title, text, inputLabel, 
+        inputPlaceholder, inputValue, inputType, showInput, buttons, size, closeOnBackdrop, closeOnEscape, ariaLabel, validator usw.).
         - addButton(text: string, onClick?: () => void): this
         - Fügt einen Button ein.
         - addBlnTree(props?: Partial {'<...>'}): this

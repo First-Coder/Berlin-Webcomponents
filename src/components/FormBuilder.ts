@@ -11,6 +11,7 @@ import './BlnInput';
 import './BlnTextarea';
 import './BlnTabs';
 import './BlnCalendar';
+import './BlnModalDialog';
 import type { BlnSelectProps } from './BlnSelect';
 import type { BlnAutocompleteSelectProps } from './BlnAutocompleteSelect';
 import type { BlnCheckBoxProps } from './BlnCheckBox';
@@ -22,6 +23,7 @@ import {BlnInputProps} from "./BlnInput";
 import {BlnTextareaProps} from "./BlnTextarea";
 import {BlnTabsProps} from "./BlnTabs";
 import {BlnCalendarProps} from "./BlnCalendar";
+import {BlnModalProps} from "./BlnModalDialog";
 
 // A small, framework-agnostic builder that produces lit TemplateResults for our inputs/buttons
 // and offers a simple validate API. Tests focus on validate().
@@ -198,6 +200,30 @@ class FormBuilder {
       .ariaDescribedby=${props.ariaDescribedby ?? ''}
       .validator=${props.validator ?? undefined}
     ></bln-calendar>`;
+        this.fields.push(tpl);
+        return this;
+    }
+
+    addBlnModalDialog(props: Partial<BlnModalProps> = {}) {
+        const tpl = html`<bln-modal-dialog
+      .title=${props.title ?? ''}
+      .text=${props.text ?? ''}
+      .inputLabel=${props.inputLabel ?? ''}
+      .inputPlaceholder=${props.inputPlaceholder ?? ''}
+      .inputValue=${props.inputValue ?? ''}
+      .inputType=${props.inputType ?? 'text'}
+      .showInput=${props.showInput ?? false}
+      .buttons=${props.buttons ?? []}
+      .open=${props.open ?? false}
+      .size=${props.size ?? 'medium'}
+      .closeOnBackdrop=${props.closeOnBackdrop ?? true}
+      .closeOnEscape=${props.closeOnEscape ?? true}
+      .class=${props.class ?? ''}
+      .ariaLabel=${props.ariaLabel ?? ''}
+      .ariaLabelledby=${props.ariaLabelledby ?? ''}
+      .ariaDescribedby=${props.ariaDescribedby ?? ''}
+      .validator=${props.validator ?? undefined}
+    ></bln-modal-dialog>`;
         this.fields.push(tpl);
         return this;
     }

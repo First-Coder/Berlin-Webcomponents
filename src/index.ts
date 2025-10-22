@@ -34,6 +34,7 @@ export * from './components/BlnInput';
 export * from './components/BlnTextarea';
 export * from './components/BlnTabs';
 export * from './components/BlnCalendar';
+export * from './components/BlnModalDialog';
 export * from './components/BlnHeader';
 export * from './components/BlnFooter';
 export * from './components/BlnNavigation';
