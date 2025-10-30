@@ -296,27 +296,29 @@ class FormBuilder {
   }
 
   // Convenience: add a BlnSelect
-  addBlnSelect(props: Partial<BlnSelectProps> = {}) {
-    const tpl = html`<bln-select
-      .label=${props.label ?? ''}
-      .cornerHint=${props.cornerHint ?? ''}
-      .hint=${props.hint ?? ''}
-      .name=${props.name ?? ''}
-      .placeholder=${props.placeholder ?? ''}
-      .value=${props.value ?? ''}
-      .disabled=${props.disabled ?? false}
-      .required=${props.required ?? false}
-      .multiple=${props.multiple ?? false}
-      .size=${props.size ?? 'medium'}
-      .class=${props.class ?? ''}
-      .options=${props.options ?? []}
-      .ariaLabel=${props.ariaLabel ?? ''}
-      .ariaLabelledby=${props.ariaLabelledby ?? ''}
-      .ariaDescribedby=${props.ariaDescribedby ?? ''}
-    ></bln-select>`;
-    this.fields.push(tpl);
-    return this;
-  }
+    addBlnSelect(props: Partial<BlnSelectProps> = {}) {
+        const tpl = html`<bln-select
+                .label=${props.label ?? ''}
+                .cornerHint=${props.cornerHint ?? ''}
+                .hint=${props.hint ?? ''}
+                .name=${props.name ?? ''}
+                .placeholder=${props.placeholder ?? ''}
+                .value=${props.value ?? ''}
+                .disabled=${props.disabled ?? false}
+                .required=${props.required ?? false}
+                .multiple=${props.multiple ?? false}
+                .size=${props.size ?? 'medium'}
+                .class=${props.class ?? ''}
+                .options=${props.options ?? []}
+                .ariaLabel=${props.ariaLabel ?? ''}
+                .ariaLabelledby=${props.ariaLabelledby ?? ''}
+                .ariaDescribedby=${props.ariaDescribedby ?? ''}
+                .validator=${props.validator ?? undefined}
+        ></bln-select>`;
+        this.fields.push(tpl);
+        return this;
+    }
+
 
     addBlnAutocompleteSelect(props: Partial<BlnAutocompleteSelectProps> = {}) {
         const tpl = html`<bln-autocomplete-select

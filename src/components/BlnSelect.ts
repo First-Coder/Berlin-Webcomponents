@@ -28,6 +28,9 @@ export interface BlnSelectProps {
     ariaLabel: string;
     ariaLabelledby: string;
     ariaDescribedby: string;
+    /** Optional externe Validierungsfunktion. Nur als Property (nicht als Attribut) setzbar. */
+    validator?: (value: string | string[], el: BlnSelect) => boolean | { valid: boolean; message?: string };
+
 }
 
 @customElement("bln-select")
@@ -57,11 +60,41 @@ export class BlnSelect extends TailwindElement {
 
     // Options (programmatisch gesetzt); alternativ kann Slot <option> genutzt werden
     @property({attribute: false}) options: BlnSelectProps["options"] = [];
+    /** Externe Validierungsfunktion: nur als Property setzbar (attribute: false). */
+    @property({attribute: false}) validator?: BlnSelectProps['validator'];
+
 
     // interner IDs
     @state() private _selectId = `bln-select-${Math.random().toString(36).slice(2)}`;
     @state() private _hintId = `bln-select-hint-${Math.random().toString(36).slice(2)}`;
     @state() private _isValidSet = false;
+
+    private runValidation() {
+        if (!this.validator) return;
+
+        try {
+            const result = this.validator(this.value, this);
+            if (typeof result === 'boolean') {
+                this.isValid = result;
+            } else if (result && typeof result === 'object') {
+                this.isValid = result.valid;
+                // Optional: Fehlermeldung im hint anzeigen
+                // if (result.message) { ... }
+            }
+            this.dispatchEvent(new CustomEvent('validitychange', {
+                detail: {
+                    valid: this.isValid,
+                    value: this.value
+                },
+                bubbles: true,
+                composed: true
+            }));
+        } catch (e) {
+            console.error('Validation error:', e);
+            this.isValid = false;
+        }
+    }
+
 
     private onChange = (e: Event) => {
         const sel = e.currentTarget as HTMLSelectElement;
@@ -71,6 +104,9 @@ export class BlnSelect extends TailwindElement {
         } else {
             this.value = sel.value;
         }
+        // Run external validation if provided
+        this.runValidation();
+
         // Events nach außen weiterreichen
         this.dispatchEvent(new Event("change", {bubbles: true, composed: true}));
         this.dispatchEvent(new Event("input", {bubbles: true, composed: true}));
@@ -115,7 +151,12 @@ export class BlnSelect extends TailwindElement {
 
     protected willUpdate(changed: Map<string, any>) {
         if (changed.has('isValid')) this._isValidSet = true;
+        if (changed.has('value')) {
+            // When value changes programmatically, also re-run validation if provided
+            this.runValidation();
+        }
     }
+
 
     protected render() {
         // A11y: aria-describedby automatisch, wenn hint vorhanden
