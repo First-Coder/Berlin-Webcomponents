@@ -27,6 +27,9 @@ export interface BlnAutocompleteSelectProps {
     minSearchChars: number;
     noResultsText: string;
     loadingText: string;
+    /** Optional externe Validierungsfunktion. Nur als Property (nicht als Attribut) setzbar. */
+    validator?: (value: string | string[], el: BlnAutocompleteSelect) => boolean | { valid: boolean; message?: string };
+
 }
 
 @customElement("bln-autocomplete-select")
@@ -63,6 +66,9 @@ export class BlnAutocompleteSelect extends TailwindElement {
 
     // Options (programmatisch gesetzt)
     @property({attribute: false}) options: BlnAutocompleteSelectProps["options"] = [];
+    /** Externe Validierungsfunktion: nur als Property setzbar (attribute: false). */
+    @property({attribute: false}) validator?: BlnAutocompleteSelectProps['validator'];
+
 
     // Internal state
     @state() private _searchTerm = "";
@@ -81,7 +87,39 @@ export class BlnAutocompleteSelect extends TailwindElement {
         if (changed.has('options') || changed.has('_searchTerm')) {
             this.updateFilteredOptions();
         }
+        if (changed.has('value')) {
+            // When value changes programmatically, also re-run validation if provided
+            this.runValidation();
+        }
     }
+
+    private runValidation() {
+        if (!this.validator) return;
+
+        try {
+            const result = this.validator(this.value, this);
+            if (typeof result === 'boolean') {
+                this.isValid = result;
+            } else if (result && typeof result === 'object') {
+                this.isValid = result.valid;
+                // Optional: Fehlermeldung im hint oder error anzeigen
+                // if (result.message) { ... }
+            }
+            this.dispatchEvent(new CustomEvent('validitychange', {
+                detail: {
+                    valid: this.isValid,
+                    value: this.value
+                },
+                bubbles: true,
+                composed: true
+            }));
+        } catch (e) {
+            console.error('Validation error:', e);
+            this.isValid = false;
+        }
+    }
+
+
 
     private updateFilteredOptions() {
         if (!this._searchTerm || this._searchTerm.length < this.minSearchChars) {
@@ -165,9 +203,12 @@ export class BlnAutocompleteSelect extends TailwindElement {
             this.closeDropdown();
         }
 
+        // Run external validation if provided
+        this.runValidation();
         this.dispatchEvent(new Event("change", {bubbles: true, composed: true}));
         this.dispatchEvent(new Event("input", {bubbles: true, composed: true}));
     }
+
 
     private closeDropdown() {
         this._isOpen = false;
@@ -216,9 +257,12 @@ export class BlnAutocompleteSelect extends TailwindElement {
         e.stopPropagation();
         if (Array.isArray(this.value)) {
             this.value = this.value.filter(v => v !== optionValue);
+            // Run external validation if provided
+            this.runValidation();
             this.dispatchEvent(new Event("change", {bubbles: true, composed: true}));
         }
     }
+
 
     protected render(): TemplateResult {
         const describedBy = [

@@ -2299,6 +2299,45 @@ export const RightArrow = () => <svg
 </div>
 <div className="sb-container">
     <div className='sb-section-title'>
+        <a name="blnModalDialog"></a>
+        # Ein vollständig zugänglicher modaler Dialog mit konfigurierbaren Eigenschaften.
+
+        **Hauptfunktionen:**
+        - Konfigurierbare Überschrift, Text, Eingabefeld und Buttons
+        - Event-System für Rückgabewerte und Benutzerinteraktionen
+        - Vollständige Barrierefreiheit (Fokusmanagement, Tastaturnavigation, ARIA)
+        - Modal-Hintergrund mit konfigurierbarem Verhalten
+        - Validierung für Eingabefelder
+
+        **Accessibility Features:**
+        - Fokus-Trap: Fokus bleibt innerhalb des Modals
+        - Tastaturnavigation: Escape, Tab, Enter
+        - ARIA-Attribute: role="dialog", aria-modal="true"
+        - Automatische Fokuswiederherstellung beim Schließen
+        - Screen Reader Unterstützung
+
+        **Event-System:**
+        - `open`: Modal wird geöffnet
+        - `close`: Modal wird geschlossen
+        - `button-click`: Button wurde geklickt (mit buttonId und inputValue)
+        - `input-change`: Eingabefeld wurde geändert
+
+        **Tastaturnavigation:**
+        - **Escape**: Modal schließen (wenn aktiviert)
+        - **Tab/Shift+Tab**: Zwischen fokussierbaren Elementen wechseln
+        - **Enter**: Primary Button aktivieren (wenn nicht im Eingabefeld)
+
+
+        Beispiel:
+
+
+    </div>
+
+
+</div>
+
+<div className="sb-container">
+    <div className='sb-section-title'>
         <a name="formBuilder"></a>
         # FormBuilder — Baukasten für Formulare, Validierung und UI-Komponenten
 

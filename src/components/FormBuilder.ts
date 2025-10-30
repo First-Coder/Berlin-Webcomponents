@@ -318,36 +318,37 @@ class FormBuilder {
     return this;
   }
 
-  // Convenience: add a BlnAutocompleteSelect
-  addBlnAutocompleteSelect(props: Partial<BlnAutocompleteSelectProps> = {}) {
-    const tpl = html`<bln-autocomplete-select
-      .label=${props.label ?? ''}
-      .cornerHint=${props.cornerHint ?? ''}
-      .hint=${props.hint ?? ''}
-      .name=${props.name ?? ''}
-      .placeholder=${props.placeholder ?? ''}
-      .searchPlaceholder=${props.searchPlaceholder ?? 'Suchen...'}
-      .value=${props.value ?? ''}
-      .disabled=${props.disabled ?? false}
-      .required=${props.required ?? false}
-      .multiple=${props.multiple ?? false}
-      .size=${props.size ?? 'medium'}
-      .class=${props.class ?? ''}
-      .isValid=${props.isValid ?? undefined}
-      .retroDesign=${props.retroDesign ?? false}
-      .minSearchChars=${props.minSearchChars ?? 1}
-      .noResultsText=${props.noResultsText ?? 'Keine Ergebnisse gefunden'}
-      .loadingText=${props.loadingText ?? 'Laden...'}
-      .options=${props.options ?? []}
-      .ariaLabel=${props.ariaLabel ?? ''}
-      .ariaLabelledby=${props.ariaLabelledby ?? ''}
-      .ariaDescribedby=${props.ariaDescribedby ?? ''}
-    ></bln-autocomplete-select>`;
-    this.fields.push(tpl);
-    return this;
-  }
+    addBlnAutocompleteSelect(props: Partial<BlnAutocompleteSelectProps> = {}) {
+        const tpl = html`<bln-autocomplete-select
+                .label=${props.label ?? ''}
+                .cornerHint=${props.cornerHint ?? ''}
+                .hint=${props.hint ?? ''}
+                .name=${props.name ?? ''}
+                .placeholder=${props.placeholder ?? ''}
+                .searchPlaceholder=${props.searchPlaceholder ?? 'Suchen...'}
+                .value=${props.value ?? ''}
+                .disabled=${props.disabled ?? false}
+                .required=${props.required ?? false}
+                .multiple=${props.multiple ?? false}
+                .size=${props.size ?? 'medium'}
+                .class=${props.class ?? ''}
+                .isValid=${props.isValid ?? undefined}
+                .retroDesign=${props.retroDesign ?? false}
+                .minSearchChars=${props.minSearchChars ?? 1}
+                .noResultsText=${props.noResultsText ?? 'Keine Ergebnisse gefunden'}
+                .loadingText=${props.loadingText ?? 'Laden...'}
+                .options=${props.options ?? []}
+                .ariaLabel=${props.ariaLabel ?? ''}
+                .ariaLabelledby=${props.ariaLabelledby ?? ''}
+                .ariaDescribedby=${props.ariaDescribedby ?? ''}
+                .validator=${props.validator ?? undefined}
+        ></bln-autocomplete-select>`;
+        this.fields.push(tpl);
+        return this;
+    }
 
-  // Convenience: add a BlnButton
+
+    // Convenience: add a BlnButton
   addBlnButton(label: string, props: Partial<BlnButtonProps> = {}, onClick?: (e: MouseEvent) => void) {
     const tpl = html`<bln-button
       .variant=${(props.variant as any) ?? 'solid'}
