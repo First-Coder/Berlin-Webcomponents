@@ -42,6 +42,8 @@ export * from './components/FormBuilder';
 export * from './components/BlnButton';
 export * from './components/BlnRadioButton';
 export * from './components/BlnFormular';
+export * from './components/BlnGrid';
+
 
 
 const meta = {

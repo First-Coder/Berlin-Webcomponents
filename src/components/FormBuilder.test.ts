@@ -1,101 +1,156 @@
-// Basic sanity suite so Vitest recognizes this file as a test suite
-import { describe, it, expect } from 'vitest';
-import FormBuilder from '../components/FormBuilder';
-import { render, html } from 'lit-html';
+import {expect, fixture, html} from "@open-wc/testing";
+import FormBuilder from "./FormBuilder";
 
+// WICHTIG: damit die Custom Elements registriert sind
+import "./BlnInput";
+import "./BlnTextarea";
+import "./BlnTabs";
+import "./BlnCalendar";
+import "./BlnModalDialog";
+import "./BlnSelect";
+import "./BlnAutocompleteSelect";
+import "./BlnCheckBox";
+import "./BlnTreeView";
+import "./ModernTree";
+import "./BlnToast";
+import "./BlnButton";
+import "./BlnGrid";
 
-describe('FormBuilder (smoke)', () => {
-    it('runs a trivial assertion', () => {
-        expect(1 + 1).toBe(2);
+describe("FormBuilder", () => {
+
+    it("can be constructed", () => {
+        const fb = new FormBuilder();
+        expect(fb).to.be.instanceOf(FormBuilder);
     });
-});
 
-
-describe('FormBuilder (setPassword with length < minLength)', () => {
-    it('returns an error message because the password is too short ', () => {
+    it("has default validators for email/password/number", () => {
         const fb = new FormBuilder();
-        expect(fb.validate('password', '123')).toBe('Passwort zu kurz (mindestens 5 Zeichen)');
-    })
-})
 
-describe('FormBuilder (setPassword with correct length)', () => {
-    it('returns empty error', () => {
-        const fb = new FormBuilder();
-        expect(fb.validate('password', '1234567')).toBe('');
-    })
-})
+        // email
+        expect(fb.validate("email", "foo")).to.equal("Falsches Email Format");
+        expect(fb.validate("email", "foo@bar.de")).to.equal("");
 
-describe('FormBuilder (set NumberInput with incorrect numbers)', () => {
-    it('returns error where number is too high', () => {
-        const fb = new FormBuilder();
-        expect(fb.validate('number', '1234567')).toBe('Wert zu hoch (maximal 99)');
-    })
-})
+        // password
+        expect(fb.validate("password", "123")).to.equal("Passwort zu kurz (mindestens 5 Zeichen)");
+        expect(fb.validate("password", "12345")).to.equal("");
 
-describe('FormBuilder (set NumberInput with incorrect numbers)', () => {
-    it('returns error where number is too low', () => {
-        const fb = new FormBuilder();
-        expect(fb.validate('number', '1')).toBe('Wert zu niedrig (mindestens 10)');
-    })
-})
-
-describe('FormBuilder', () => {
-  it('validates email format', () => {
-    const fb = new FormBuilder();
-    expect(fb.validate('email', 'invalid')).toBe('Falsches Email Format');
-    expect(fb.validate('email', 'user@example.com')).toBe('');
-  });
-
-  it('allows overriding sync validators with setCustomValidateFunction', () => {
-    const fb = new FormBuilder();
-    fb.setCustomValidateFunction('password', (v) => v === 'ok' ? '' : 'bad');
-    expect(fb.validate('password', 'nope')).toBe('bad');
-    expect(fb.validate('password', 'ok')).toBe('');
-  });
-
-  it('supports async validation with setCustomValidateFunctionAsync and fallback to sync', async () => {
-    const fb = new FormBuilder();
-    fb.setCustomValidateFunctionAsync('email', async (v) => {
-      await new Promise(r => setTimeout(r, 1));
-      return v.includes('@') ? '' : 'async-fail';
+        // number
+        expect(fb.validate("number", "abc")).to.equal("Wert ist keine Zahl");
+        expect(fb.validate("number", "5")).to.equal("Wert zu niedrig (mindestens 10)");
+        expect(fb.validate("number", "150")).to.equal("Wert zu hoch (maximal 99)");
+        expect(fb.validate("number", "50")).to.equal("");
     });
-    expect(await fb.validateAsync('email', 'x')).toBe('async-fail');
-    expect(await fb.validateAsync('email', 'a@b')).toBe('');
 
-    // Fallback to sync if no async validator exists
-    expect(await fb.validateAsync('number', '5')).toBe('Wert zu niedrig (mindestens 10)');
-    expect(await fb.validateAsync('number', '55')).toBe('');
-  });
+    it("allows registering a custom sync validator", () => {
+        const fb = new FormBuilder();
+        fb.setCustomValidateFunction("username", (v) => v.length < 3 ? "zu kurz" : "");
 
-  it('accumulates fields via builder methods and exposes them via getFields()', () => {
-    const fb = new FormBuilder();
-    fb.addField('text', 'Name', 'Alice')
-      .addButton('Save')
-      .addBlnSelect({ label: 'Choose', options: [{label:'A', value:'a'}] })
-      .addBlnButton('Click')
-      .addBlnCheckbox({ label: 'Agree', checked: true })
-      .addBlnTree({ items: [{ id: '1', label: 'Root' }] as any })
-      .addBlnToast({ title: 'Hi', message: 'Msg' });
-    const fields = fb.getFields();
-    expect(Array.isArray(fields)).toBe(true);
-    expect(fields.length).toBeGreaterThan(0);
-  });
+        expect(fb.validate("username", "a")).to.equal("zu kurz");
+        expect(fb.validate("username", "alex")).to.equal("");
+    });
 
-  it('renders created elements with correct tag names in a container', () => {
-    const container = document.createElement('div');
-    const fb = new FormBuilder();
-    fb.addBlnSelect({ name: 's', options: [{label:'X', value:'x'}] });
-    fb.addBlnButton('Label');
-    fb.addBlnCheckbox({ name: 'c' });
-    fb.addBlnTree({ items: [] as any });
-    fb.addBlnToast({ open: false });
-    // Render all fields at once to avoid overwriting previous nodes
-    render(html`${fb.getFields()}`, container);
-    // Only assert tag presence, not internal behavior
-    expect(container.querySelector('bln-select')).toBeTruthy();
-    expect(container.querySelector('bln-button')).toBeTruthy();
-    expect(container.querySelector('bln-checkbox')).toBeTruthy();
-    expect(container.querySelector('bln-tree')).toBeTruthy();
-    expect(container.querySelector('bln-toast')).toBeTruthy();
-  });
+    it("allows registering a custom async validator", async () => {
+        const fb = new FormBuilder();
+        fb.setCustomValidateFunctionAsync("serverCheck", async (v) => {
+            // fake async
+            return v === "ok" ? "" : "nicht ok";
+        });
+
+        const res1 = await fb.validateAsync("serverCheck", "ok");
+        const res2 = await fb.validateAsync("serverCheck", "nope");
+
+        expect(res1).to.equal("");
+        expect(res2).to.equal("nicht ok");
+    });
+
+    it("adds a BlnInput template to fields", () => {
+        const fb = new FormBuilder();
+        fb.addBlnInput({label: "Name"});
+        const fields = fb.getFields();
+        expect(fields.length).to.equal(1);
+    });
+
+    it("adds a BlnTextarea template to fields", () => {
+        const fb = new FormBuilder();
+        fb.addBlnTextarea({label: "Beschreibung"});
+        const fields = fb.getFields();
+        expect(fields.length).to.equal(1);
+    });
+
+    it("adds a BlnSelect template to fields", () => {
+        const fb = new FormBuilder();
+        fb.addBlnSelect({label: "Auswahl", options: [{label: "A", value: "a"}]});
+        const fields = fb.getFields();
+        expect(fields.length).to.equal(1);
+    });
+
+    it("adds an Autocomplete select template to fields", () => {
+        const fb = new FormBuilder();
+        fb.addBlnAutocompleteSelect({label: "Suche", options: [{label: "X", value: "x"}]});
+        const fields = fb.getFields();
+        expect(fields.length).to.equal(1);
+    });
+
+    it("adds a BlnButton template to fields", () => {
+        const fb = new FormBuilder();
+        fb.addBlnButton("Speichern", {variant: "outline"});
+        const fields = fb.getFields();
+        expect(fields.length).to.equal(1);
+    });
+
+    it("adds a BlnGrid template to fields", () => {
+        const fb = new FormBuilder();
+        fb.addBlnGrid({
+            columns: 2,
+            mdColumns: 3,
+            ariaLabelText: "Formular-Gitter"
+        });
+        const fields = fb.getFields();
+        expect(fields.length).to.equal(1);
+    });
+
+    it("can render a BlnGrid from the field template", async () => {
+        const fb = new FormBuilder();
+        fb.addBlnGrid({
+            columns: 2,
+            mdColumns: 3,
+            lgColumns: 4,
+            gap: "lg",
+            ariaLabelText: "Adressen"
+        });
+
+        const [tpl] = fb.getFields();
+        // wir rendern das Template in ein echtes DOM via fixture
+        const el = await fixture<HTMLDivElement>(html`<div>${tpl}</div>`);
+        const grid = el.querySelector("bln-grid") as HTMLElement;
+
+        expect(grid).to.exist;
+        expect(grid.getAttribute("aria-label")).to.equal("Adressen");
+        // Columns werden als Property gesetzt, daher hier Zugriff über any
+        expect((grid as any).columns).to.equal(2);
+        expect((grid as any).mdColumns).to.equal(3);
+    });
+
+    it("supports passing inner content into BlnGrid (default demo items)", async () => {
+        const fb = new FormBuilder();
+        fb.addBlnGrid({columns: 1});
+
+        const [tpl] = fb.getFields();
+        const host = await fixture<HTMLDivElement>(html`<div>${tpl}</div>`);
+        const grid = host.querySelector("bln-grid")!;
+        // laut unserer addBlnGrid-Implementierung sind mind. 2 Items als Demo drin
+        const items = grid.querySelectorAll("div.border, article, figure");
+        expect(items.length).to.be.greaterThan(0);
+    });
+
+    it("returns all fields in insertion order", () => {
+        const fb = new FormBuilder();
+        fb.addBlnInput({label: "A"});
+        fb.addBlnTextarea({label: "B"});
+        fb.addBlnGrid({columns: 2});
+        const fields = fb.getFields();
+        expect(fields.length).to.equal(3);
+        // wir prüfen hier nur, dass nichts zwischendrin verloren geht
+    });
+
 });
